@@ -1,0 +1,243 @@
+/* ------------- 共通 ------------- */
+h1 {
+	font-size: x-large;
+}
+
+h2 {
+	font-size: large;
+}
+
+h3 {
+	font-size: medium;
+}
+/* ------------- ヘッダー ------------- */
+.menu {
+	background-color: rgb(255, 255, 240);
+}
+
+.header .menu {
+	border-top: 1px solid;
+}
+
+.account-form {
+	text-align: right;
+	padding: none;
+}
+
+.account-form a {
+	margin: 0 12px;
+}
+
+.header ul {
+	margin: 0;
+	padding: 0;
+}
+
+.header ul li, .sled ul li {
+	display: inline;
+	list-style: none;
+	padding: 0 10px;
+}
+
+.logined-form {
+	display: none
+}
+
+/* ------------- 左サイドバー ------------- */
+@media screen and (max-width:480px) {
+	.leftSidebarMenu {
+		display: none
+	}
+}
+
+@media screen and (min-width:480px) {
+	.leftSidebar {
+		height: 1600px;
+		background-color: rgb(222, 235, 247);
+	}
+	.leftSidebarMenu {
+		width: 80%;
+		margin: 0 auto;
+	}
+	.leftSidebarMenu li {
+		list-style: none;
+		margin: 5px 0;
+		font-size: medium;
+	}
+	.leftSidebarMenu li:hover {
+		background-color: rgb(135, 206, 250);
+	}
+}
+
+/* ------------- 右サイドバー ------------- */
+@media screen and (max-width:480px) {
+	.rightSidebarMenu {
+		height: 100vh;
+		display: none
+	}
+}
+
+@media screen and (min-width:480px) {
+	.rightSidebar {
+		height: 1600px;
+		background-color: rgb(222, 235, 247);
+	}
+	.rightSidebarMenu {
+		width: 80%;
+		margin: 0 auto;
+	}
+	.rightSidebar p, .rightSidebar label {
+		margin: 0;
+	}
+	.rightSidebarMenu button {
+		border-radius: 25% 10%;
+		color: #fff;
+		background-color: rgb(135, 206, 235);
+	}
+	.rightSidebarMenu button:focus {
+		background-color: rgb(0, 191, 255);
+	}
+	.rightSidebarMenu a {
+		white-space: nowrap;
+		font-size: small;
+	}
+}
+
+/* ------------- とっぷページ ------------- */
+.newAdd {
+	background-color: rgb(65, 113, 156);
+	color: white;
+	border-radius: 50px;
+	padding: 5px 15px;
+	margin: 1px 10px;
+	transition: .5s cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+.newAdd:hover {
+	background-color: white;
+	color: rgb(65, 113, 156);
+	border: solid rgb(65, 113, 156);
+	transform: scale(2, 2);
+}
+
+.sled {
+	margin: 0;
+	padding: 5px 15px;
+	width: 100%;
+}
+
+.sled-innner {
+	width: 100%;
+	height: 250px;
+	border-radius: 15px;
+	border: 1px solid grey;
+	margin: 0 0 0 5px;
+	transition: .5s cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+.sled-image {
+	width: 100%;
+	max-height: 250px;
+	padding: none;
+	border-radius: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.sled-image img {
+	width: 99%;
+	max-height: 95%;
+	object-fit: contain;
+}
+
+.sled-innner:hover {
+	box-shadow: 0 0 5px 5px aqua;
+}
+
+.text-hidden {
+	height: 150px;
+	overflow-y: scroll;
+}
+
+.sled-info {
+	width: 100%;
+	text-align: right;
+	vertical-align: bottom;
+	padding: 5px 5px 0 0;
+}
+
+/* ------------- ログイン-新規登録 ------------- */
+
+@media screen and (min-width:480px){
+	.login-form{
+		margin: auto;
+		width: 30%;
+		text-align: center;
+		background: rgb(189,215,238);
+		box-shadow: 1px 1px 3px black;
+		border-radius: 30px;
+	}
+}
+@media screen and (max-width:480px){
+	.login-form{
+		margin: auto;
+		width: 70%;
+		text-align: center;
+		background: rgb(189,215,238);
+		box-shadow: 1px 1px 3px black;
+		border-radius: 15px;
+		}
+
+}
+
+.login-form-registar label,.login-form-registar input,.login-form-registar textarea{
+	width: 40%;
+}
+
+.registration{
+	float:left;
+}
+
+
+/* ------------- スレ投稿画面 ------------- */
+.thredPosting{
+	margin: 15px;
+	padding: 5px;
+	border: 1px solid;
+	text-align: center;
+	border-radius: 30px;
+}
+
+
+/* ------------- マイページ ------------- */
+
+.mypage{
+	border: 1px solid grey;
+	padding: 0;
+}
+
+/* ------------- スレッド詳細 ------------- */
+
+.detail{
+	margin:5px auto;
+	width:75%;
+	background-color: rgb(240,240,240);
+}
+
+.comment{
+	margin:5px auto;
+	width:75%;
+}
+
+.detail ul, .comment ul{
+	display:flex;
+	margin: 0;
+	justify-content: flex-end;
+}
+
+.detail ul li ,.comment ul li{
+	list-style: none;
+	margin-left: 5px;
+}
+
