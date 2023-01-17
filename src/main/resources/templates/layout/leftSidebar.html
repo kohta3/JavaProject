@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+	<nav th:fragment="leftSidebar" class="col-md-2 m-0 p-0 leftSidebar" id="leftSidebar">
+	<div class="leftSidebarMenu my-3">
+		<h1>カテゴリー</h1>
+		<ul>
+			<li><a th:href="@{/thredCategory}">SF/ファンタジー</a></li>
+			<li><a th:href="@{/thredCategory}">ロボット/メカ</a></li>
+			<li><a th:href="@{/thredCategory}">アクション/バトル</a></li>
+			<li><a href="">コメディ/ギャグ</a></li>
+			<li><a href="">恋愛/ラブコメ</a></li>
+			<li><a href="">日常/ほのぼの</a></li>
+			<li><a href="">スポーツ/競技</a></li>
+			<li><a href="">ホラー/サスペンス/推理</a></li>
+			<li><a href="">歴史/戦記</a></li>
+			<li><a href="">戦争/ミリタリー</a></li>
+			<li><a href="">ドラマ/青春</a></li>
+			<li><a href="">キッズ/ファミリー</a></li>
+			<li><a href="">ショート</a></li>
+			<li><a href="">ライブ/ラジオ/その他</a></li>
+		</ul>
+	</div>
+	</nav>
+</body>
+</html>

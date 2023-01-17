@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+	<nav th:fragment="header" class="w-100 header">
+		<div>
+			<h1 class="pl-5 py-3 w-100">あ2ちゃんねる</h1>
+			<div class= "row menu m-0">
+				<ul class="col-md-6">
+					<li><a th:href="@{/}">トップ</a></li>
+					<li><a th:href="@{/Category}">カテゴリー</a></li>
+					<li><a href="">問い合わせ</a></li>
+				</ul>
+				<div class="col-md-6 account-form">
+					<a th:href="@{/user/registration}">新規登録</a>
+					or
+					<a th:href="@{/user}">ログイン</a>
+				</div>
+				<div class="col-md-6 logined-form">
+					<a href="">マイページ</a>
+				</div>
+			</div>
+		</div>
+	</nav>
+</body>
+</html>
+

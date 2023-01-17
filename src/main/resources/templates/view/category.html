@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}">
+<head>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-トップ</title>
+<link />
+</head>
+<body>
+	<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<div class="row m-0">
+		<div th:replace="~{layout/leftSidebar :: leftSidebar}"></div>
+		<div class="col-md-8 m-0 p-0">
+		<h1>カテゴリー一覧</h1>
+			<div class="row m-0 bg-secondary p-3">
+				<div class="col-md-3" th:each="i : ${#numbers.sequence(0,20,1)}">
+					<div class="bg-warning text-center w-75 my-3">
+						<a class=" m-1 text-light"href="">カテゴリー名</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:replace="~{layout/rightSidebar :: rightSidebar}"></div>
+	</div>
+
+</body>
+</html>
