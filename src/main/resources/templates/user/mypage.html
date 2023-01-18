@@ -13,71 +13,90 @@
 		<div th:replace="~{layout/leftSidebar :: leftSidebar}"></div>
 		<div class="col-md-8 m-0 p-0">
 			<h1>マイページ</h1>
-			<div class="row w-100 m-0">
-				<div class="col-md-9 mypage">
-					<p class="my-2 text-center"><label class="bg-light">ユーザー名 </label> <span class="bg-info w-50">加藤太郎</span></p>
-					<p class="my-2 text-center"><label class="bg-light">メールアドレス</label> <span class="bg-info w-50">XXXX@gmail.com</span></p>
+			<div class="m-3">
+				<div class="row w-100 m-0">
+					<div class="col-md-11 mypage">
+						<p class="my-2 text-center"><label class="bg-light">ユーザー名 </label> <span class="bg-info w-50">加藤太郎</span></p>
+						<p class="my-2 text-center"><label class="bg-light">メールアドレス</label> <span class="bg-info w-50">XXXX@gmail.com</span></p>
+					</div>
+					<div class="col-md-1 h-100 my-auto">
+						<a class="update-btn" id="update">更新</a>
+					</div>
+					<div class="col-md-11 p-0">
+						<p class="my-2 text-center"><label class="bg-light">パスワード</label> <span class="bg-info w-50">xxxxxxxxxxxxx</span></p>
+					</div>
 				</div>
-				<div class="col-md-3 h-100 my-auto">
-					<a href=""　class="bg-info">更新</a>
+
+				<div class="mypage-genre">
+					<h3>興味のあるジャンル</h3>
+					<ul class="w-100 mypage-genre">
+						<li th:each="i : ${#numbers.sequence(0,3,1)}">ジャンル</li>
+					</ul>
 				</div>
-				<div class="col-md-9 p-0">
-					<p class="my-2 text-center"><label class="bg-light">パスワード</label> <span class="bg-info w-50">xxxxxxxxxxxxx</span></p>
+
+				<div class="row mypage-thredCell">
+					<div class="col-md-6">
+						<h3>投稿したスレ</h3>
+						<ul class="w-100 list-unstyled">
+							<li th:each="i : ${#numbers.sequence(0,5,1)}">スレ１</li>
+						</ul>
+					</div>
+
+					<div class="col-md-6">
+						<h3>コメントしたスレ</h3>
+						<ul class="w-100 list-unstyled">
+							<li th:each="i : ${#numbers.sequence(0,5,1)}">スレ１</li>
+						</ul>
+					</div>
 				</div>
+
+				<div class="row mypage-thredCell">
+					<div class="col-md-6">
+						<h3>フォロー</h3>
+						<ul class="w-100 list-unstyled">
+							<li th:each="i : ${#numbers.sequence(0,5,1)}">ユーザー</li>
+						</ul>
+					</div>
+
+					<div class="col-md-6">
+						<h3>ブロック</h3>
+						<ul class="w-100 list-unstyled">
+							<li th:each="i : ${#numbers.sequence(0,5,1)}">ユーザー</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="update-form" id="userUpdate">
+					<form action="" method="get">
+						<div class="m-5">
+							<h1>ユーザー情報更新</h1>
+							<div class="text-nowrap my-1">
+								<label for="update-form-name">ユーザー名</label>
+								<input type="text" id="update-form-name" value="ユーザー名">
+							</div>
+
+							<div class="text-nowrap my-1">
+								<label for="update-form-email">メールアドレス</label>
+								<input type="email" id="update-form-email" value="xxxx@gmail.com">
+							</div>
+
+							<div class="text-nowrap my-1">
+								<label for="update-form-mind">自己紹介</label>
+								<textarea id="update-form-mind"></textarea>
+							</div>
+<br>
+							<h3>興味のあるジャンル</h3>
+							<span style="white-space: nowrap;" th:each="i : ${#numbers.sequence(0,5,1)}"><input type="checkbox" id="SF/ファンタジー"><label for="SF/ファンタジー">SF/ファンタジー</label></span>
+
+
+							<div class="text-center">
+								<button>保存</button>
+							</div>
+
+						</div>
+					</form>
 			</div>
 
-			<div class="row w-100 m-0">
-				<h3 class="ml-3">興味のあるジャンル</h3><br>
-				<p class="w-100 text-center">
-					<span class="bg-info">ジャンル</span>
-					<span class="bg-info">ジャンル</span>
-					<span class="bg-info">ジャンル</span>
-					<span class="bg-info">ジャンル</span>
-				</p>
-			</div>
-
-			<div class="row w-100 m-0　py-3 text-center">
-				<div class="col-md-6">
-					<h3 class="ml-3">投稿したスレ</h3><br>
-					<p class="w-100 text-left">
-						<span class="bg-info row">スレ１</span>
-						<span class="bg-info row">スレ１</span>
-						<span class="bg-info row">スレ１</span>
-						<span class="bg-info row">スレ１</span>
-					</p>
-				</div>
-
-				<div class="col-md-6">
-					<h3 class="ml-3">コメントしたスレ</h3><br>
-					<p class="w-100 text-left">
-						<span class="bg-info row">スレ１</span>
-						<span class="bg-info row">スレ１</span>
-						<span class="bg-info row">スレ１</span>
-						<span class="bg-info row">スレ１</span>
-					</p>
-				</div>
-			</div>
-
-			<div class="row w-100 m-0 text-center">
-				<div class="col-md-6">
-					<h3 class="ml-3">フォロー</h3><br>
-					<p class="w-100 text-left">
-						<span class="bg-info row">ユーザー名</span>
-						<span class="bg-info row">ユーザー名</span>
-						<span class="bg-info row">ユーザー名</span>
-						<span class="bg-info row">ユーザー名</span>
-					</p>
-				</div>
-
-				<div class="col-md-6">
-					<h3 class="ml-3">ブロック</h3><br>
-					<p class="w-100 text-left">
-						<span class="bg-info row">ユーザー名</span>
-						<span class="bg-info row">ユーザー名</span>
-						<span class="bg-info row">ユーザー名</span>
-						<span class="bg-info row">ユーザー名</span>
-					</p>
-				</div>
 			</div>
 		</div>
 		<div th:replace="~{layout/rightSidebar :: rightSidebar}"></div>

@@ -44,8 +44,7 @@ public class ThredController {
 		return "view/thredTitle";
 	}
 
-	//スレ詳細
-	@GetMapping("/detail/{id}")
+	@GetMapping("/thredDetail")
 	public String threDetail() {
 		return "view/thredDetail";
 	}

@@ -10,6 +10,26 @@ h2 {
 h3 {
 	font-size: medium;
 }
+
+.btn-design{
+	padding: 5px;
+	margin:5px 0;
+	border-radius: 15px;
+	width:30%;
+	border: 1px solid rgb(183,231,251);
+	color:rgb(183,231,251);
+	background-color:white;
+	transition: all 0.5s 0s ease;
+	box-shadow: 1px 1px 5px fuchsia;
+}
+
+.btn-design:hover{
+	background-color:blue;
+	color:white;
+	cursor: pointer;
+	box-shadow: 1px 1px 5px orange;
+}
+
 /* ------------- ヘッダー ------------- */
 .menu {
 	background-color: rgb(255, 255, 240);
@@ -52,7 +72,9 @@ h3 {
 
 @media screen and (min-width:480px) {
 	.leftSidebar {
-		height: 1600px;
+		min-height:100vh;
+		padding-bottom: 10000px;
+		margin-bottom: -10000px;
 		background-color: rgb(222, 235, 247);
 	}
 	.leftSidebarMenu {
@@ -79,7 +101,9 @@ h3 {
 
 @media screen and (min-width:480px) {
 	.rightSidebar {
-		height: 1600px;
+		min-height:100vh;
+		padding-bottom: 10000px;
+		margin-bottom: -10000px;
 		background-color: rgb(222, 235, 247);
 	}
 	.rightSidebarMenu {
@@ -126,13 +150,25 @@ h3 {
 	width: 100%;
 }
 
-.sled-innner {
-	width: 100%;
-	height: 250px;
-	border-radius: 15px;
-	border: 1px solid grey;
-	margin: 0 0 0 5px;
-	transition: .5s cubic-bezier(0.45, 0, 0.55, 1);
+@media screen and (max-width:480px) {
+	.sled-innner {
+		width: 100%;
+		height: 500px;
+		border-radius: 15px;
+		border: 1px solid grey;
+		margin: 0 0 0 5px;
+		transition: .5s cubic-bezier(0.45, 0, 0.55, 1);
+	}
+}
+@media screen and (min-width:480px) {
+	.sled-innner {
+		width: 100%;
+		height: 250px;
+		border-radius: 15px;
+		border: 1px solid grey;
+		margin: 0 0 0 5px;
+		transition: .5s cubic-bezier(0.45, 0, 0.55, 1);
+	}
 }
 
 .sled-image {
@@ -167,12 +203,42 @@ h3 {
 	padding: 5px 5px 0 0;
 }
 
+/* ------------- カテゴリー一覧 ------------- */
+
+.category-page{
+	margin: 0;
+	padding: 0;
+}
+
+.category-page-child{
+	padding: 10px;
+	margin: 30px;
+	box-shadow: 0 1px 10px blue;
+	border: 1px solid;
+	border-radius:15px;
+}
+
+.category-choise{
+	background-color:rgb(183,231,251);
+	transition: all 0.5s 0s ease;
+	margin:5px 0;
+	padding:15px 5px;
+	text-align: center;
+}
+
+.category-choise:hover{
+	background-color:aqua;
+	transform: scale(1.2, 1.2);
+}
+
 /* ------------- ログイン-新規登録 ------------- */
 
 @media screen and (min-width:480px){
 	.login-form{
-		margin: auto;
-		width: 30%;
+		margin-right:auto;
+		margin-left:auto;
+		margin-top:100px;
+		width: 40%;
 		text-align: center;
 		background: rgb(189,215,238);
 		box-shadow: 1px 1px 3px black;
@@ -217,17 +283,91 @@ h3 {
 	padding: 0;
 }
 
+.mypage-thredCell{
+	width:100%;
+	text-align: center;
+	margin: 10px 0;
+	padding: 0 10px;
+
+}
+
+.mypage-thredCell ul,.mypage-thredCell h3{
+	margin: 0;
+}
+
+.mypage-thredCell h3{
+	background-color: rgb(179,240,255);
+	color: rgb(250,180,95);
+}
+
+.mypage-genre{
+	padding: 10px;
+	background-color: rgb(230,230,230);
+}
+
+.mypage-genre ul{
+	display: flex;
+	margin :0;
+	width: 100%;
+}
+
+.mypage-genre li{
+	list-style: none;
+	margin: 0 5px;
+}
+
+.mypage-thredCell span{
+	width: 100%;
+	margin:0;
+	padding: 5px;
+}
+
+#update{
+	cursor: pointer;
+}
+
+.update-form{
+	margin: auto;
+	width: 50%;
+	border-radius: 15px;
+	background-color: rgb(214,255,247);
+}
+
+.update-form label{
+	width: 30%;
+	font-size: small;
+	height: 100%;
+	margin: auto;
+}
+
+#userUpdate{
+	height:40%;
+	position: absolute;
+	top: 10px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
 /* ------------- スレッド詳細 ------------- */
 
 .detail{
-	margin:5px auto;
+	margin:5px auto 0 auto;
+	padding-bottom:3px;
 	width:75%;
 	background-color: rgb(240,240,240);
 }
 
 .comment{
-	margin:5px auto;
+	margin:0 auto 2px auto;
 	width:75%;
+	height:500px;
+	overflow-y: scroll;
+	border-bottom:solid gray;
+	border-top:solid gray;
+	background-color: rgb(240,240,240);
+	font-size: small;
 }
 
 .detail ul, .comment ul{
@@ -238,6 +378,37 @@ h3 {
 
 .detail ul li ,.comment ul li{
 	list-style: none;
-	margin-left: 5px;
+	border-left:solid 1px;
+	padding: 0 5px;
+}
+
+/* ------------- おすすめユーザー ------------- */
+
+.recommend{
+	width: 85%;
+	margin:10px auto;
+	display: flex;
+	box-shadow: 1px 1px 3px gray;
+	font-size: x-small;
+	transition: all 0.5s 0s ease;
+}
+
+.recommend:hover{
+	transform:scale(1.2,1.5);
+	font-size: medium;
+	background-color: white;
+}
+
+.recommend ul{
+	display: flex;
+	flex-flow:wrap;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.recommend ul li{
+	margin: auto 5px;
+	font-size:x-small;
 }
 
