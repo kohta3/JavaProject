@@ -1,15 +1,10 @@
 package com.example.security;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.entity.Role;
 import com.example.entity.User;
 
 public class A2ChannelUserDetails implements UserDetails {
@@ -22,15 +17,7 @@ public class A2ChannelUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roles = user.getRoles();
-
-        List<SimpleGrantedAuthority> authories = new ArrayList<>();
-
-        for (Role role : roles) {
-            authories.add(new SimpleGrantedAuthority(role.getName()));
-        }
-
-        return authories;
+        return null;
     }
 
     @Override
@@ -67,7 +54,4 @@ public class A2ChannelUserDetails implements UserDetails {
         return this.user;
     }
 
-    public boolean hasRole(String roleName) {
-        return user.hasRole(roleName);
-    }
 }
