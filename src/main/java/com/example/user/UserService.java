@@ -143,9 +143,9 @@ public class UserService {
     }
 
     /**
-     * IDに紐づく管理者情報削除処理
+     * IDに紐づくユーザー情報削除処理
      *
-     * @param id 管理者ID
+     * @param id ユーザーID
      * @throws NotFoundException
      */
     public void delete(Long id) throws NotFoundException {
@@ -166,7 +166,7 @@ public class UserService {
     }
 
     /**
-     * 管理者情報の存在チェック
+     * ユーザー情報の存在チェック
      *
      * @param name 確認したい管理者情報のID
      * @return true:存在する false:存在しない

@@ -15,6 +15,7 @@
 		<h1 class="ml-5">ログイン</h1>
 		<div class="login-form-child p-3">
 			<form th:action="@{/login}" method="post">
+				<input type="hidden" name="_csrf" value="33c7b13f-f3e2-44de-b0b1-eadb5e6ffbdb">
 				<div class="text-nowrap">
 					<label for="email">メールアドレス</label>
 					<input type="email" id="email" name="email" placeholder="email">
@@ -24,7 +25,7 @@
 					<input type="password" id="password" name="password" placeholder="password">
 				</div>
 				<div class='text-center'>
-					<button type="submit">ログイン</button>
+					<input type="submit" value="ろぐいん">
 				</div>
 				<p>パスワードを忘れた場合は<a href="">こちら</a></p>
 			</form>

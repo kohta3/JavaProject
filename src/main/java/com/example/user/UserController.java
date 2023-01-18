@@ -131,25 +131,5 @@ public class UserController {
         return "users/user_edit";
     }
 
-    /**
-     * 管理者削除処理
-     *
-     * @param id 管理者ID
-     * @param userDetails ログイン者情報
-     * @param model
-     * @param ra
-     * @return 管理者一覧画面
-     */
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable(name = "id") Long id, Model model, RedirectAttributes ra) {
-        // 管理者情報削除
-        try {
-            userService.delete(id);
-            ra.addFlashAttribute("success_message", "削除に成功しました");
-        } catch (NotFoundException e) {
-            ra.addFlashAttribute("error_message", "対象のデータが見つかりませんでした");
-        }
-        return "redirect:/users";
-    }
 
 }
