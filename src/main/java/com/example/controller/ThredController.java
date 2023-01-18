@@ -39,7 +39,7 @@ public class ThredController {
 	}
 
 	//スレ詳細
-	@GetMapping("/threDetail")
+	@GetMapping("/thredDetail")
 	public String threDetail() {
 		return "view/thredDetail";
 	}

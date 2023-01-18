@@ -21,4 +21,9 @@ public class UserController {
 	public String mypage() {
 		return "user/mypage";
 	}
+
+	@GetMapping("/recommend")
+	public String recommend() {
+		return "user/recommend";
+	}
 }
