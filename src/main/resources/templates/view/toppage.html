@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}"
+>
+<head>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-トップ</title>
+<link />
+</head>
+<body>
+	<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<div class="row m-0">
+		<div th:replace="~{layout/leftSidebar :: leftSidebar}"></div>
+		<div class="col-md-8 m-0 p-0">
+			<div class="mb-3">
+				<h1 class="m-0">トップ</h1>
+				<div class="w-100 text-right">
+					<a th:href="@{/postThred}" class="newAdd">新規すれ作成＋</a>
+				</div>
+			</div>
+
+			<div class="sled">
+				<div class="row sled-innner" th:each="i : ${#numbers.sequence(0,20,1)}">
+					<div class="col-md-4 sled-image">
+						<img alt="sample" th:src="@{/images/usagi.png}">
+					</div>
+					<div class="col-md-8 p-0">
+						<a th:href="@{/thredDetail}">
+							<h2>タイトルタイトルタイトル</h2>
+						</a>
+						<div class="text-hidden">
+							<h3>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</h3>
+						</div>
+						<div class="sled-info">
+							<ul class="m-0">
+								<li>ユーザー名</li>
+								<li>コメント数123件</li>
+								<li>2023/12/4</li>
+							</ul>
+							<ul class="m-0">
+								<li class="text-info">カテゴリー名</li>
+								<li class="text-">アニメタイトル</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:replace="~{layout/rightSidebar :: rightSidebar}"></div>
+	</div>
+
+</body>
+</html>
