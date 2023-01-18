@@ -5,12 +5,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/threads")
 public class ThredController {
 
 	//トップページ
 	@GetMapping
 	public String toppage() {
+		return "view/toppage";
+	}
+
+	//トップページ
+	@GetMapping("/home")
+	public String toppages() {
 		return "view/toppage";
 	}
 
@@ -39,7 +45,7 @@ public class ThredController {
 	}
 
 	//スレ詳細
-	@GetMapping("/threDetail")
+	@GetMapping("/detail/{id}")
 	public String threDetail() {
 		return "view/thredDetail";
 	}

@@ -1,144 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}"
+>
 <head>
-  <title>ログイン - A2channel</title>
-  <!-- Google font-->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
-  <!-- Required Fremwork -->
-  <link rel="stylesheet" th:href="@{/css/bootstrap/css/bootstrap.min.css}" type="text/css">
-  <!-- waves.css -->
-  <link rel="stylesheet" th:href="@{/pages/waves/css/waves.min.css}" type="text/css" media="all">
-  <!-- themify icon -->
-  <link rel="stylesheet" th:href="@{/icon/themify-icons/themify-icons.css}" type="text/css">
-  <!-- font-awesome-n -->
-  <link rel="stylesheet" th:href="@{/css/font-awesome-n.min.css}" type="text/css">
-  <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" type="text/css">
-  <!-- scrollbar.css -->
-  <link rel="stylesheet" th:href="@{/css/jquery.mCustomScrollbar.css}" type="text/css">
-  <!-- style.css -->
-  <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-ログイン</title>
+<link />
 </head>
-
-  <body>
-  <!-- Pre-loader start -->
-  <div class="theme-loader">
-      <div class="loader-track">
-          <div class="preloader-wrapper">
-              <div class="spinner-layer spinner-blue">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-              <div class="spinner-layer spinner-red">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-
-              <div class="spinner-layer spinner-yellow">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-
-              <div class="spinner-layer spinner-green">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  <!-- Pre-loader end -->
-
-    <section class="login-block">
-        <!-- Container-fluid starts -->
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <!-- Authentication card start -->
-
-                        <form class="md-float-material form-material" th:action="@{/login}" method="post">
-                            <div class="text-center">
-                                <img class="img-fluid img-60" th:src="@{/images/logo.svg}">
-                                <h2>A2channel</h2>
-                            </div>
-                            <div class="auth-box card">
-                                <div class="card-block">
-                                    <div class="row m-b-20">
-                                        <div class="col-md-12">
-                                            <h3 class="text-center">ログイン</h3>
-                                        </div>
-                                    </div>
-                                    <div th:if="${param.error}">
-                                      <p class="text-danger">ユーザ名かパスワードが正しくありません</p>
-                                    </div>
-                                    <div th:if="${param.logout}">
-                                      <p class="text-warning">ログアウトしました</p>
-                                    </div>
-                                    <div class="form-group form-primary">
-                                        <label>メールアドレス</label>
-                                        <input type="text" name="email" class="form-control">
-                                        <span class="form-bar"></span>
-                                    </div>
-                                    <div class="form-group form-primary">
-                                        <label>パスワード</label>
-                                        <input type="password" name="password" class="form-control">
-                                        <span class="form-bar"></span>
-                                    </div>
-                                    <div class="row m-t-30">
-                                        <div class="col-md-12">
-                                            <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">ログイン</button>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                </div>
-                            </div>
-                        </form>
-                        <!-- end of form -->
-                </div>
-                <!-- end of col-sm-12 -->
-            </div>
-            <!-- end of row -->
-        </div>
-        <!-- end of container-fluid -->
-    </section>
-    <!-- Warning Section Starts -->
-<!-- Required Jquery -->
-<script type="text/javascript" th:src="@{/js/jquery/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/jquery-ui/jquery-ui.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/popper.js/popper.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
-<!-- waves js -->
-<script th:src="@{/pages/waves/js/waves.min.js}"></script>
-<!-- jquery slimscroll js -->
-<script type="text/javascript" th:src="@{/js/jquery-slimscroll/jquery.slimscroll.js}"></script>
-<script type="text/javascript" th:src="@{/js/common-pages.js}"></script>
+<body>
+<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<div class="login-form">
+		<h1 class="ml-5">ログイン</h1>
+		<div class="login-form-child p-3">
+			<form th:action="@{/login}" method="post">
+				<div class="text-nowrap">
+					<label for="email">メールアドレス</label>
+					<input type="email" id="email" name="email" placeholder="email">
+				</div>
+				<div class="text-nowrap">
+					<label for="password">パスワード</label>
+					<input type="password" id="password" name="password" placeholder="password">
+				</div>
+				<div class='text-center'>
+					<button type="submit">ログイン</button>
+				</div>
+				<p>パスワードを忘れた場合は<a href="">こちら</a></p>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript" th:src="@{/js/componentNone.js}"></script>
 </body>
-
 </html>

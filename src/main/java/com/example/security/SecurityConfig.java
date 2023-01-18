@@ -30,14 +30,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         		//以下のurlに対しては、未ログインユーザーでもアクセスを許可する
                 .antMatchers("/loginForm").permitAll()
                 .antMatchers("/threads").permitAll()
+                .antMatchers("/threads/Detail/{id}").permitAll()
                 .anyRequest().authenticated();
-        
+
         http.formLogin()
-        .loginProcessingUrl("/login")//ログイン時のURL
+        .loginProcessingUrl("/login")//ログイン処理のパス
                 .loginPage("/loginForm")//ログイン画面表示するページの設定
                 .usernameParameter("email")//ログイン画面のメールアドレス
                 .passwordParameter("password")//ログイン画面のパスワード
-                .defaultSuccessUrl("/threads", true)//ログイン成功時遷移先
+                .defaultSuccessUrl("/thread", true)//ログイン成功時遷移先
                 .failureUrl("/loginForm?error");//ログイン失敗時の遷移先
 
     }

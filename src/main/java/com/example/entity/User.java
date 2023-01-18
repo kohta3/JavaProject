@@ -1,10 +1,17 @@
 package com.example.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -34,8 +41,13 @@ public class User {
     @Column(name = "INTRODUCTION", length = 300, nullable = true)
     private String introduction;
 
-    @Column(name = "ROLE_ID", nullable = false)
-    private Long role_id;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "ROLE_ID",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
+            )
+    private Set<Role> roles = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -77,12 +89,25 @@ public class User {
 		this.introduction = introduction;
 	}
 
-	public Long getRole_id() {
-		return role_id;
-	}
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
-	public void setRole_id(Long role_id) {
-		this.role_id = role_id;
-	}
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public boolean hasRole(String roleName) {
+        for (Role role : roles) {
+            if (role.getName().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
