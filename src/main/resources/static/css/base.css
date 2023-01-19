@@ -254,7 +254,10 @@ h3 {
 		box-shadow: 1px 1px 3px black;
 		border-radius: 15px;
 		}
+}
 
+input::placeholder{
+	font-size: x-small;
 }
 
 .login-form-registar label,.login-form-registar input,.login-form-registar textarea{
