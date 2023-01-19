@@ -1,5 +1,6 @@
 package com.example.entity;
 
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
 
 
 @Entity
@@ -40,14 +40,6 @@ public class User {
     //自己紹介文
     @Column(name = "INTRODUCTION", length = 300, nullable = true)
     private String introduction;
-
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "ROLE_ID",
-//            joinColumns = @JoinColumn(name = "USER_ID"),
-//            inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
-//            )
-//    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Threads> threadList;
@@ -100,26 +92,5 @@ public class User {
 	public void setIntroduction(String introduction) {
 		this.introduction = introduction;
 	}
-
-//    public Set<Role> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(Set<Role> roles) {
-//        this.roles = roles;
-//    }
-//
-//    public void addRole(Role role) {
-//        this.roles.add(role);
-//    }
-//
-//    public boolean hasRole(String roleName) {
-//        for (Role role : roles) {
-//            if (role.getName().equals(roleName)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
 }

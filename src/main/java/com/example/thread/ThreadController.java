@@ -22,7 +22,6 @@ public class ThreadController {
 		this.threadService = threadService;
 	}
 
-	//トップページ
 	/**
 	 * スレッド一覧ページ
 	 * @param oreder
