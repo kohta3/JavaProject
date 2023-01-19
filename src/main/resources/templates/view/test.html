@@ -21,36 +21,22 @@
 				</div>
 			</div>
 
-			<div class="sled">s
+			<div class="sled">
 				<div class="row sled-innner" th:each="thread : ${threads}">
+					<div th:text="${thread.title}"></div>
+					<div th:text="${thread.id}"></div>
+					<div th:each="comment : ${thread.commentList}">
+						<div th:text="${comment.content}"></div>
+					</div>
+					<div th:text="${thread.commentSum}"></div>
 
-					<div class="col-md-4 sled-image">
-						<img alt="sample" th:src="@{/images/usagi.png}">
-					</div>
-					<div class="col-md-8 p-0">
-						<a th:href="@{/thredDetail}">
-							<h2 th:text="${thread.title}">taitoru</h2>
-						</a>
-						<div class="text-hidden">
-							<h3 th:text="${thread.id}"></h3>
-						</div>
-						<div class="sled-info">
-							<ul class="m-0">
-								<li th:text="${thread.user.name}">ユーザー名</li>
-								<li th:text="${thread.commentSum}">コメント数123件</li>
-								<li th:text="${thread.dateTime}">2023/12/4</li>
-							</ul>
-							<ul class="m-0">
-								<li class="text-info" th:text="${thread.category.name}">カテゴリー名</li>
-								<li class="text-" th:text="${thread.animeTitle.name}">アニメタイトル</li>
-							</ul>
-						</div>
-					</div>
+
+
 				</div>
 			</div>
 		</div>
+
 		<div th:replace="~{layout/rightSidebar :: rightSidebar}"></div>
 	</div>
-
 </body>
 </html>
