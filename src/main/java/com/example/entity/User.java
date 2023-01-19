@@ -1,20 +1,27 @@
 package com.example.entity;
 
+
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "USERS")
 public class User {
 
     @Id
-    @SequenceGenerator(name = "USERS_GENERATOR", sequenceName = "USERS_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_GENERATOR")
+    @SequenceGenerator(name = "USERS_ID_GENERATOR", sequenceName = "USERS_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS_ID_GENERATOR")
     @Column(name = "ID")
     private Long id;
 
@@ -33,6 +40,18 @@ public class User {
     //自己紹介文
     @Column(name = "INTRODUCTION", length = 300, nullable = true)
     private String introduction;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Threads> threadList;
+
+
+	public List<Threads> getThreadList() {
+		return threadList;
+	}
+
+	public void setThreadList(List<Threads> threadList) {
+		this.threadList = threadList;
+	}
 
 	public Long getId() {
 		return id;
