@@ -4,33 +4,46 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="COMMENTS")
+@Table(name = "COMMENTS")
 public class Comment {
 
-	@Column(name="ID")
+	@Id
+	@SequenceGenerator(name = "COMMENTS_ID_GENERATOR", sequenceName = "COMMENTS_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMENTS_ID_GENERATOR")
+    @Column(name = "ID")
 	private Long id;
 
-	@Column(name="CONTENT")
+	@Column(name = "CONTENT", length = 150)
 	private String content;
 
-	@Column(name="IMAGE")
+	@Column(name = "IMAGE" , nullable = true)
 	private String image;
 
-	@Column(name="DATE_TIME")
-	private LocalDateTime date_time;
+	@Column(name = "DATE_TIME")
+	private LocalDateTime dateTime;
+
+	@Column(name = "USER_ID")
+	private Long userId;
+
+	@Column(name = "THREAD_ID")
+	private Long threadId;
 
 	@ManyToOne
-	@JoinColumn(insertable = false, updatable = false)
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(insertable = false, updatable = false)
-	private THREAD thread;
+	@JoinColumn(name = "thread_id", insertable = false, updatable = false)
+	private Threads threads;
 
 	public Long getId() {
 		return id;
@@ -57,11 +70,11 @@ public class Comment {
 	}
 
 	public LocalDateTime getDate_time() {
-		return date_time;
+		return dateTime;
 	}
 
 	public void setDate_time(LocalDateTime date_time) {
-		this.date_time = date_time;
+		this.dateTime = date_time;
 	}
 
 	public User getUser() {
@@ -72,12 +85,11 @@ public class Comment {
 		this.user = user;
 	}
 
-	public THREAD getThread() {
-		return thread;
+	public Threads getThread() {
+		return threads;
 	}
 
-	public void setThread(THREAD thread) {
-		this.thread = thread;
+	public void setThread(Threads thread) {
+		this.threads = thread;
 	}
-
 }

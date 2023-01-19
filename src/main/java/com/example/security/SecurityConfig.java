@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .loginPage("/loginForm")//ログイン画面表示するページの設定
                 .usernameParameter("email")//ログイン画面のメールアドレス
                 .passwordParameter("password")//ログイン画面のパスワード
-                .defaultSuccessUrl("/thread", true)//ログイン成功時遷移先
+                .defaultSuccessUrl("/threads", true)//ログイン成功時遷移先
                 .failureUrl("/loginForm?error");//ログイン失敗時の遷移先
 
     }

@@ -1,16 +1,41 @@
-package com.example.controller;
+package com.example.thread;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.entity.Threads;
 
 @Controller
 @RequestMapping("/threads")
-public class ThredController {
+public class ThreadController {
 
-	//トップページ
+	private ThreadService threadService;
+
+	@Autowired
+	public ThreadController(ThreadService threadService) {
+		this.threadService = threadService;
+	}
+
+	/**
+	 * スレッド一覧ページ
+	 * @param oreder
+	 * @param model
+	 * @return view/toppage
+	 */
 	@GetMapping
-	public String toppage() {
+	public String showThreadsAll(Model model, @RequestParam(required = false) String order) {
+		//スレッド一覧を取得
+		List<Threads> threads = this.threadService.listAll(order);
+
+
+		//取得したスレッド情報を画面に渡す
+		model.addAttribute("threads", threads);
 		return "view/toppage";
 	}
 
