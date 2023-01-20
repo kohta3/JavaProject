@@ -15,7 +15,7 @@
 		<h1 class="ml-3">新規ユーザー登録</h1>
 		<div class="login-form p-3">
 			<form th:action="@{/users/save}" method="post" th:object="${user}">
-
+				<input type="hidden" name="_csrf" value="33c7b13f-f3e2-44de-b0b1-eadb5e6ffbdb">
 				<div class="login-form-registar">
 					<div class="text-nowrap">
 						<label for="username">ユーザー名</label>
@@ -29,18 +29,17 @@
 
 					<div class="text-nowrap">
 						<label for="password">パスワード</label>
-						<input type="password"placeholder="パスワード" th:field="*{password}" required="required">
+						<input type="password" placeholder="パスワード" th:field="*{password}" required="required">
 					</div>
 
 					<div class="text-nowrap">
 						<label for="confirm">確認パスワード</label>
-						<input type="password" id="confirm" name="confirm" required="required">
+						<input type="password" placeholder="確認パスワード" id="confirm" name="confirm" required="required">
 					</div>
 
 					<div class="text-nowrap">
 						<label for="self" class="m-auto">自己紹介</label>
-						<textarea name="self" id="self" placeholder="自己紹介を入力してください"></textarea>
-
+						<textarea name="self" id="self" placeholder="自己紹介を入力してください" th:field="*{introduction}"></textarea>
 					</div>
 				</div>
 
@@ -91,7 +90,7 @@
 				</div>
 
 				<div class='text-center'>
-					<input type="submit" value="新規登録" class="btn-design">
+					<button class="btn-design">新規登録</button>
 				</div>
 
 			</form>

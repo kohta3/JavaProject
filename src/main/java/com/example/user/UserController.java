@@ -44,7 +44,8 @@ public class UserController {
      */
     @PostMapping("/save")
     public String saveUser(User user, RedirectAttributes ra) {
-        System.out.println("ここまできたよ・・・・・・・・・・・");
+    	//デバッグ表示
+    	System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     	//入力された文字数のチェック
         if (!userService.isValid(user.getEmail(), user.getName())) {
             ra.addFlashAttribute("error_message", "メールアドレスまたはユーザー名の文字数がオーバーしています");
