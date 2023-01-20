@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         		//以下のurlに対しては、未ログインユーザーでもアクセスを許可する
                 .antMatchers("/loginForm").permitAll()
                 .antMatchers("/threads").permitAll()
-                .antMatchers("/threads/Detail/{id}").permitAll()
+                .antMatchers("/threads/detail/{id}").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin()

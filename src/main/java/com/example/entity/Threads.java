@@ -34,7 +34,7 @@ public class Threads {
 	@Column(name = "TITLE")
 	private String title;
 
-	@Column(name = "COMENT")
+	@Column(name = "COMMENTS")
 	private String comment;
 
 	@Column(name = "DATE_TIME")

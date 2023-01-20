@@ -44,6 +44,9 @@ public class ThreadService {
 		return threadList;
 	}
 
+	public Threads get(Long id) {
+		return threadRepository.findById(id).get();
+	}
 
 
 
