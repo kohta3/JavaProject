@@ -36,6 +36,14 @@ public class ThreadService {
 	}
 
 	/**
+	 * カテゴリIdでスレッド検索
+	 */
+	public List<Threads> findByCategory(Long categoryId) {
+
+		return this.threadRepository.findByCategoryId(categoryId);
+	}
+
+	/**
 	 * スレッド登録処理
 	 */
 	public Threads save(Threads threads) {
@@ -51,6 +59,8 @@ public class ThreadService {
 	private List<Threads> orderByComment(List<Threads> threadList) {
 		return threadList;
 	}
+
+
 
 
 

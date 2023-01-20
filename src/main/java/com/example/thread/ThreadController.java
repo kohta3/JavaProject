@@ -85,7 +85,7 @@ public class ThreadController {
 		//アニメIDの取得,登録
 		String animeTitle = threadsForm.getAnimeTitle();
 		Threads threads = threadsForm.getThreads();
-		Long animeId = this.animeTitleService.searchId(animeTitle, 1L);
+		Long animeId = this.animeTitleService.searchId(animeTitle, threads.getCategoryId());
 
 		//スレッドの中のアニメIDの登録
 		threads.setAnimeId(animeId);
@@ -96,14 +96,6 @@ public class ThreadController {
 		//スレッドの登録
 		this.threadService.save(threads);
 		return "redirect:/threads";
-	}
-
-	//カテゴリー一覧
-	@GetMapping("/Category")
-	public String Category(Model model) {
-		List<Categories> categories = this.categoryService.listAll();
-		model.addAttribute("categories", categories);
-		return "view/category";
 	}
 
 	//スレ一覧(カテゴリー絞り込み)

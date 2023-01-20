@@ -14,9 +14,9 @@
 		<div class="col-md-8 category-page">
 		<h1>カテゴリー一覧</h1>
 			<div class="row category-page-child">
-				<div class="col-md-3" th:each="i : ${#numbers.sequence(1,20,1)}">
+				<div class="col-md-3" th:each="category : ${categories}">
 					<div class="category-choise">
-						<a href="">カテゴリー名</a>
+						<a th:href="@{/categories/threads/{categoryId}(categoryId=${category.id})}" th:text="${category.name}">カテゴリー名</a>
 					</div>
 				</div>
 			</div>
