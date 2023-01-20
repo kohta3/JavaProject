@@ -58,7 +58,7 @@ public class Threads {
 
 	@ManyToOne
 	@JoinColumn(name = "CATEGORY_ID", insertable = false, updatable = false)
-	private Category category;
+	private Categories category;
 
 	@ManyToOne
 	@JoinColumn(name = "ANIME_ID", insertable = false, updatable = false)
@@ -139,11 +139,11 @@ public class Threads {
 		this.user = user;
 	}
 
-	public Category getCategory() {
+	public Categories getCategory() {
 		return category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategory(Categories category) {
 		this.category = category;
 	}
 

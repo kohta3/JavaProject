@@ -29,6 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.authorizeRequests()
         		//以下のurlに対しては、未ログインユーザーでもアクセスを許可する
                 .antMatchers("/loginForm").permitAll()
+                .antMatchers("/users/new").permitAll()
+                .antMatchers("/users/save").permitAll()
                 .antMatchers("/threads").permitAll()
                 .antMatchers("/threads/detail/{id}").permitAll()
                 .anyRequest().authenticated();

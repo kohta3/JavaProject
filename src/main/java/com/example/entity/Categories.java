@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CATEGORIES")
-public class Category {
+public class Categories {
 
 	@Id
 	@Column(name = "ID")

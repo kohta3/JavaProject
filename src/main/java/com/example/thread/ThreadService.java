@@ -36,6 +36,14 @@ public class ThreadService {
 	}
 
 	/**
+	 * スレッド登録処理
+	 */
+	public Threads save(Threads threads) {
+		return this.threadRepository.save(threads);
+	}
+
+
+	/**
 	 * コメント数で並べ替え機能
 	 * @param List<Threads>
 	 * @return 並べ替えたList<Threads>
