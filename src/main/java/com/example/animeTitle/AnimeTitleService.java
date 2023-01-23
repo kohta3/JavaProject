@@ -1,5 +1,6 @@
 package com.example.animeTitle;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,22 @@ public class AnimeTitleService {
 	}
 
 	/**
-	 * アニメタイトル検索
+	 * アニメタイトル全件リスト
+	 * @return List<AnimeTitle>
+	 */
+	public List<AnimeTitle> listAll() {
+		return this.animeTitleRepository.findAll();
+	}
+
+	/**
+	 * アニメタイトルIDからアニメタイトル情報取得
+	 */
+	public AnimeTitle findById(Long id) {
+		return this.animeTitleRepository.findById(id).get();
+	}
+
+	/**
+	 * アニメタイトルからアニメタイトルIDを取得
 	 * @param keyword
 	 * @return Long id
 	 */
