@@ -25,14 +25,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
+    	//未ログインユーザーも遷移可能な画面をまとめた処理
         http.authorizeRequests()
         		//以下のurlに対しては、未ログインユーザーでもアクセスを許可する
-                .antMatchers("/loginForm").permitAll()
-                .antMatchers("/users/new").permitAll()
-                .antMatchers("/users/save").permitAll()
-                .antMatchers("/threads").permitAll()
-                .antMatchers("/threads/detail/{id}").permitAll()
+                .antMatchers("/loginForm").permitAll()//ログイン画面
+                .antMatchers("/users/new").permitAll()//ユーザー新規作成画面
+                .antMatchers("/users/save").permitAll()//ユーザー作成処理
+                .antMatchers("/threads").permitAll()//スレッド一覧画面
+                .antMatchers("/categories").permitAll()//カテゴリー一覧画面
+                .antMatchers("/threads/threadsCategory/{id}").permitAll()//カテゴリー一覧>カテゴリー>スレッド
+
                 .anyRequest().authenticated();
 
         http.formLogin()
@@ -42,6 +44,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .passwordParameter("password")//ログイン画面のパスワード
                 .defaultSuccessUrl("/threads", true)//ログイン成功時遷移先
                 .failureUrl("/loginForm?error");//ログイン失敗時の遷移先
+
+        //ログアウトに関する処理
+        http.logout()
+        .logoutUrl("/logout")//ログアウト処理時のパス
+        .logoutSuccessUrl("/loginForm");//ログアウト後の遷移先
+
 
     }
 }

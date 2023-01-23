@@ -13,9 +13,10 @@
 <div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div>
 		<h1 class="ml-3">新規ユーザー登録</h1>
+		<div th:replace="fragments :: message"></div>
 		<div class="login-form p-3">
 			<form th:action="@{/users/save}" method="post" th:object="${user}">
-				<input type="hidden" name="_csrf" value="33c7b13f-f3e2-44de-b0b1-eadb5e6ffbdb">
+
 				<div class="login-form-registar">
 					<div class="text-nowrap">
 						<label for="username">ユーザー名</label>

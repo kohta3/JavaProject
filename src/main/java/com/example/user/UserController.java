@@ -1,6 +1,7 @@
 package com.example.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.entity.User;
+import com.example.security.A2ChannelUserDetails;
 
 @Controller
 @RequestMapping("/users")
@@ -44,17 +46,9 @@ public class UserController {
      */
     @PostMapping("/save")
     public String saveUser(User user, RedirectAttributes ra) {
-    	//デバッグ表示
-    	System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     	//入力された文字数のチェック
         if (!userService.isValid(user.getEmail(), user.getName())) {
             ra.addFlashAttribute("error_message", "メールアドレスまたはユーザー名の文字数がオーバーしています");
-            return "redirect:/users/new";
-        }
-
-        //ユーザー情報のメールアドレス重複チェック
-        if (!userService.UserEmailcheckUnique(user)) {
-            ra.addFlashAttribute("error_message", "既に使用されているメールアドレスです");
             return "redirect:/users/new";
         }
 
@@ -64,11 +58,31 @@ public class UserController {
             return "redirect:/users/new";
         }
 
+        //ユーザー情報のメールアドレス重複チェック
+        if (!userService.UserEmailcheckUnique(user)) {
+            ra.addFlashAttribute("error_message", "既に使用されているメールアドレスです");
+            return "redirect:/users/new";
+        }
+
         //ユーザー情報の登録
         userService.save(user);
         // 登録成功のメッセージを格納
         ra.addFlashAttribute("success_message", "ユーザーの新規登録に成功しました");
         return "redirect:/threads";
+    }
+
+    /**
+     * マイページ画面
+     *
+     * @param user マイページ
+     * @param ra
+     * @return マイページ画面
+     */
+    @GetMapping("/mypage")
+    public String MyPages(Model model, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+
+    	model.addAttribute("loginUser", loginUser.getUser());
+    	return "users/mypage";
     }
 
 }
