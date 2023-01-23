@@ -21,7 +21,7 @@ import com.example.security.A2ChannelUserDetails;
 import com.example.user.UserService;
 
 @Controller
-@RequestMapping("follows")
+@RequestMapping("/follows")
 public class FollowController {
 
 	private final FollowService followService;
