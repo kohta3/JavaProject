@@ -28,6 +28,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     public User findByEmail(String email);
 
     /**
+     * ユーザー名に紐づくユーザー情報取得クエリ
+     *
+     * @param name ユーザー名
+     * @return ユーザー情報
+     */
+    public User findByName(String name);
+
+    /**
      * ユーザー情報検索クエリ
      *
      * @param keyword 検索キーワード

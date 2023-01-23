@@ -122,7 +122,7 @@ public class UserService {
      */
     public boolean UserNamecheckUnique(User user) {
         boolean isCreatingNew = (user.getId() == null || user.getId() == 0);
-        User userByName = userRepository.findByEmail(user.getName());
+        User userByName = userRepository.findByName(user.getName());
 
         if (isCreatingNew) {
             if (userByName != null) {
