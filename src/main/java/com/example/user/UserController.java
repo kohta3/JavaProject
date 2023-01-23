@@ -1,5 +1,7 @@
 package com.example.user;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.entity.Follow;
 import com.example.entity.User;
+import com.example.follow.FollowService;
 import com.example.security.A2ChannelUserDetails;
 
 @Controller
@@ -17,10 +21,12 @@ import com.example.security.A2ChannelUserDetails;
 public class UserController {
 
     private final UserService userService;
+    private final FollowService followService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, FollowService followService) {
         this.userService = userService;
+        this.followService = followService;
     }
 
     /**
@@ -81,6 +87,8 @@ public class UserController {
     @GetMapping("/mypage")
     public String MyPages(Model model, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 
+    	List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
+		model.addAttribute("follows", followList);
     	model.addAttribute("loginUser", loginUser.getUser());
     	return "users/mypage";
     }

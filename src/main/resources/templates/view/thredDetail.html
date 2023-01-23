@@ -21,7 +21,14 @@
 				<ul class="">
 					<li th:text="${#temporals.format(thread.dateTime, 'yyyy/MM/dd HH:mm:ss')}">日付</li>
 					<li th:text="${thread.user.name}">ユーザー名</li>
-					<li><a href="">フォロー</a></li>
+
+					<li>
+						<form th:action="@{/follows/save}" method="post">
+							<input type="hidden" name="threadId" th:value="${thread.id}">
+							<button type="submit" name="followId" th:value="${thread.user.id}">フォロー</button>
+						</form>
+					</li>
+
 					<li><a href="">ブロック</a></li>
 				</ul>
 				<p th:text="'1.'+ ${thread.comment}"></p>
@@ -32,7 +39,13 @@
 				<ul class="mr-1">
 					<li th:text="${#temporals.format(comment.dateTime, 'yyyy/MM/dd HH:mm:ss')}"></li>
 					<li th:text="${comment.user.name}">ユーザー名</li>
-					<li><a href="">フォロー</a></li>
+					<li>
+						<form th:action="@{/follows/save}" method="post">
+							<input type="hidden" name="threadId" th:value="${thread.id}">
+							<button type="submit" name="followId" th:value="${comment.user.id}">フォロー</button>
+						</form>
+					</li>
+					<!--   <li><a href="">フォロー</a></li> -->
 					<li><a href="">ブロック</a></li>
 				</ul>
 				<p class="my-1" th:text="${comment.content}"></p>

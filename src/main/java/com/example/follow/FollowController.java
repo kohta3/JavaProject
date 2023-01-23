@@ -1,5 +1,6 @@
 package com.example.follow;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.animeTitle.AnimeTitleService;
 import com.example.category.CategoryService;
@@ -60,12 +62,21 @@ public class FollowController {
 	 * @return フォローする画面
 	 */
 	@PostMapping("/save")
-	public String createFollow(@RequestParam("followId") Long followId ,@AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+	public String createFollow(@RequestParam("followId") Long followId ,@RequestParam("threadId") Long threadId,@AuthenticationPrincipal A2ChannelUserDetails loginUser, UriComponentsBuilder builder) {
 		Follow follow = new Follow();
 		follow.setUserId(loginUser.getUser().getId());
 		follow.setFollowId(followId);
 		this.followService.save(follow);
-		return "redirect:/follows";
+
+		URI location = builder.path("/threads/detail/" + threadId).build().toUri();
+//		comment.setUserId(loginUser.getUser().getId());
+//		this.commentService.save(comment);
+//
+//		URI location = builder.path("/threads/detail/" + comment.getThreadId()).build().toUri();
+//
+//		return "redirect:"+ location.toString();
+
+		return "redirect:" + location.toString();
 	}
 
 	/*
