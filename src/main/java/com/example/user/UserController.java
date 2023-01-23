@@ -21,6 +21,7 @@ import com.example.entity.UserCategories;
 import com.example.security.A2ChannelUserDetails;
 import com.example.userCategories.UserCategoriesService;
 
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -61,23 +62,21 @@ public class UserController {
      */
     @PostMapping("/save")
     public String saveUser(User user, RedirectAttributes ra) {
-    	//デバッグ表示
-    	System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     	//入力された文字数のチェック
         if (!userService.isValid(user.getEmail(), user.getName())) {
             ra.addFlashAttribute("error_message", "メールアドレスまたはユーザー名の文字数がオーバーしています");
             return "redirect:/users/new";
         }
 
-        //ユーザー情報のメールアドレス重複チェック
-        if (!userService.UserEmailcheckUnique(user)) {
-            ra.addFlashAttribute("error_message", "既に使用されているメールアドレスです");
-            return "redirect:/users/new";
-        }
-
         //ユーザー情報のユーザー名重複チェック
         if (!userService.UserNamecheckUnique(user)) {
             ra.addFlashAttribute("error_message", "既に使用されているユーザー名です。");
+            return "redirect:/users/new";
+        }
+
+        //ユーザー情報のメールアドレス重複チェック
+        if (!userService.UserEmailcheckUnique(user)) {
+            ra.addFlashAttribute("error_message", "既に使用されているメールアドレスです");
             return "redirect:/users/new";
         }
 
@@ -116,5 +115,18 @@ public class UserController {
 		List<AnimeTitle> animeTitles = this.animeTitleService.listAll();
 		return animeTitles;
 	}
+    /**
+     * マイページ画面
+     *
+     * @param user マイページ
+     * @param ra
+     * @return マイページ画面
+     */
+    @GetMapping("/mypage")
+    public String MyPages(Model model, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+
+    	model.addAttribute("loginUser", loginUser.getUser());
+    	return "users/mypage";
+    }
 
 }
