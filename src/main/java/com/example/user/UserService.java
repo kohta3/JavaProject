@@ -1,5 +1,7 @@
 package com.example.user;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -157,6 +159,14 @@ public class UserService {
             return false;
         }
         return true;
+    }
+
+    /**
+     * ユーザーリスト取得
+     * 全件取得
+     */
+    public List<User> listAll() {
+    	return this.userRepository.findAll();
     }
 
 }
