@@ -7,4 +7,6 @@ import com.example.entity.Comment;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long>{
+//	@Query("select c from COMMENTS c where c.thread_id = ?1")
+//	List<Comment> myFindByThreadId(Long thread_id);
 }

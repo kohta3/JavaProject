@@ -35,12 +35,15 @@
 					<li><a href="">ブロック</a></li>
 				</ul>
 				<p class="my-1" th:text="${comment.content}"></p>
+				<a th:href="@{/comment/delete/{id}(id=${comment.id})}">削除</a>
 			</div>
 		</div>
 		<div class="w-75 mx-auto mt-3">
-			<form action="">
+			<form th:action="@{/comment/create}" method="post" th:object="${comment}">
+				<input type="hidden" name="_csrf" value="33c7b13f-f3e2-44de-b0b1-eadb5e6ffbdb">
+				<input type="hidden" name="threadId" th:value="${thread.id}">
 				<label for="thredComment">コメント</label>
-				<input type="text" id="thredComment" class="w-50">
+				<input type="text" id="thredComment" class="w-50" th:field="*{content}" required="required">
 				<button>送信</button>
 			</form>
 		</div>

@@ -73,8 +73,8 @@ public class Comment {
 		return dateTime;
 	}
 
-	public void setgetDateTime(LocalDateTime date_time) {
-		this.dateTime = date_time;
+	public void setDateTime(LocalDateTime dateTime) {
+		this.dateTime = dateTime;
 	}
 
 	public User getUser() {
@@ -85,11 +85,28 @@ public class Comment {
 		this.user = user;
 	}
 
-	public Threads getThread() {
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getThreadId() {
+		return threadId;
+	}
+
+	public void setThreadId(Long threadId) {
+		this.threadId = threadId;
+	}
+
+	public Threads getThreads() {
 		return threads;
 	}
 
-	public void setThread(Threads thread) {
+	public void setThreads(Threads thread) {
 		this.threads = thread;
 	}
+
 }

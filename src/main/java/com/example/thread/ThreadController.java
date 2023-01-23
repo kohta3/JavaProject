@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,12 +53,14 @@ public class ThreadController {
 
 	//スレッド詳細表示
 	@GetMapping("/detail/{id}")
-	public String detailThreads(@PathVariable(name = "id") Long id,@AuthenticationPrincipal UserDetails user, Model model) {
+	public String detailThreads(@PathVariable(name = "id") Long id, Model model) {
 		Threads threads = threadService.get(id);
 		List<Comment> comments = this.commentService.findAll();
+		Comment comment = new Comment();
 		//スレッド詳細画面にタイムリーフで変数を送信
 		model.addAttribute("thread", threads);
 		model.addAttribute("comments",comments);
+		model.addAttribute("comment",comment);
 
 		return "view/thredDetail";
 	}
