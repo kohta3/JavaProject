@@ -23,7 +23,4 @@ public class NewThreadForm {
 	public void setAnimeTitle(String animeTitle) {
 		this.animeTitle = animeTitle;
 	}
-
-
-
 }

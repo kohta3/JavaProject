@@ -29,11 +29,11 @@
 						<img alt="sample" th:src="@{/images/usagi.png}">
 					</div>
 					<div class="col-md-8 p-0">
-						<a th:href="@{/thredDetail}">
+						<a th:href="@{threads/detail/{id}(id=${thread.id})}">
 							<h2 th:text="${thread.title}">taitoru</h2>
 						</a>
 						<div class="text-hidden">
-							<h3 th:text="${thread.id}"></h3>
+							<h3 th:text="${thread.comment}"></h3>
 						</div>
 						<div class="sled-info">
 							<ul class="m-0">

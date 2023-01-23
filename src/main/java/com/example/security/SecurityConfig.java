@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/users/new").permitAll()
                 .antMatchers("/users/save").permitAll()
                 .antMatchers("/threads").permitAll()
-                .antMatchers("/threads/Detail/{id}").permitAll()
+                .antMatchers("/threads/detail/{id}").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin()

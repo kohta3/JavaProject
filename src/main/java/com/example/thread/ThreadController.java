@@ -3,6 +3,7 @@ package com.example.thread;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.animeTitle.AnimeTitleService;
 import com.example.category.CategoryService;
+import com.example.comment.CommentService;
 import com.example.entity.AnimeTitle;
 import com.example.entity.Categories;
+import com.example.entity.Comment;
 import com.example.entity.Threads;
 import com.example.security.A2ChannelUserDetails;
 
@@ -25,14 +28,15 @@ import com.example.security.A2ChannelUserDetails;
 public class ThreadController {
 
 	private ThreadService threadService;
+	private CommentService commentService;
 	private CategoryService categoryService;
 	private AnimeTitleService animeTitleService;
-
-
-	public ThreadController(ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService) {
+	@Autowired
+	public ThreadController(ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService) {
 		this.threadService = threadService;
 		this.categoryService = categoryService;
 		this.animeTitleService = animeTitleService;
+		this.commentService = commentService;
 	}
 
 	//左サイドバーにカテゴリ情報を送る
@@ -63,11 +67,24 @@ public class ThreadController {
 		//スレッド一覧を取得
 		List<Threads> threads = this.threadService.listAll(order);
 
-
 		//取得したスレッド情報を画面に渡す
 		model.addAttribute("threads", threads);
 
 		return "view/toppage";
+	}
+
+	//スレッド詳細表示
+	@GetMapping("/detail/{id}")
+	public String detailThreads(@PathVariable(name = "id") Long id, Model model) {
+		Threads threads = threadService.get(id);
+		List<Comment> comments = this.commentService.findAll();
+		Comment comment = new Comment();
+		//スレッド詳細画面にタイムリーフで変数を送信
+		model.addAttribute("thread", threads);
+		model.addAttribute("comments",comments);
+		model.addAttribute("comment",comment);
+
+		return "view/thredDetail";
 	}
 
 	//トップページ

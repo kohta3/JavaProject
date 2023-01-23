@@ -22,10 +22,10 @@ public class Comment {
     @Column(name = "ID")
 	private Long id;
 
-	@Column(name = "CONTENT", length = 150)
+	@Column(name = "CONTENT")
 	private String content;
 
-	@Column(name = "IMAGE" , nullable = true)
+	@Column(name = "IMAGE")
 	private String image;
 
 	@Column(name = "DATE_TIME")
@@ -38,7 +38,11 @@ public class Comment {
 	private Long threadId;
 
 	@ManyToOne
-	@JoinColumn(name = "thread_id", insertable = false, updatable = false)
+	@JoinColumn(name = "USER_ID", insertable = false, updatable = false)
+	private User user;
+
+	@ManyToOne
+	@JoinColumn(name = "THREAD_ID", insertable = false, updatable = false)
 	private Threads threads;
 
 	public Long getId() {
@@ -73,6 +77,14 @@ public class Comment {
 		this.dateTime = dateTime;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -93,9 +105,8 @@ public class Comment {
 		return threads;
 	}
 
-	public void setThreads(Threads threads) {
-		this.threads = threads;
+	public void setThreads(Threads thread) {
+		this.threads = thread;
 	}
-
 
 }
