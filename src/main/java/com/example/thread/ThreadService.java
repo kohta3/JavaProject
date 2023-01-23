@@ -36,6 +36,28 @@ public class ThreadService {
 	}
 
 	/**
+	 * カテゴリIdでスレッド検索
+	 */
+	public List<Threads> findByCategory(Long categoryId) {
+		return this.threadRepository.findByCategoryId(categoryId);
+	}
+
+	/**
+	 * アニメタイトルIdでスレッド検索
+	 */
+	public List<Threads> findByAnimeTitle(Long animeTitleId) {
+		return this.threadRepository.findByAnimeTitleId(animeTitleId);
+	}
+
+	/**
+	 * スレッドタイトル部分一致検索
+	 *
+	 */
+	public List<Threads> findByTitle(String keyword) {
+		return this.threadRepository.findByTitle(keyword);
+	}
+
+	/**
 	 * スレッド登録処理
 	 */
 	public Threads save(Threads threads) {
@@ -55,6 +77,8 @@ public class ThreadService {
 	public Threads get(Long id) {
 		return threadRepository.findById(id).get();
 	}
+
+
 
 
 

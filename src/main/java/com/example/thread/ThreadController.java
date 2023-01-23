@@ -4,9 +4,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.animeTitle.AnimeTitleService;
 import com.example.category.CategoryService;
 import com.example.comment.CommentService;
+import com.example.entity.AnimeTitle;
 import com.example.entity.Categories;
 import com.example.entity.Comment;
 import com.example.entity.Threads;
+import com.example.security.A2ChannelUserDetails;
 
 @Controller
 @RequestMapping("/threads")
@@ -35,6 +39,23 @@ public class ThreadController {
 		this.commentService = commentService;
 	}
 
+	//左サイドバーにカテゴリ情報を送る
+	@ModelAttribute("categories")
+	public List<Categories> leftSideMenu() {
+		List<Categories> categories = this.categoryService.listAll();
+		return categories;
+	}
+
+	//右サイドバーにアニメタイトル情報を送る
+	@ModelAttribute("animeTitles")
+	public List<AnimeTitle> rightSideMenu() {
+		List<AnimeTitle> animeTitles = this.animeTitleService.listAll();
+		return animeTitles;
+	}
+
+
+
+
 	/**
 	 * スレッド一覧ページ
 	 * @param oreder
@@ -48,6 +69,7 @@ public class ThreadController {
 
 		//取得したスレッド情報を画面に渡す
 		model.addAttribute("threads", threads);
+
 		return "view/toppage";
 	}
 
@@ -77,7 +99,7 @@ public class ThreadController {
 	 * @return スレッド新規投稿ページ
 	 */
 	@GetMapping("/postThred")
-	public String showNewThred(Model model) {
+	public String showNewThred(Model model, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 		//新しいスレッド情報
 //		Threads threads = new Threads();
 		NewThreadForm threadsForm = new NewThreadForm();
@@ -87,6 +109,7 @@ public class ThreadController {
 		//画面に渡す
 		model.addAttribute("threadsForm", threadsForm);
 		model.addAttribute("categories", categories);
+		model.addAttribute("loginUser", loginUser.getUser());
 
 		return "view/threadPosting2";
 	}
@@ -99,15 +122,15 @@ public class ThreadController {
 	 *@RequestParam("animeTitle") String animeTitle
 	 */
 	@PostMapping("/postThred")
-	public String createThread(NewThreadForm threadsForm) {
+	public String createThread(NewThreadForm threadsForm, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 		//アニメIDの取得,登録
 		String animeTitle = threadsForm.getAnimeTitle();
 		Threads threads = threadsForm.getThreads();
-		Long animeId = this.animeTitleService.searchId(animeTitle, 1L);
+		Long animeId = this.animeTitleService.searchId(animeTitle, threads.getCategoryId());
 
 		//スレッドの中のアニメIDの登録
 		threads.setAnimeId(animeId);
-		threads.setUserId(1L);
+		threads.setUserId(loginUser.getUser().getId());
 		threads.setCommentSum(1L);
 		threads.setDateTime(LocalDateTime.now());
 
@@ -116,24 +139,45 @@ public class ThreadController {
 		return "redirect:/threads";
 	}
 
-	//カテゴリー一覧
-	@GetMapping("/Category")
-	public String Category(Model model) {
-		List<Categories> categories = this.categoryService.listAll();
-		model.addAttribute("categories", categories);
-		return "view/category";
-	}
-
 	//スレ一覧(カテゴリー絞り込み)
-	@GetMapping("/thredCategory")
-	public String thredCategory() {
-
+	@GetMapping("/threadsCategory/{categoryId}")
+	public String showThreadsCategory(@PathVariable Long categoryId, Model model) {
+		//カテゴリIDからカテゴリ情報を取得
+		Categories category = this.categoryService.findById(categoryId);
+		//カテゴリIDから該当のスレッド情報のリストを取得
+		List<Threads> threads = this.threadService.findByCategory(categoryId);
+		//画面に上記情報を送る
+		model.addAttribute("threads", threads);
+		model.addAttribute("category", category);
 		return "view/thredCategory";
 	}
 
-	//スレ一覧(タイトル絞り込み)
-	@GetMapping("/thredTitle")
-	public String thredTitle() {
+	//スレ一覧(アニメタイトル絞り込み)
+	@GetMapping("/threadsAnimeTitle/{animeTitleId}")
+	public String showThreadAnimeTitles(@PathVariable Long animeTitleId, Model model) {
+		//アニメタイトル情報取得
+		AnimeTitle animeTitle = this.animeTitleService.findById(animeTitleId);
+		//スレッド情報取得
+		List<Threads> threads = this.threadService.findByAnimeTitle(animeTitleId);
+		//画面に上記情報を送る
+		model.addAttribute("animeTitle", animeTitle);
+		model.addAttribute("threads", threads);
+		return "view/threadAnimeTitle";
+	}
+
+	/**
+	 * スレ一覧(タイトル絞り込み)
+	 * @param ＠requestParam keyword
+	 * @param model
+	 * @return スレッド検索結果画面
+	 */
+	@GetMapping("/threadTitle")
+	public String thredTitle(@RequestParam String keyword, Model model) {
+		//スレッド検索
+		List<Threads> threads = this.threadService.findByTitle(keyword);
+		//画面に情報を渡す
+		model.addAttribute("threads", threads);
+		model.addAttribute("keyword", keyword);
 		return "view/thredTitle";
 	}
 

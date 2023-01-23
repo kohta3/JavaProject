@@ -4,76 +4,19 @@
 <head>
 </head>
 <body>
-	<nav th:fragment="rightSidebar" class="col-md-2 m-0 p-0 rightSidebar">
+	<nav th:fragment="rightSidebar(animeTitles)" class="col-md-2 m-0 p-0 rightSidebar">
 		<div class="rightSidebarMenu">
-			<form action="" method="get" class="my-3">
+			<form th:action="@{/threads/threadTitle}" method="get" class="my-3">
 				<p><label>キーワード検索</label></p>
 				<div class="text-nowrap">
-					<input type="text">
+					<input type="text"  th:name="@{keyword}">
 					<button>検索</button>
 				</div>
 			</form>
 			<h1>タイトル</h1>
-			<a th:href="@{/thredTitle}" class="pr-2">タイトルA</a>
-			<a th:href="@{/thredTitle}" class="pr-2">タイトルB</a>
-			<a th:href="@{/thredTitle}" class="pr-2">タイトルC</a>
-			<a href="" class="pr-2">タイトルD</a>
-			<a href="" class="pr-2">タイトルE</a>
-			<a href="" class="pr-2">タイトルF</a>
-			<a href="" class="pr-2">タイトルG</a>
-			<a href="" class="pr-2">タイトルH</a>
-			<a href="" class="pr-2">タイトルI</a>
-			<a href="" class="pr-2">タイトルJ</a>
-			<a href="" class="pr-2">タイトルK</a>
-			<a href="" class="pr-2">タイトルL</a>
-			<a href="" class="pr-2">タイトルm</a>
-			<a href="" class="pr-2">タイトルn</a>
-			<a href="" class="pr-2">タイトルO</a>
-			<a href="" class="pr-2">タイトルA</a>
-			<a href="" class="pr-2">タイトルB</a>
-			<a href="" class="pr-2">タイトルC</a>
-			<a href="" class="pr-2">タイトルD</a>
-			<a href="" class="pr-2">タイトルE</a>
-			<a href="" class="pr-2">タイトルF</a>
-			<a href="" class="pr-2">タイトルG</a>
-			<a href="" class="pr-2">タイトルH</a>
-			<a href="" class="pr-2">タイトルI</a>
-			<a href="" class="pr-2">タイトルJ</a>
-			<a href="" class="pr-2">タイトルK</a>
-			<a href="" class="pr-2">タイトルL</a>
-			<a href="" class="pr-2">タイトルm</a>
-			<a href="" class="pr-2">タイトルn</a>
-			<a href="" class="pr-2">タイトルO</a>
-			<a href="" class="pr-2">タイトルA</a>
-			<a href="" class="pr-2">タイトルB</a>
-			<a href="" class="pr-2">タイトルC</a>
-			<a href="" class="pr-2">タイトルD</a>
-			<a href="" class="pr-2">タイトルE</a>
-			<a href="" class="pr-2">タイトルF</a>
-			<a href="" class="pr-2">タイトルG</a>
-			<a href="" class="pr-2">タイトルH</a>
-			<a href="" class="pr-2">タイトルI</a>
-			<a href="" class="pr-2">タイトルJ</a>
-			<a href="" class="pr-2">タイトルK</a>
-			<a href="" class="pr-2">タイトルL</a>
-			<a href="" class="pr-2">タイトルm</a>
-			<a href="" class="pr-2">タイトルn</a>
-			<a href="" class="pr-2">タイトルO</a>
-			<a href="" class="pr-2">タイトルA</a>
-			<a href="" class="pr-2">タイトルB</a>
-			<a href="" class="pr-2">タイトルC</a>
-			<a href="" class="pr-2">タイトルD</a>
-			<a href="" class="pr-2">タイトルE</a>
-			<a href="" class="pr-2">タイトルF</a>
-			<a href="" class="pr-2">タイトルG</a>
-			<a href="" class="pr-2">タイトルH</a>
-			<a href="" class="pr-2">タイトルI</a>
-			<a href="" class="pr-2">タイトルJ</a>
-			<a href="" class="pr-2">タイトルK</a>
-			<a href="" class="pr-2">タイトルL</a>
-			<a href="" class="pr-2">タイトルm</a>
-			<a href="" class="pr-2">タイトルn</a>
-			<a href="" class="pr-2">タイトルO</a>
+			<li th:each="animeTitle : ${animeTitles}">
+				<a th:href="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" th:text="${animeTitle.name}">アニメタイトル</a>
+			</li>
 		</div>
 	</nav>
 </body>

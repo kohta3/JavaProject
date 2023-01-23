@@ -12,10 +12,11 @@
 <body>
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
-		<div th:replace="~{layout/leftSidebar :: leftSidebar}"></div>
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 m-0 p-0">
 			<div class="mb-3">
 				<h1 class="m-0">トップ</h1>
+				<div th:text="${test}"></div>
 				<div class="w-100 text-right">
 					<a th:href="@{/threads/postThred}" class="newAdd">新規すれ作成＋</a>
 				</div>
@@ -49,7 +50,7 @@
 				</div>
 			</div>
 		</div>
-		<div th:replace="~{layout/rightSidebar :: rightSidebar}"></div>
+		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
 	</div>
 
 </body>

@@ -10,18 +10,28 @@
 <body>
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
-		<div th:replace="~{layout/leftSidebar :: leftSidebar}"></div>
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 category-page">
 		<h1>カテゴリー一覧</h1>
 			<div class="row category-page-child">
-				<div class="col-md-3" th:each="i : ${#numbers.sequence(1,20,1)}">
+				<div class="col-md-3" th:each="category : ${categories}">
 					<div class="category-choise">
-						<a href="">カテゴリー名</a>
+						<a th:href="@{/threads/threadsCategory/{categoryId}(categoryId=${category.id})}" th:text="${category.name}">カテゴリー名</a>
+					</div>
+				</div>
+			</div>
+
+
+		<h1>アニメタイトル一覧</h1>
+			<div class="row category-page-child">
+				<div class="col-md-3" th:each="animeTitle : ${animeTitles}">
+					<div class="category-choise">
+						<a th:href="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" th:text="${animeTitle.name}">アニメタイトル名</a>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div th:replace="~{layout/rightSidebar :: rightSidebar}"></div>
+		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
 	</div>
 
 </body>

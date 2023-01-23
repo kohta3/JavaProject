@@ -12,6 +12,10 @@ configurations {
   compileOnly {
     extendsFrom annotationProcessor
   }
+  developmentOnly
+  runtimeClasspath {
+        extendsFrom developmentOnly
+}
 }
 
 repositories {
@@ -26,6 +30,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.named('test') {
