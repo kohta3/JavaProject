@@ -12,7 +12,7 @@
 <body>
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
-		<div th:replace="~{layout/leftSidebar :: leftSidebar}"></div>
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 	<div class="col-md-8 m-0 p-0">
 		<div class="mb-3">
 			<h1 class="m-0"><a th:href="@{/categories}">カテゴリー</a> > カテゴリー名</h1>
@@ -45,8 +45,7 @@
 			</div>
 		</div>
 	</div>
-	<div th:replace="~{layout/rightSidebar :: rightSidebar}"></div>
+	<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
 	</div>
-
 </body>
 </html>

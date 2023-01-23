@@ -18,7 +18,13 @@ public class CategoryService {
 		this.categoryRepository = categoryRepository;
 	}
 
+	//カテゴリ一覧を返す
 	public List<Categories> listAll() {
 		return this.categoryRepository.findAll();
+	}
+
+	//カテゴリIDからカテゴリ情報を検索
+	public Categories findById(Long id) {
+		return this.categoryRepository.findById(id).get();
 	}
 }

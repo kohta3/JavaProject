@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}"
+>
+<head>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-トップ</title>
+<link />
+</head>
+<body>
+	<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<div class="row m-0">
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
+	<div class="col-md-8 m-0 p-0">
+		<div class="mb-3">
+			<a th:href="@{/categories}">アニメタイトル一覧</a>
+			<h1 class="m-0" th:text="${animeTitle.name}">> アニメタイトル名</h1>
+		</div>
+
+		<div class="sled">
+			<div class="row sled-innner" th:each="thread : ${threads}">
+				<div class="col-md-4 sled-image">
+					<img alt="sample" th:src="@{/images/usagi.png}">
+				</div>
+				<div class="col-md-8 p-0">
+					<a href="">
+						<h2 th:text="${thread.title}">タイトルタイトルタイトル</h2>
+					</a>
+					<div class="text-hidden">
+						<h3 th:text="${thread.comment}">内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</h3>
+					</div>
+					<div class="sled-info">
+						<ul class="m-0">
+							<li th:text="${thread.user.name}">ユーザー名</li>
+							<li th:text="${thread.commentSum}">コメント数123件</li>
+							<li th:text="${thread.dateTime}">2023/12/4</li>
+						</ul>
+						<ul class="m-0">
+							<li class="text-info" th:text="${thread.category.name}">カテゴリー名</li>
+							<li class="text-" th:text="${thread.animeTitle.name}">アニメタイトル</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
+	</div>
+
+</body>
+</html>

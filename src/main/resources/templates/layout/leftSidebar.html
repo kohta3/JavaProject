@@ -4,16 +4,15 @@
 <head>
 </head>
 <body>
-	<nav th:fragment="leftSidebar" class="col-md-2 m-0 p-0 leftSidebar" id="leftSidebar">
+	<nav th:fragment="leftSidebar(categories)" class="col-md-2 m-0 p-0 leftSidebar" id="leftSidebar">
 	<div class="leftSidebarMenu my-3">
 		<h1>カテゴリー</h1>
-		<!-- 保留項目
 		<ul>
 			<li th:each="category : ${categories}">
-				<a th:href="@{/thredCategory/${category.id}}" th:text="${category.name}">SF/ファンタジー</a>
+				<a th:href="@{/threads/threadsCategory/{categoryId}(categoryId=${category.id})}" th:text="${category.name}">SF/ファンタジー</a>
 			</li>
 		</ul>
-		-->
+		<!--
 		<ul>
 			<li><a th:href="@{/thredCategory}">SF/ファンタジー</a></li>
 			<li><a th:href="@{/thredCategory}">ロボット/メカ</a></li>
@@ -30,6 +29,7 @@
 			<li><a href="">ショート</a></li>
 			<li><a href="">ライブ/ラジオ/その他</a></li>
 		</ul>
+		-->
 	</div>
 	</nav>
 </body>
