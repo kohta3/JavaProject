@@ -5,18 +5,22 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.animeTitle.AnimeTitleService;
+import com.example.block.BlockService;
 import com.example.category.CategoryService;
 import com.example.entity.AnimeTitle;
+import com.example.entity.Block;
 import com.example.entity.Categories;
 import com.example.entity.Follow;
 import com.example.entity.User;
@@ -35,15 +39,16 @@ public class UserController {
 	private final CategoryService categoryService;
 	private final AnimeTitleService animeTitleService;
 	private final UserCategoriesService userCategoriesService;
+	private final BlockService blockService;
 
     @Autowired
-    public UserController(UserService userService,CategoryService categoryService, AnimeTitleService animeTitleService,UserCategoriesService userCategoriesService, FollowService followService) {
+    public UserController(UserService userService,CategoryService categoryService, AnimeTitleService animeTitleService,UserCategoriesService userCategoriesService, FollowService followService, BlockService blockService) {
         this.userService = userService;
         this.categoryService = categoryService;
 		this.animeTitleService = animeTitleService;
 		this.userCategoriesService = userCategoriesService;
 		this.followService = followService;
-
+		this.blockService = blockService;
     }
 
     /**
@@ -149,13 +154,26 @@ public class UserController {
      * @param ra
      * @return マイページ画面
      */
-    @GetMapping("/mypage")
-    public String MyPages(Model model, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+    @GetMapping("/mypage/{userId}")
+    public String MyPages(Model model,@PathVariable("userId") Long userId,@AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+    	try {
+    		//ユーザー情報取得
+			User user = this.userService.get(userId);
+			//フォロー情報取得
+	    	List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
+	    	//ブロック情報取得
+	    	List<Block> blockList = this.blockService.listAll(loginUser.getUser().getId());
 
-    	List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
-		model.addAttribute("follows", followList);
-    	model.addAttribute("loginUser", loginUser.getUser());
-    	return "users/mypage";
+			//画面に情報を渡す
+			model.addAttribute("follows", followList);
+			model.addAttribute("blocks", blockList);
+	    	model.addAttribute("user", user);
+	    	return "users/mypage";
+		} catch (NotFoundException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			return "";
+		}
     }
 
 }

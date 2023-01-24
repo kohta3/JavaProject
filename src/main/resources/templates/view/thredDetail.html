@@ -27,12 +27,16 @@
 						<form th:action="@{/follows/save}" method="post">
 							<input type="hidden" name="url">
 							<button type="submit" name="followId" th:value="${thread.user.id}">フォロー</button>
-
 						</form>
 					</li>
 
+					<li>
+						<form th:action="@{/blocks/save}" method="post">
+							<input type="hidden" name="url">
+							<button type="submit" name="blockId" th:value="${thread.user.id}">ブロック</button>
+						</form>
+					</li>
 
-					<li><a href="">ブロック</a></li>
 				</ul>
 				<p th:text="'1.'+ ${thread.comment}"></p>
 			</div>
@@ -49,7 +53,12 @@
 						</form>
 					</li>
 					<!--   <li><a href="">フォロー</a></li> -->
-					<li><a href="">ブロック</a></li>
+					<li>
+						<form th:action="@{/blocks/save}" method="post">
+							<input type="hidden" name="url">
+							<button type="submit" name="blockId" th:value="${comment.user.id}">ブロック</button>
+						</form>
+					</li>
 				</ul>
 				<p class="my-1" th:text="${comment.content}"></p>
 				<a th:href="@{/comment/delete/{id}(id=${comment.id})}">削除</a>
