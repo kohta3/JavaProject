@@ -77,7 +77,7 @@ public class ThreadController {
 	@GetMapping("/detail/{id}")
 	public String detailThreads(@PathVariable(name = "id") Long id, Model model) {
 		Threads threads = threadService.get(id);
-		List<Comment> comments = this.commentService.findAll();
+		List<Comment> comments = this.commentService.commentMatchingTheThread(id);
 		Comment comment = new Comment();
 		//スレッド詳細画面にタイムリーフで変数を送信
 		model.addAttribute("thread", threads);

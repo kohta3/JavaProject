@@ -1,49 +1,49 @@
 <!DOCTYPE html>
-<html
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-  th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}"
->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}">
 <head>
 <meta charset="UTF-8">
-<title>あ2ちゃんねる-スレ</title>
+<title>あ2ちゃんねる-おすすめユーザー</title>
 <link />
 </head>
 <body>
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
-		<div th:replace="~{layout/leftSidebar :: leftSidebar}"></div>
-	<div class="col-md-8 m-0 p-0">
-	<h1 class="ml-5">おすすめのユーザー</h1>
-		<div class="recommend row" th:each="i : ${#numbers.sequence(0,10,1)}">
-			<div class="col-md-2 my-auto">
-				<a href="" th:text="ユーザー名"></a>
-			</div>
-			<div class="d-flex col-md-5">
-				<label class="m-0 text-nowrap my-auto">ジャンル</label>
-				<ul>
-  					<li>item1</li>
-  					<li>item2</li>
-  					<li>item3</li>
-  					<li>item4</li>
-  					<li>item5</li>
-  					<li>item6</li>
-  					<li>item7</li>
-  					<li>item8</li>
-  					<li>item9</li>
-  					<li>item10</li>
-  					<li>item11</li>
-  					<li>item12</li>
-  					<li>item13</li>
-  					<li>item14</li>
-				</ul>
-			</div>
-			<div class="col-md-5 my-auto">
-				<input type="text" disabled="disabled" class="w-100" th:value="自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介">
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
+		<div class="col-md-8 m-0 p-0">
+			<h1 class="ml-5" th:text="${loginUser}+'さんのおすすめのユーザー'"></h1>
+			<div class="recommend row" th:each="i : ${#numbers.sequence(0,10,1)}">
+				<div class="col-md-2 my-auto">
+					<a href="" th:text="ユーザー名"></a>
+				</div>
+				<div class="d-flex col-md-5">
+					<label class="m-0 text-nowrap my-auto">ジャンル</label>
+					<ul>
+						<li>item1</li>
+						<li>item2</li>
+						<li>item3</li>
+						<li>item4</li>
+						<li>item5</li>
+						<li>item6</li>
+						<li>item7</li>
+						<li>item8</li>
+						<li>item9</li>
+						<li>item10</li>
+						<li>item11</li>
+						<li>item12</li>
+						<li>item13</li>
+						<li>item14</li>
+					</ul>
+				</div>
+				<div class="col-md-5 my-auto">
+					<input type="text" disabled="disabled" class="w-100"
+						th:value="自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介自己紹介">
+				</div>
 			</div>
 		</div>
-	</div>
-	<div th:replace="~{layout/rightSidebar :: rightSidebar}"></div>
+		<div
+			th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
 	</div>
 
 </body>
