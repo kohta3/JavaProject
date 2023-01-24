@@ -18,8 +18,10 @@ import com.example.animeTitle.AnimeTitleService;
 import com.example.category.CategoryService;
 import com.example.entity.AnimeTitle;
 import com.example.entity.Categories;
+import com.example.entity.Follow;
 import com.example.entity.User;
 import com.example.entity.UserCategories;
+import com.example.follow.FollowService;
 import com.example.security.A2ChannelUserDetails;
 import com.example.userCategories.UserCategoriesService;
 
@@ -29,17 +31,19 @@ import com.example.userCategories.UserCategoriesService;
 public class UserController {
 
     private final UserService userService;
-
+    private final FollowService followService;
 	private final CategoryService categoryService;
 	private final AnimeTitleService animeTitleService;
 	private final UserCategoriesService userCategoriesService;
 
     @Autowired
-    public UserController(UserService userService,CategoryService categoryService, AnimeTitleService animeTitleService,UserCategoriesService userCategoriesService) {
+    public UserController(UserService userService,CategoryService categoryService, AnimeTitleService animeTitleService,UserCategoriesService userCategoriesService, FollowService followService) {
         this.userService = userService;
         this.categoryService = categoryService;
 		this.animeTitleService = animeTitleService;
 		this.userCategoriesService = userCategoriesService;
+		this.followService = followService;
+
     }
 
     /**
@@ -131,6 +135,8 @@ public class UserController {
     @GetMapping("/mypage")
     public String MyPages(Model model, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 
+    	List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
+		model.addAttribute("follows", followList);
     	model.addAttribute("loginUser", loginUser.getUser());
     	return "users/mypage";
     }
@@ -145,7 +151,7 @@ public class UserController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable(name = "id") Long id, Model model, RedirectAttributes ra) {
         try {
-            // ユーザーIDに紐づくユーザー情報取得
+            //ユーザーIDに紐づくユーザー情報取得
             User user = userService.get(id);
             model.addAttribute("user", user);
             return "users/user_detail";

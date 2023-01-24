@@ -13,20 +13,25 @@
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
-<<<<<<< HEAD
 		<div class="col-md-8 m-0 p-0" th:object="${thread}">
 		<h1><a th:href="@{/threads}">戻る</a>→<span th:text="${thread.title}"></span><span th:text="${userName}"></span></h1>
 
-=======
-			<div class="col-md-8 m-0 p-0" th:object="${thread}">
-		<h1><a th:href="@{/threads}">戻る</a><span th:text="${thread.title}"></span><span th:text="${userName}"></span></h1>
->>>>>>> develop
+
 		<div class="detail">
 			<div class="w-100">
 				<ul class="">
 					<li th:text="${#temporals.format(thread.dateTime, 'yyyy/MM/dd HH:mm:ss')}">日付</li>
 					<li th:text="${thread.user.name}">ユーザー名</li>
-					<li><a href="">フォロー</a></li>
+
+					<li>
+						<form th:action="@{/follows/save}" method="post">
+							<input type="hidden" name="url">
+							<button type="submit" name="followId" th:value="${thread.user.id}">フォロー</button>
+
+						</form>
+					</li>
+
+
 					<li><a href="">ブロック</a></li>
 				</ul>
 				<p th:text="'1.'+ ${thread.comment}"></p>
@@ -37,7 +42,13 @@
 				<ul class="mr-1">
 					<li th:text="${#temporals.format(comment.dateTime, 'yyyy/MM/dd HH:mm:ss')}"></li>
 					<li th:text="${comment.user.name}">ユーザー名</li>
-					<li><a href="">フォロー</a></li>
+					<li>
+						<form th:action="@{/follows/save}" method="post">
+							<input type="hidden" name="url" >
+							<button type="submit" name="followId" th:value="${comment.user.id}">フォロー</button>
+						</form>
+					</li>
+					<!--   <li><a href="">フォロー</a></li> -->
 					<li><a href="">ブロック</a></li>
 				</ul>
 				<p class="my-1" th:text="${comment.content}"></p>
@@ -56,7 +67,16 @@
 	</div>
 	<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
 	</div>
+	<script>
+		var url = document.getElementsByName('url');
+		var a = location.pathname;
+		console.log(url);
+		url.forEach(function(e) {
+			e.setAttribute("value", a);
+		})
+	</script>
 
 
 </body>
+
 </html>

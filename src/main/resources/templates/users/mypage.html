@@ -59,8 +59,8 @@
 				<div class="row mypage-thredCell">
 					<div class="col-md-6">
 						<h3>フォロー</h3>
-						<ul class="w-100 list-unstyled">
-							<li th:each="i : ${#numbers.sequence(0,5,1)}">ユーザー</li>
+						<ul class="w-100 list-unstyled" th:each="follow : ${follows}">
+							<li th:text="${follow.follower.name}">ユーザー</li>
 						</ul>
 					</div>
 
