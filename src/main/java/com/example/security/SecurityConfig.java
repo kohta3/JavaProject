@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/users/new").permitAll()//ユーザー新規作成画面
                 .antMatchers("/users/save").permitAll()//ユーザー作成処理
                 .antMatchers("/threads").permitAll()//スレッド一覧画面
+                .antMatchers("/threads/detail/{id}").permitAll()//スレッド詳細画面
                 .antMatchers("/categories").permitAll()//カテゴリー一覧画面
                 .antMatchers("/threads/threadsCategory/{id}").permitAll()//カテゴリー一覧>カテゴリー>スレッド
 

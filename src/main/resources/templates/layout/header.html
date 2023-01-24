@@ -12,20 +12,15 @@
 					<li><a th:href="@{/threads}">トップ</a></li>
 					<li><a th:href="@{/categories}">カテゴリー</a></li>
 					<li><a th:href="@{/users/recommend}">おすすめのユーザー</a></li>
-					<div sec:authorize="isAuthenticated()">
-						<li><a th:href="@{/users/mypage/{userId}(userId=${#authentication.principal.user.id})}">マイページへ</a></li>
-					</div>
-
-
-
+					<li>問い合わせ</li>
 				</ul>
-				<div class="col-md-6 account-form">
+				<div class="col-md-6 account-form" sec:authorize="isAnonymous()">
 					<a th:href="@{/users/new}">新規登録</a>
 					or
 					<a th:href="@{/login}">ログイン</a>
 				</div>
-				<div class="col-md-6 logined-form">
-					<a href="">マイページ</a>
+				<div class="col-md-6 account-form" sec:authorize="isAuthenticated()">
+					<a th:href="@{/users/mypage/{userId}(userId=${#authentication.principal.user.id})}">マイページへ</a>
 				</div>
 			</div>
 		</div>
