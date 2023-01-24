@@ -13,9 +13,10 @@
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 m-0 p-0">
 			<h1 class="ml-5" th:text="${loginUser}+'さんのおすすめのユーザー'"></h1>
-			<div class="recommend row" th:each="recommendUserInfo:${recommendUser}">
+			<div class="recommend row" th:each="recommendUserInfo:${recommendUser}" th:if="${recommendUserInfo.id} != ${#authentication.principal.user.id}">
+
 				<div class="col-md-2 my-auto">
-					<a href="" th:text="${recommendUserInfo.name}"></a>
+					<a th:href="@{/users/mypage/{userId}(userId=${recommendUserInfo.id})}" th:text="${recommendUserInfo.name}"></a>
 				</div>
 				<div class="d-flex col-md-5">
 					<label class="m-0 text-nowrap my-auto">ジャンル</label>
@@ -27,11 +28,28 @@
 					<input type="text" disabled="disabled" class="w-100"
 						th:value="${recommendUserInfo.introduction}">
 				</div>
+				<form th:action="@{/follows/save}" method="post">
+					<input type="hidden" name="url" >
+					<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー</button>
+				</form>
+				<form th:action="@{/blocks/save}" method="post">
+					<input type="hidden" name="url">
+					<button type="submit" name="blockId" th:value="${recommendUserInfo.id}">ブロック</button>
+				</form>
+
 			</div>
 		</div>
 		<div
 			th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
 	</div>
+	<script>
+		var url = document.getElementsByName('url');
+		var a = location.pathname;
+		console.log(url);
+		url.forEach(function(e) {
+			e.setAttribute("value", a);
+		})
+	</script>
 
 </body>
 </html>

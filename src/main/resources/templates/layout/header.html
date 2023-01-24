@@ -20,7 +20,7 @@
 					<a th:href="@{/login}">ログイン</a>
 				</div>
 				<div class="col-md-6 account-form" sec:authorize="isAuthenticated()">
-					<a th:href="@{/users/mypage}">マイページへ</a>
+					<a th:href="@{/users/mypage/{userId}(userId=${#authentication.principal.user.id})}">マイページへ</a>
 				</div>
 			</div>
 		</div>
