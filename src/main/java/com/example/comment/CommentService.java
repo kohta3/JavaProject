@@ -23,10 +23,10 @@ public class CommentService {
 	}
 
 	//スレッド内表示メソッド
-//	public List<Comment> commentMatchingTheThread(Long id) {
-//		List<Comment> matchingComment = this.commentRepository.myFindByThreadId(id);
-//		return matchingComment;
-//	}
+	public List<Comment> commentMatchingTheThread(Long threadId) {
+		List<Comment> matchingComment = this.commentRepository.findBythreadId(threadId);
+		return matchingComment;
+	}
 
 	public Comment save(Comment comment) {
 		return commentRepository.save(comment);

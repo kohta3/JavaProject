@@ -13,8 +13,14 @@
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
+<<<<<<< HEAD
+		<div class="col-md-8 m-0 p-0" th:object="${thread}">
+		<h1><a th:href="@{/threads}">戻る</a>→<span th:text="${thread.title}"></span><span th:text="${userName}"></span></h1>
+
+=======
 			<div class="col-md-8 m-0 p-0" th:object="${thread}">
 		<h1><a th:href="@{/threads}">戻る</a><span th:text="${thread.title}"></span><span th:text="${userName}"></span></h1>
+>>>>>>> develop
 		<div class="detail">
 			<div class="w-100">
 				<ul class="">

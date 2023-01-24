@@ -8,27 +8,38 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.animeTitle.AnimeTitleService;
 import com.example.category.CategoryService;
+import com.example.entity.AnimeTitle;
 import com.example.entity.Categories;
 import com.example.entity.User;
+import com.example.entity.UserCategories;
 import com.example.security.A2ChannelUserDetails;
+import com.example.userCategories.UserCategoriesService;
+
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
-    private final CategoryService categoryService;
+
+	private final CategoryService categoryService;
+	private final AnimeTitleService animeTitleService;
+	private final UserCategoriesService userCategoriesService;
 
     @Autowired
-    public UserController(UserService userService, CategoryService categoryService) {
+    public UserController(UserService userService,CategoryService categoryService, AnimeTitleService animeTitleService,UserCategoriesService userCategoriesService) {
         this.userService = userService;
         this.categoryService = categoryService;
+		this.animeTitleService = animeTitleService;
+		this.userCategoriesService = userCategoriesService;
     }
 
     /**
@@ -82,6 +93,34 @@ public class UserController {
         return "redirect:/threads";
     }
 
+    @GetMapping("/recommend")
+    private String RecommendUser(Model model,@AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+
+    	List<UserCategories> userCategories = this.userCategoriesService.findByUserId(loginUser.getUser().getId());
+    	List<UserCategories> userList;
+    	for (UserCategories userCategory : userCategories) {
+    		System.out.println(userCategory);
+//			userList = this.userCategoriesService.findByCategoryId(Long.parseLong(userCategory));
+		}
+
+    	model.addAttribute("loginUser",loginUser.getUser().getName());
+		model.addAttribute("userCategories",userCategories);
+
+    	return "users/recommend";
+	}
+
+	@ModelAttribute("categories")
+	public List<Categories> leftSideMenu() {
+		List<Categories> categories = this.categoryService.listAll();
+		return categories;
+	}
+
+	//右サイドバーにアニメタイトル情報を送る
+	@ModelAttribute("animeTitles")
+	public List<AnimeTitle> rightSideMenu() {
+		List<AnimeTitle> animeTitles = this.animeTitleService.listAll();
+		return animeTitles;
+	}
     /**
      * マイページ画面
      *
@@ -114,40 +153,6 @@ public class UserController {
             ra.addFlashAttribute("error_message", "対象のデータが見つかりませんでした");
             return "redirect:/users/mypage";
         }
-    }
-
-    /**
-     * ユーザー情報登録処理
-     *
-     * @param user ユーザー情報
-     * @param ra
-     * @return マイページ画面
-     */
-    @PostMapping("/save2")
-    public String save2User(User user, RedirectAttributes ra) {
-    	//入力された文字数のチェック
-        if (!userService.isValid(user.getEmail(), user.getName())) {
-            ra.addFlashAttribute("error_message", "メールアドレスまたはユーザー名の文字数がオーバーしています");
-            return "redirect:/users/user_edit";
-        }
-
-        //ユーザー情報のユーザー名重複チェック
-        if (!userService.UserNamecheckUnique(user)) {
-            ra.addFlashAttribute("error_message", "既に使用されているユーザー名です。");
-            return "redirect:/users/user_edit";
-        }
-
-        //ユーザー情報のメールアドレス重複チェック
-        if (!userService.UserEmailcheckUnique(user)) {
-            ra.addFlashAttribute("error_message", "既に使用されているメールアドレスです");
-            return "redirect:/users/user_edit";
-        }
-
-        //ユーザー情報の登録
-        userService.save(user);
-        // 登録成功のメッセージを格納
-        ra.addFlashAttribute("success_message", "ユーザー情報の更新に成功しました");
-        return "redirect:/users/mypage";
     }
 
 }
