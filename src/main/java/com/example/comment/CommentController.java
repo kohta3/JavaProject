@@ -30,6 +30,8 @@ public class CommentController {
 	private final CategoryService categoryService;
 	private final AnimeTitleService animeTitleService;
 
+
+
 	@Autowired
 	public CommentController(CommentService commentService,CategoryService categoryService, AnimeTitleService animeTitleService) {
 		this.commentService = commentService;

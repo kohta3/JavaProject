@@ -18,7 +18,9 @@
 				<h1>新規スレ</h1>
 				<span th:text="${loginUser.name}"></span>
 			</div>
+
 			<div class="thredPosting">
+
 				<form th:action="@{/threads/postThred}" method="post" th:object="${threadsForm}">
 					<input type="hidden" th:value="${loginUser.id}">
 					<div class="w-75 mx-auto my-3">
