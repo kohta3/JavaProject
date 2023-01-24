@@ -24,10 +24,12 @@
 
 					<li>
 						<form th:action="@{/follows/save}" method="post">
-							<input type="hidden" name="threadId" th:value="${thread.id}">
+							<input type="hidden" name="url">
 							<button type="submit" name="followId" th:value="${thread.user.id}">フォロー</button>
+
 						</form>
 					</li>
+
 
 					<li><a href="">ブロック</a></li>
 				</ul>
@@ -41,7 +43,7 @@
 					<li th:text="${comment.user.name}">ユーザー名</li>
 					<li>
 						<form th:action="@{/follows/save}" method="post">
-							<input type="hidden" name="threadId" th:value="${thread.id}">
+							<input type="hidden" name="url" >
 							<button type="submit" name="followId" th:value="${comment.user.id}">フォロー</button>
 						</form>
 					</li>
@@ -64,7 +66,16 @@
 	</div>
 	<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
 	</div>
+	<script>
+		var url = document.getElementsByName('url');
+		var a = location.pathname;
+		console.log(url);
+		url.forEach(function(e) {
+			e.setAttribute("value", a);
+		})
+	</script>
 
 
 </body>
+
 </html>
