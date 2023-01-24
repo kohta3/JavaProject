@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -75,8 +76,12 @@ public class UserController {
      * @param ra
      * @return スレッド一覧画面
      */
+    @Async
     @PostMapping("/save")
     public String saveUser(User user, RedirectAttributes ra) {
+
+    	UserCategories userCategories = new UserCategories();
+
     	//入力された文字数のチェック
         if (!userService.isValid(user.getEmail(), user.getName())) {
             ra.addFlashAttribute("error_message", "メールアドレスまたはユーザー名の文字数がオーバーしています");
@@ -96,7 +101,17 @@ public class UserController {
         }
 
         //ユーザー情報の登録
-        userService.save(user);
+        User userReturn=userService.save(user);
+
+       //category情報の保存
+        for (UserCategories element : user.getUserCategories()) {
+        	System.out.println("処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始");
+            userCategories.setCategoryId(element.getId());
+            userCategories.setUserId(userReturn.getId());
+            userCategoriesService.save(userCategories);
+            System.out.println("処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了");
+		}
+
         // 登録成功のメッセージを格納
         ra.addFlashAttribute("success_message", "ユーザーの新規登録に成功しました");
         return "redirect:/threads";

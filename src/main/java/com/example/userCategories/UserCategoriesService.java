@@ -26,4 +26,8 @@ public class UserCategoriesService {
    	 List<UserCategories> userCategories= userCategoriesRepository.findByCategoryId(id);
 		return userCategories;
    }
+
+    public UserCategories save(UserCategories userCategories) {
+    	return userCategoriesRepository.save(userCategories);
+    }
 }
