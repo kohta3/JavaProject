@@ -1,4 +1,12 @@
 /* ------------- 共通 ------------- */
+@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap');
+
+
+body{
+font-family: 'Mochiy Pop P One', sans-serif;
+	font-size: 15px;
+}
+
 h1 {
 	font-size: x-large;
 }
@@ -11,6 +19,10 @@ h3 {
 	font-size: medium;
 }
 
+.listStyleCss{
+	list-style: none;
+	margin: 5px 0;
+}
 .btn-design{
 	padding: 5px;
 	margin:5px 0;
@@ -83,7 +95,7 @@ h3 {
 	}
 	.leftSidebarMenu li {
 		list-style: none;
-		margin: 5px 0;
+		margin: 10px 0;
 		font-size: medium;
 	}
 	.leftSidebarMenu li:hover {
@@ -156,7 +168,7 @@ h3 {
 		height: 500px;
 		border-radius: 15px;
 		border: 1px solid grey;
-		margin: 0 0 0 5px;
+		margin: 0 0 10px 5px;
 		transition: .5s cubic-bezier(0.45, 0, 0.55, 1);
 	}
 }
@@ -166,7 +178,7 @@ h3 {
 		height: 250px;
 		border-radius: 15px;
 		border: 1px solid grey;
-		margin: 0 0 0 5px;
+		margin: 0 0 10px 5px;
 		transition: .5s cubic-bezier(0.45, 0, 0.55, 1);
 	}
 }
