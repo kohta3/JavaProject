@@ -91,11 +91,7 @@ public class UserController {
     private String RecommendUser(Model model,@AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 
     	List<UserCategories> userCategories = this.userCategoriesService.findByUserId(loginUser.getUser().getId());
-    	List<UserCategories> userList;
-    	for (UserCategories userCategory : userCategories) {
-    		System.out.println(userCategory);
-//			userList = this.userCategoriesService.findByCategoryId(Long.parseLong(userCategory));
-		}
+
 
     	model.addAttribute("loginUser",loginUser.getUser().getName());
 		model.addAttribute("userCategories",userCategories);
