@@ -12,7 +12,7 @@
 <body>
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
-		<div th:replace="~{layout/leftSidebar :: leftSidebar}"></div>
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 m-0 p-0">
 			<div class="mb-3">
 				<h1 class="m-0">トップ</h1>
@@ -22,13 +22,12 @@
 			</div>
 
 			<div class="sled">
-				<div class="row sled-innner" th:each="thread : ${threads}">
-					<div th:text="${thread.title}"></div>
-					<div th:text="${thread.id}"></div>
-					<div th:each="comment : ${thread.commentList}">
-						<div th:text="${comment.content}"></div>
-					</div>
-					<div th:text="${thread.commentSum}"></div>
+				<div class="row sled-innner" th:each="user : ${users}">
+					<div th:text="${user.name}"></div>
+					<form th:action="@{/follows/save}" method="post" >
+						<button type="submit"  name="followId" th:value="${user.id}">フォロー</button>
+					</form>
+
 
 
 
@@ -36,7 +35,7 @@
 			</div>
 		</div>
 
-		<div th:replace="~{layout/rightSidebar :: rightSidebar}"></div>
+		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
 	</div>
 </body>
 </html>
