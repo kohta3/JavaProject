@@ -48,28 +48,53 @@ public class UserService {
      * @return 保存したユーザー情報
      */
     public User save(User user) {
-//        //ユーザー情報を更新する場合
-//        if (user.getId() != null) {
-//            //更新対象のユーザー情報を取得
-//            User existingUser = userRepository.findById(user.getId()).get();
-//            //保存したいユーザー情報のパスワードが空の場合
-//            if (user.getPassword().isEmpty()) {
-//                //保存したいユーザー情報に以前のパスワードを格納
-//                user.setPassword(existingUser.getPassword());
-//            } else {
-//                //パスワードのハッシュ化
-//                String encodedPassword = encodePassword(user.getPassword());
-//                //ハッシュ化したパスワードを格納
-//                user.setPassword(encodedPassword);
-//            }
-//        }
+        //ユーザー情報を更新する場合
+        if (user.getId() != null) {
+            //更新対象のユーザー情報を取得
+            User existingUser = userRepository.findById(user.getId()).get();
+            //保存したいユーザー情報のパスワードが空の場合
+            if (user.getPassword().isEmpty()) {
+                //保存したいユーザー情報に以前のパスワードを格納
+                user.setPassword(existingUser.getPassword());
+            } else {
+                //パスワードのハッシュ化
+                String encodedPassword = encodePassword(user.getPassword());
+                //ハッシュ化したパスワードを格納
+                user.setPassword(encodedPassword);
+            }
+        }
         //ユーザー情報を新規登録する場合
-//        else {
-            // パスワードのハッシュ化
+        else {
+            //パスワードのハッシュ化
             String encodedPassword = encodePassword(user.getPassword());
-            // ハッシュ化したパスワードを格納
+            //ハッシュ化したパスワードを格納
             user.setPassword(encodedPassword);
-//        }
+        }
+        return userRepository.save(user);
+    }
+
+    /**
+     * ユーザー情報登録・更新処理
+     *
+     * @param user 保存したいユーザー情報
+     * @return 保存したユーザー情報
+     */
+    public User save2(User user) {
+        //ユーザー情報を更新する場合
+        if (user.getId() != null) {
+            //更新対象のユーザー情報を取得
+            User existingUser = userRepository.findById(user.getId()).get();
+            //保存したいユーザー情報のパスワードが空の場合
+            if (user.getPassword().isEmpty()) {
+                //保存したいユーザー情報に以前のパスワードを格納
+                user.setPassword(existingUser.getPassword());
+            } else {
+                //パスワードのハッシュ化
+                String encodedPassword = encodePassword(user.getPassword());
+                //ハッシュ化したパスワードを格納
+                user.setPassword(encodedPassword);
+            }
+        }
         return userRepository.save(user);
     }
 

@@ -74,7 +74,4 @@ public class UserCategories {
 		this.categoryId = categoryId;
 	}
 
-
-
-
 }
