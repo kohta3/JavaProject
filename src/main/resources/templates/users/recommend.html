@@ -13,6 +13,9 @@
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 m-0 p-0">
 			<h1 class="ml-5" th:text="${loginUser}+'さんのおすすめのユーザー'"></h1>
+			<ul th:each="userCategory:${userCategories}">
+				<li th:text="${userCategory.category.id}"></li>
+			</ul>
 			<div class="recommend row" th:each="i : ${#numbers.sequence(0,10,1)}">
 				<div class="col-md-2 my-auto">
 					<a href="" th:text="ユーザー名"></a>
