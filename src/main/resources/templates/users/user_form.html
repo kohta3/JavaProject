@@ -48,8 +48,8 @@
                 <div>
                     <th:block th:each="category : ${categories}">
                        <div>
-                           <input class="m-2" type="checkbox" th:field="usercategories" th:value="${category.id}">
-                      	   <label th:text="usercategories"></label>
+                           <input class="m-2" type="checkbox" name="usercategories" th:value="${category.id}">
+                      	   <label th:text="${category.name}"></label>
                        </div>
                     </th:block>
                 </div>
