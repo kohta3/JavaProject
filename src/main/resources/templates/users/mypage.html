@@ -26,7 +26,7 @@
 						<p class="my-2 text-center"><label class="bg-light">メールアドレス</label> <span class="bg-info w-50" th:text="${loginUser.email}"></span></p>
 					</div>
 					<div class="col-md-1 h-100 my-auto">
-						<a class="update-btn" id="update">更新</a>
+							<a th:href="@{/users/detail/{id}}" class="update-btn" id="update">変更</a>
 					</div>
 					<div class="col-md-11 p-0">
 						<p class="my-2 text-center"><label class="bg-light">パスワード</label> <span class="bg-info w-50">xxxxxxxxxxxxx</span></p>
@@ -71,38 +71,6 @@
 						</ul>
 					</div>
 				</div>
-
-				<div class="update-form" id="userUpdate">
-					<form action="" method="get">
-						<div class="m-5">
-							<h1>ユーザー情報更新</h1>
-							<div class="text-nowrap my-1">
-								<label for="update-form-name">ユーザー名</label>
-								<input type="text" id="update-form-name" value="ユーザー名">
-							</div>
-
-							<div class="text-nowrap my-1">
-								<label for="update-form-email">メールアドレス</label>
-								<input type="email" id="update-form-email" value="xxxx@gmail.com">
-							</div>
-
-							<div class="text-nowrap my-1">
-								<label for="update-form-mind">自己紹介</label>
-								<textarea id="update-form-mind"></textarea>
-							</div>
-<br>
-							<h3>興味のあるジャンル</h3>
-							<span style="white-space: nowrap;" th:each="i : ${#numbers.sequence(0,5,1)}"><input type="checkbox" id="SF/ファンタジー"><label for="SF/ファンタジー">SF/ファンタジー</label></span>
-
-
-							<div class="text-center">
-								<button>保存</button>
-							</div>
-
-						</div>
-					</form>
-			</div>
-
 			</div>
 		</div>
 		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
