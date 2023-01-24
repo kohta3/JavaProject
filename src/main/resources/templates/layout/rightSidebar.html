@@ -9,12 +9,12 @@
 			<form th:action="@{/threads/threadTitle}" method="get" class="my-3">
 				<p><label>キーワード検索</label></p>
 				<div class="text-nowrap">
-					<input type="text"  th:name="@{keyword}">
+					<input type="text"  th:name="@{keyword}" class="w-75">
 					<button>検索</button>
 				</div>
 			</form>
 			<h1>タイトル</h1>
-			<li th:each="animeTitle : ${animeTitles}">
+			<li th:each="animeTitle : ${animeTitles}" class="listStyleCss">
 				<a th:href="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" th:text="${animeTitle.name}">アニメタイトル</a>
 			</li>
 		</div>
