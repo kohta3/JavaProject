@@ -32,8 +32,8 @@
 
 				<div class="mypage-genre">
 					<h3>興味のあるジャンル</h3>
-					<ul class="w-100 mypage-genre">
-						<li th:each="i : ${#numbers.sequence(0,3,1)}">ジャンル</li>
+					<ul class="w-100 mypage-genre" th:each="userCategory : ${user.userCategories}">
+						<li th:text="${userCategory.category.name}">ジャンル</li>
 					</ul>
 				</div>
 
