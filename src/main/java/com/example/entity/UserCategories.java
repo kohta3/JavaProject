@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -23,6 +25,30 @@ public class UserCategories {
 
 	@Column(name="CATEGORY_ID")
 	private Long categoryId;
+
+	@ManyToOne
+	@JoinColumn(name = "USER_ID", insertable = false, updatable = false)
+	private User user;
+
+	@ManyToOne
+	@JoinColumn(name = "CATEGORY_ID", insertable = false, updatable = false)
+	private Categories category;
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Categories getCategory() {
+		return category;
+	}
+
+	public void setCategory(Categories category) {
+		this.category = category;
+	}
 
 	public Long getId() {
 		return id;

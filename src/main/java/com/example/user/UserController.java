@@ -1,5 +1,7 @@
 package com.example.user;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,14 +103,34 @@ public class UserController {
     private String RecommendUser(Model model,@AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 
     	List<UserCategories> userCategories = this.userCategoriesService.findByUserId(loginUser.getUser().getId());
-    	List<UserCategories> userList;
+    	List<UserCategories> usersInfo = new ArrayList<UserCategories>();
+    	List<Long> usersId = new ArrayList<Long>();
+
+    	//ログインユーザーのもつお気に入りカテゴリーを取得
     	for (UserCategories userCategory : userCategories) {
-    		System.out.println(userCategory);
-//			userList = this.userCategoriesService.findByCategoryId(Long.parseLong(userCategory));
+    		usersInfo.addAll(this.userCategoriesService.findByCategoryId(userCategory.getCategoryId())) ;
 		}
 
+    	//共通のお気に入りジャンルを持つユーザーを取得
+    	for (UserCategories userInfo : usersInfo) {
+    		usersId.add(userInfo.getUserId());
+		}
+
+    	//重複するおすすめユーザーを削除
+    	List<Long> uniqueUsersId = new ArrayList<Long>(new HashSet<>(usersId));
+
+    	System.out.println(uniqueUsersId);
+
+    	List<User> recommendUsers = new ArrayList<User>();
+    	//htmlに渡すおすすめユーザーの取得
+	    for (Long userNum : uniqueUsersId) {
+	    	recommendUsers.add(this.userService.getByid(userNum));
+		}
+
+	    System.out.println(recommendUsers.size());
+
     	model.addAttribute("loginUser",loginUser.getUser().getName());
-		model.addAttribute("userCategories",userCategories);
+		model.addAttribute("recommendUser",recommendUsers);
 
     	return "users/recommend";
 	}

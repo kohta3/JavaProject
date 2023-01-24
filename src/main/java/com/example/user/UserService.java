@@ -194,4 +194,8 @@ public class UserService {
     	return this.userRepository.findAll();
     }
 
+    public User getByid(Long id) {
+    	return userRepository.getByid(id);
+    }
+
 }

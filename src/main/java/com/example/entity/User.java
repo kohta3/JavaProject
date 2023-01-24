@@ -44,6 +44,17 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Threads> threadList;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<UserCategories> userCategories;
+
+
+	public List<UserCategories> getUserCategories() {
+		return userCategories;
+	}
+
+	public void setUserCategories(List<UserCategories> userCategories) {
+		this.userCategories = userCategories;
+	}
 
 
 	public List<Threads> getThreadList() {
