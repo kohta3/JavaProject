@@ -44,4 +44,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE CONCAT(u.id, ' ', u.email, ' ', u.name, ' ') LIKE %?1%")
     public List<User> search(String keyword);
 
+    public User getByid(Long id);
+
 }
