@@ -54,10 +54,10 @@ public class FollowController {
 	//----------------共通部分に送る情報ここまで
 
 	/**
-	 * フォローユーザー登録
+	 * フォローユーザー登録(実際につかうメソッドはここだけ）
 	 * @param loginuser
 	 * @param followId
-	 * @return フォローする画面
+	 * @return フォロー前の画面
 	 */
 	@PostMapping("/save")
 	public String createFollow(@RequestParam("followId") Long followId ,@RequestParam("url") String url, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
