@@ -13,6 +13,7 @@
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 m-0 p-0">
 			<h1>マイページ</h1>
+			<div th:replace="fragments :: message"></div>
 			<div class="m-3">
 				<form th:action="@{/logout}" method="post">
 					<div class='text-center'>
@@ -26,7 +27,7 @@
 						<p class="my-2 text-center"><label class="bg-light">メールアドレス</label> <span class="bg-info w-50" th:text="${loginUser.email}"></span></p>
 					</div>
 					<div class="col-md-1 h-100 my-auto">
-							<a th:href="@{/users/detail/{id}}" class="update-btn" id="update">変更</a>
+							<a class="btn btn-success btn-sm m-1" th:href="@{/users/edit/{id}(id=${loginUser.id})}">編集</a>
 					</div>
 					<div class="col-md-11 p-0">
 						<p class="my-2 text-center"><label class="bg-light">パスワード</label> <span class="bg-info w-50">xxxxxxxxxxxxx</span></p>

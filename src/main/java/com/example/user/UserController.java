@@ -47,7 +47,7 @@ public class UserController {
     }
 
     /**
-     * ユーザー新規登録画面表示
+     * 新規登録画面表示
      *
      * @param model
      * @return ユーザー新規登録画面
@@ -64,7 +64,7 @@ public class UserController {
     }
 
     /**
-     * ユーザー新規登録処理
+     * 新規登録処理
      *
      * @param user ユーザー情報
      * @param ra
@@ -125,6 +125,7 @@ public class UserController {
 		List<AnimeTitle> animeTitles = this.animeTitleService.listAll();
 		return animeTitles;
 	}
+
     /**
      * マイページ画面
      *
@@ -149,16 +150,53 @@ public class UserController {
      * @return 編集画面
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable(name = "id") Long id, Model model, RedirectAttributes ra) {
+    public String edit(@PathVariable(name = "id") Long id, Model model, RedirectAttributes ra, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
         try {
             //ユーザーIDに紐づくユーザー情報取得
             User user = userService.get(id);
+            List<Categories> categories = this.categoryService.listAll();
+          	List<UserCategories> userCategories = this.userCategoriesService.findByUserId(loginUser.getUser().getId());
             model.addAttribute("user", user);
-            return "users/user_detail";
+            model.addAttribute("categories", categories);
+            return "users/user_edit";
         } catch (NotFoundException e) {
             ra.addFlashAttribute("error_message", "対象のデータが見つかりませんでした");
             return "redirect:/users/mypage";
         }
+    }
+
+    /**
+     * 編集内容登録処理
+     *
+     * @param user ユーザー情報
+     * @param ra
+     * @return スレッド一覧画面
+     */
+    @PostMapping("/save2")
+    public String save2User(User user, RedirectAttributes ra) {
+    	//入力された文字数のチェック
+        if (!userService.isValid(user.getEmail(), user.getName())) {
+            ra.addFlashAttribute("error_message", "メールアドレスまたはユーザー名の文字数がオーバーしています");
+            return "redirect:/users/user_edit";
+        }
+
+        //ユーザー情報のユーザー名重複チェック
+        if (!userService.UserNamecheckUnique(user)) {
+            ra.addFlashAttribute("error_message", "変更しようとしたユーザー名は既に使用されています。");
+            return "redirect:/users/user_edit";
+        }
+
+        //ユーザー情報のメールアドレス重複チェック
+        if (!userService.UserEmailcheckUnique(user)) {
+            ra.addFlashAttribute("error_message", "変更しようとしたメールアドレスは既に使用されています。");
+            return "redirect:/users/user_edit";
+        }
+
+        //ユーザー情報の登録
+        userService.save2(user);
+        // 登録成功のメッセージを格納
+        ra.addFlashAttribute("success_message", "ユーザー情報の編集に成功しました");
+        return "redirect:/users/mypage";
     }
 
 }
