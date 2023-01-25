@@ -16,12 +16,12 @@
 			<div class="row category-page-child">
 				<div class="col-md-3" th:each="category : ${categories}">
 					<div class="category-choise">
-						<a th:href="@{/threads/threadsCategory/{categoryId}(categoryId=${category.id})}" th:text="${category.name}">カテゴリー名</a>
+						<a th:href="@{/threads/threadsCategory/{categoryId}(categoryId=${category.id})}" th:text="${category.name}"></a>
 					</div>
 				</div>
 			</div>
 			<div sec:authorize="isAnonymous()">
-				認証しています。
+
 			</div>
 
 
@@ -30,7 +30,7 @@
 			<div class="row category-page-child">
 				<div class="col-md-3" th:each="animeTitle : ${animeTitles}">
 					<div class="category-choise">
-						<a th:href="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" th:text="${animeTitle.name}">アニメタイトル名</a>
+						<a th:href="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" th:text="${animeTitle.name}"></a>
 					</div>
 				</div>
 			</div>
