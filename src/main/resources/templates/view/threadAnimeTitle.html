@@ -37,7 +37,7 @@
 					<img alt="sample" th:src="@{/images/usagi.png}">
 				</div>
 				<div class="col-md-8 p-0">
-					<a href="">
+					<a th:href="@{~/threads/detail/{id}(id=${thread.id})}">
 						<h2 th:text="${thread.title}"></h2>
 					</a>
 					<div class="text-hidden">
