@@ -20,14 +20,17 @@
 		</div>
 
 		<div class="sled">
-
-			<form th:action="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" method="get">
-				<select name="order" class="w-100" >
-					<option value="最新">最新順</option>
-					<option value="コメント数" >コメント数</option>
-				</select>
-				<input type="submit" value="並べ替え">
-			</form>
+			<div class="w-100 my-2">
+				<div class="w-100 text-right">
+					<form th:action="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" method="get" class="selectBox-top">
+						<select name="order" id="select-order" class="w-25">
+							<option disabled selected>並べ替え</option>
+							<option value="最新">最新順</option>
+							<option value="コメント数" >コメント数</option>
+						</select>
+					</form>
+				</div>
+			</div>
 
 			<div class="row sled-innner" th:each="thread : ${threads}">
 				<div class="col-md-4 sled-image">
