@@ -29,16 +29,17 @@
 						th:value="${recommendUserInfo.introduction}">
 				</div>
 
+
 				<div th:text="${follows.contains('3')}">
 					<div>フォロー済み</div>
 				</div>
-
+<!--
 				<div th:each="follow : ${follows}" >
 					<div th:if="${follow != recommendUserInfo.id}">
-						<div>フォローしてません</div>
+						<div th:>フォローしてません</div>
 					</div>
 
-				</div>
+				</div> -->
 
 				<form th:action="@{/follows/save}" method="post">
 					<input type="hidden" name="url" >

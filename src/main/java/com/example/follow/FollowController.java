@@ -74,6 +74,8 @@ public class FollowController {
 	 * @param loginUser
 	 * @return
 	 */
+//	@PostMapping("/isExist")
+//	public boolean isExist(@RequestParam("userId") Long userId, @)
 
 
 
