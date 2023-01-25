@@ -28,6 +28,31 @@ public class UserCategoriesService {
    }
 
     public UserCategories save(UserCategories userCategories) {
+
+    	if(userCategories == null) {
+    		return userCategories;
+    	}
+
+    	Long id = userCategories.getUserId();
+    	Long wantId = userCategories.getCategoryId();
+
+
+
+    	if(isUserCategories(id, wantId)) {
+    		return userCategories;
+    	}
+
     	return userCategoriesRepository.save(userCategories);
+    }
+
+    private boolean isUserCategories(Long id, Long wantId) {
+    	List<UserCategories> userCategories = this.userCategoriesRepository.findByUserId(id);
+
+    	for(UserCategories category : userCategories) {
+    		if(category.getCategoryId() == wantId) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 }
