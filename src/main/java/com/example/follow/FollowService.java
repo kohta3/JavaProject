@@ -1,5 +1,6 @@
 package com.example.follow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -21,6 +22,19 @@ public class FollowService {
 	public List<Follow> listAll(Long userId) {
 		List<Follow> followList = this.followRepository.findByUserId(userId);
 		return followList;
+	}
+
+	/**
+	 * フォローしているユーザーのIDを取得
+	 * @param follow
+	 */
+	public List<Long> listUserId(Long userId) {
+		List<Follow> followList = listAll(userId);
+		List<Long> listNum = new ArrayList<Long>();
+		for(Follow follow : followList) {
+			listNum.add(follow.getFollowId());
+		}
+		return listNum;
 	}
 
 	/*

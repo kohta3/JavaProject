@@ -28,10 +28,23 @@
 					<input type="text" disabled="disabled" class="w-100"
 						th:value="${recommendUserInfo.introduction}">
 				</div>
+
+				<div th:text="${follows.contains('3')}">
+					<div>フォロー済み</div>
+				</div>
+
+				<div th:each="follow : ${follows}" >
+					<div th:if="${follow != recommendUserInfo.id}">
+						<div>フォローしてません</div>
+					</div>
+
+				</div>
+
 				<form th:action="@{/follows/save}" method="post">
 					<input type="hidden" name="url" >
 					<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー</button>
 				</form>
+
 				<form th:action="@{/blocks/save}" method="post">
 					<input type="hidden" name="url">
 					<button type="submit" name="blockId" th:value="${recommendUserInfo.id}">ブロック</button>
@@ -49,6 +62,9 @@
 		url.forEach(function(e) {
 			e.setAttribute("value", a);
 		})
+
+
+
 	</script>
 
 </body>

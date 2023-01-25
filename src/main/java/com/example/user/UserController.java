@@ -149,8 +149,13 @@ public class UserController extends Thread{
 	    	recommendUsers.add(this.userService.getByid(userNum));
 		}
 
+	    //htmlに渡すフォローリスト
+	    List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
+	    List<Long> followUserList = this.followService.listUserId(loginUser.getUser().getId());
+
 	    System.out.println(recommendUsers.size());
 
+	    model.addAttribute("follows", followUserList);
     	model.addAttribute("loginUser",loginUser.getUser().getName());
 		model.addAttribute("recommendUser",recommendUsers);
 

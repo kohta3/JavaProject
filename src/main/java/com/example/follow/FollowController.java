@@ -76,6 +76,7 @@ public class FollowController {
 	 */
 
 
+
 	/*
 	 * フォロー情報取得
 	 * 画面に渡す
