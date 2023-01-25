@@ -84,11 +84,21 @@ public class UserController extends Thread{
     @PostMapping("/save")
     public String saveUser(User user, RedirectAttributes ra) {
 
+    	//入力されたメールアドレスの文字数チェック
+        if (!userService.isValidEmail(user.getEmail())) {
+            ra.addFlashAttribute("error_message", "メールアドレスは10文字以上254文字以内で入力してください");
+            return "redirect:/users/new";
+        }
 
+    	//入力されたユーザー名の文字数チェック
+        if (!userService.isValidName(user.getName())) {
+            ra.addFlashAttribute("error_message", "ユーザー名は、1文字以上100文字以内で入力してください");
+            return "redirect:/users/new";
+        }
 
-    	//入力された文字数のチェック
-        if (!userService.isValid(user.getEmail(), user.getName())) {
-            ra.addFlashAttribute("error_message", "メールアドレスまたはユーザー名の文字数がオーバーしています");
+    	//入力された自己紹介の文字数チェック
+        if (!userService.isValidIntroduction(user.getIntroduction())) {
+            ra.addFlashAttribute("error_message", "自己紹介は、1文字以上300文字以内で入力してください");
             return "redirect:/users/new";
         }
 
@@ -116,9 +126,9 @@ public class UserController extends Thread{
             userCategoriesService.save(userCategories);
 		}
 
-        // 登録成功のメッセージを格納
+        //登録成功のメッセージを格納
         ra.addFlashAttribute("success_message", "ユーザーの新規登録に成功しました");
-        return "redirect:/threads";
+        return "redirect:/";
     }
 
     @GetMapping("/recommend")
@@ -217,7 +227,7 @@ public class UserController extends Thread{
             //ユーザーIDに紐づくユーザー情報取得
             User user = userService.get(id);
             List<Categories> categories = this.categoryService.listAll();
-          	List<UserCategories> userCategories = this.userCategoriesService.findByUserId(loginUser.getUser().getId());
+            System.out.println(categories);
             model.addAttribute("user", user);
             model.addAttribute("categories", categories);
             return "users/user_edit";
@@ -236,11 +246,23 @@ public class UserController extends Thread{
      */
     @PostMapping("/save2")
     public String save2User(User user, RedirectAttributes ra) {
-    	//入力された文字数のチェック
-        if (!userService.isValid(user.getEmail(), user.getName())) {
-            ra.addFlashAttribute("error_message", "メールアドレスまたはユーザー名の文字数がオーバーしています");
+    	//入力されたメールアドレスの文字数チェック
+        if (!userService.isValidEmail(user.getEmail())) {
+            ra.addFlashAttribute("error_message", "メールアドレスの文字数がオーバーしています");
             return "redirect:/users/user_edit";
         }
+
+    	//入力されたユーザー名の文字数チェック
+        if (!userService.isValidName(user.getName())) {
+            ra.addFlashAttribute("error_message", "ユーザー名は、1文字以上100文字以内で入力してください");
+            return "redirect:/users/user_edit";
+        }
+
+    	//入力されたユーザー名の文字数チェック
+//       if (!userService.isValidIntroduction(user.getIntroduction())) {
+//            ra.addFlashAttribute("error_message", "自己紹介は、1文字以上300文字以内で入力してください");
+//            return "redirect:/users/user_edit";
+//        }
 
         //ユーザー情報のユーザー名重複チェック
         if (!userService.UserNamecheckUnique(user)) {
@@ -255,10 +277,20 @@ public class UserController extends Thread{
         }
 
         //ユーザー情報の登録
-        userService.save2(user);
-        // 登録成功のメッセージを格納
-        ra.addFlashAttribute("success_message", "ユーザー情報の編集に成功しました");
-        return "redirect:/users/mypage";
+        Long userReturnId=userService.save(user).getId();
+
+
+       //category情報の保存
+        for (UserCategories element : user.getUserCategories()) {
+        	UserCategories userCategories = new UserCategories();
+            userCategories.setCategoryId(element.getId());
+            userCategories.setUserId(userReturnId);
+            userCategoriesService.save(userCategories);
+		}
+
+        //登録成功のメッセージを格納
+ //       ra.addFlashAttribute("success_message", "ユーザー情報の編集に成功しました");
+        return "redirect:users/mypage";
     }
 
 }

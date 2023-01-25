@@ -15,39 +15,42 @@
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 	<div class="col-md-8 m-0 p-0">
 		<div class="mb-3">
-			<h1 class="m-0"><a th:href="@{/categories}">カテゴリー</a> > カテゴリー名</h1>
+			<h1 class="m-0"><a th:href="@{/categories}">カテゴリー</a> > <span th:text="${category.name}"></span></h1>
 		</div>
 
 		<div class="sled">
-
-			<form th:action="@{/threads/threadsCategory/{categoryId}(categoryId=${category.id})}" method="get">
-				<select name="order" class="w-100" >
-					<option value="最新">最新順</option>
-					<option value="コメント数" >コメント数</option>
-				</select>
-				<input type="submit" value="並べ替え">
-			</form>
+			<div class="w-100 my-2">
+				<div class="w-100 text-right">
+					<form th:action="@{/threads/threadsCategory/{categoryId}(categoryId=${category.id})}" method="get" class="selectBox-top">
+						<select name="order" id="select-order" class="w-25">
+							<option disabled selected>並べ替え</option>
+							<option value="最新">最新順</option>
+							<option value="コメント数" >コメント数</option>
+						</select>
+					</form>
+				</div>
+			</div>
 
 			<div class="row sled-innner" th:each="thread : ${threads}">
 				<div class="col-md-4 sled-image">
 					<img alt="sample" th:src="@{/images/usagi.png}">
 				</div>
 				<div class="col-md-8 p-0">
-					<a href="">
-						<h2 th:text="${thread.title}">タイトルタイトルタイトル</h2>
+					<a th:href="@{~/threads/detail/{id}(id=${thread.id})}">
+						<h2 th:text="${thread.title}"></h2>
 					</a>
 					<div class="text-hidden">
-						<h3 th:text="${thread.comment}">内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</h3>
+						<h3 th:text="${thread.comment}"></h3>
 					</div>
 					<div class="sled-info">
 						<ul class="m-0">
-							<li th:text="${thread.user.name}">ユーザー名</li>
-							<li th:text="${thread.commentSum}">コメント数123件</li>
-							<li th:text="${thread.dateTime}">2023/12/4</li>
+							<li th:text="${thread.user.name}"></li>
+							<li th:text="${thread.commentSum}"></li>
+							<li th:text="${thread.dateTime}">4</li>
 						</ul>
 						<ul class="m-0">
-							<li class="text-info" th:text="${thread.category.name}">カテゴリー名</li>
-							<li class="text-" th:text="${thread.animeTitle.name}">アニメタイトル</li>
+							<li class="text-info" th:text="${thread.category.name}"></li>
+							<li class="text-" th:text="${thread.animeTitle.name}"></li>
 						</ul>
 					</div>
 				</div>

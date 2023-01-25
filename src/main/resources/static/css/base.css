@@ -3,7 +3,7 @@
 
 
 body{
-font-family: 'Mochiy Pop P One', sans-serif;
+	font-family: 'Mochiy Pop P One', sans-serif;
 	font-size: 15px;
 }
 
@@ -23,6 +23,7 @@ h3 {
 	list-style: none;
 	margin: 5px 0;
 }
+
 .btn-design{
 	padding: 5px;
 	margin:5px 0;
@@ -40,6 +41,10 @@ h3 {
 	color:white;
 	cursor: pointer;
 	box-shadow: 1px 1px 5px orange;
+}
+
+.change-Font{
+	font-size: small;
 }
 
 /* ------------- ヘッダー ------------- */
@@ -215,6 +220,22 @@ h3 {
 	padding: 5px 5px 0 0;
 }
 
+.selectBox-top{
+	margin: 0 10px 0 0;
+}
+
+.selectBox-top select{
+	background:linear-gradient(rgb(222, 235, 247),rgb(65, 113, 156));
+	border:none;
+	width: 30%;
+	border-radius: 10px;
+	transition: all 375ms ease-in-out;
+	color:white;
+	background-color: grey;
+	text-align: center;
+
+}
+
 /* ------------- カテゴリー一覧 ------------- */
 
 .category-page{
@@ -294,8 +315,8 @@ input::placeholder{
 /* ------------- マイページ ------------- */
 
 .mypage{
-	border: 1px solid grey;
 	padding: 0;
+	width: 80%;
 }
 
 .mypage-thredCell{
@@ -316,14 +337,15 @@ input::placeholder{
 }
 
 .mypage-genre{
-	padding: 10px;
-	background-color: rgb(230,230,230);
+	margin: 0 0 50px 0;
 }
 
 .mypage-genre ul{
-	display: flex;
-	margin :0;
 	width: 100%;
+	padding:0;
+	margin :0;
+	display: flex;
+	justify-content: center;
 }
 
 .mypage-genre li{
