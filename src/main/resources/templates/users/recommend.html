@@ -29,12 +29,11 @@
 						th:value="${recommendUserInfo.introduction}">
 				</div>
 
-		<!--		<div th:text="${follows.contains('3')}">
-					<div>フォロー済み</div>
-				</div>
-		-->
+
+
 
 				<form th:action="@{/follows/save}" method="post" th:id="follow+${recommendUserInfo.id}">
+
 					<input type="hidden" name="url" >
 					<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー</button>
 				</form>

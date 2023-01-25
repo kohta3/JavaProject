@@ -39,6 +39,8 @@ public class UserController extends Thread{
 
 	}
 
+
+
     private final UserService userService;
     private final FollowService followService;
 	private final CategoryService categoryService;
@@ -283,15 +285,20 @@ public class UserController extends Thread{
 
 
        //category情報の保存
-        for (UserCategories element : user.getUserCategories()) {
-        	UserCategories userCategories = new UserCategories();
-            userCategories.setCategoryId(element.getId());
-            userCategories.setUserId(userReturnId);
-            userCategoriesService.save(userCategories);
-		}
+        if(user.getUserCategories() != null) {
+        	for (UserCategories element : user.getUserCategories()) {
+        		UserCategories userCategories = new UserCategories();
+        		userCategories.setCategoryId(element.getId());
+        		userCategories.setUserId(userReturnId);
+        		userCategoriesService.save(userCategories);
+        	}
+        }
 
         //登録成功のメッセージを格納
-//        ra.addFlashAttribute("success_message", "ユーザー情報の編集に成功しました");
-        return "redirect:/users/mypage/{userId}";    }
+
+ //       ra.addFlashAttribute("success_message", "ユーザー情報の編集に成功しました");
+        return "redirect:/users/mypage/" + user.getId();
+    }
+
 
 }
