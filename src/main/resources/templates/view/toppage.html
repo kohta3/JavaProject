@@ -25,9 +25,8 @@
 				</form>
 
 				<h1 class="m-0 pl-3">トップ</h1>
-				<div th:replace="fragments :: message"></div>
 				<div th:text="${test}"></div>
-				<div class="w-100 text-right">
+				<div class="w-100 text-right" sec:authorize="isAuthenticated()">
 					<a th:href="@{/threads/postThred}" class="newAdd">新規すれ作成＋</a>
 				</div>
 			</div>
