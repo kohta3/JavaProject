@@ -99,20 +99,48 @@ public class UserService {
     }
 
     /**
-     * ユーザー情報の入力値チェック
+     * メールアドレスの入力値チェック
      *
      * @param email メールアドレス
      * @param name ユーザー名
      * @return true:正常の入力値 false:異常な入力値
      */
-    public boolean isValid(String email, String name) {
+    public boolean isValidEmail(String email) {
+    	System.out.println(email);
         //メールアドレスの判定（10文字から254文字まで）
         if (email.length() < 10 || email.length() > 254) {
             return false;
         }
 
+        return true;
+    }
+
+    /**
+     * ユーザー名の入力値チェック
+     *
+     * @param name ユーザー名
+     * @return true:正常の入力値 false:異常な入力値
+     */
+    public boolean isValidName(String name) {
+    	System.out.println(name);
         //ユーザー名の判定（1文字から100文字まで）
         if (name.length() < 1 || name.length() > 100) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 自己紹介の入力値チェック
+     *
+     * @param introduction 自己紹介
+     * @return true:正常の入力値 false:異常な入力値
+     */
+    public boolean isValidIntroduction(String introduction) {
+    	System.out.println(introduction);
+        //自己紹介の判定（1文字から300文字まで）
+        if (introduction.length() < 1 || introduction.length() > 300) {
             return false;
         }
 

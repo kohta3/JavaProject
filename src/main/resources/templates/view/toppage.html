@@ -16,9 +16,7 @@
 		<div class="col-md-8 m-0 p-0">
 			<div class="mb-3">
 				<h1 class="m-0 pl-3">トップ</h1>
-				<div th:replace="fragments :: message"></div>
-				<div th:text="${test}"></div>
-				<div class="w-100 h-100 d-flex mt-3">
+				<div class="w-100 h-100 d-flex mt-3" sec:authorize="isAuthenticated()">
 					<div class="w-50">
 						<a th:href="@{/threads/postThred}" class="newAdd">新規すれ作成＋</a>
 					</div>
@@ -33,7 +31,6 @@
 					</div>
 				</div>
 			</div>
-
 			<div class="sled">
 
 				<div class="row sled-innner" th:each="thread : ${threads}">
