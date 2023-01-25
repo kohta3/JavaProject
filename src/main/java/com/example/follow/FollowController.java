@@ -68,6 +68,14 @@ public class FollowController {
 		return "redirect:" + url;
 	}
 
+	/**
+	 * フォローユーザー判定
+	 * @param model
+	 * @param loginUser
+	 * @return
+	 */
+
+
 	/*
 	 * フォロー情報取得
 	 * 画面に渡す

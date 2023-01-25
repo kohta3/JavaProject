@@ -41,7 +41,7 @@ public class FollowService {
 
 
 	//フォロー情報があるかチェック
-	private boolean isExist(Follow follow) {
+	public boolean isExist(Follow follow) {
 		//１，フォローしたいユーザーのID
 		Long wantFollowId = follow.getFollowId();
 		//２，フォローするユーザーのID
@@ -56,6 +56,17 @@ public class FollowService {
 		}
 		return false;
 
+	}
+
+	//フォローリストからフォロー情報があるかチェック
+	public boolean isFollowExist(Long userId, Long wantId) {
+		List<Follow> follows = this.listAll(userId);
+		for(Follow follow : follows) {
+			if(follow.getFollowId() == wantId) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	//フォローユーザーとフォロワーユーザーが同じかチェック
