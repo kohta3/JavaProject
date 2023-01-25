@@ -165,7 +165,9 @@ public class UserController extends Thread{
 	    List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
 	    List<Long> followUserList = this.followService.listUserId(loginUser.getUser().getId());
 
-	    System.out.println(recommendUsers.size());
+//	    for (Long long : followUserList) {
+//	    	System.out.println(followUserList);
+//		}
 
 	    model.addAttribute("follows", followUserList);
     	model.addAttribute("loginUser",loginUser.getUser().getName());
@@ -293,8 +295,10 @@ public class UserController extends Thread{
         }
 
         //登録成功のメッセージを格納
+
  //       ra.addFlashAttribute("success_message", "ユーザー情報の編集に成功しました");
         return "redirect:/users/mypage/" + user.getId();
     }
+
 
 }
