@@ -163,7 +163,9 @@ public class UserController extends Thread{
 	    List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
 	    List<Long> followUserList = this.followService.listUserId(loginUser.getUser().getId());
 
-	    System.out.println(recommendUsers.size());
+//	    for (Long long : followUserList) {
+//	    	System.out.println(followUserList);
+//		}
 
 	    model.addAttribute("follows", followUserList);
     	model.addAttribute("loginUser",loginUser.getUser().getName());

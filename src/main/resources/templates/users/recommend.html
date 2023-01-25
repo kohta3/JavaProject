@@ -29,42 +29,55 @@
 						th:value="${recommendUserInfo.introduction}">
 				</div>
 
-				<div th:text="${follows.contains('3')}">
+		<!--		<div th:text="${follows.contains('3')}">
 					<div>フォロー済み</div>
 				</div>
+		-->
 
-				<div th:each="follow : ${follows}" >
-					<div th:if="${follow != recommendUserInfo.id}">
-						<div>フォローしてません</div>
-					</div>
-
-				</div>
-
-				<form th:action="@{/follows/save}" method="post">
+				<form th:action="@{/follows/save}" method="post" th:id="follow+${recommendUserInfo.id}">
 					<input type="hidden" name="url" >
 					<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー</button>
 				</form>
+
+				<form action="" method="post" th:id="unfollow+${recommendUserInfo.id}">
+					<input type="hidden" name="url" >
+					<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー中</button>
+				</form>
+
 
 				<form th:action="@{/blocks/save}" method="post">
 					<input type="hidden" name="url">
 					<button type="submit" name="blockId" th:value="${recommendUserInfo.id}">ブロック</button>
 				</form>
 
+				<script th:inline="javascript">
+						var users =  /*[[${follows}]]*/;
+						var recommend = /*[[${recommendUserInfo.id}]]*/;
+
+						var followId = document.getElementById('follow'+/*[[${recommendUserInfo.id}]]*/);
+						var unfollowId = document.getElementById('unfollow'+/*[[${recommendUserInfo.id}]]*/);
+
+						if(users.includes(recommend)){
+							followId.style.display ="none";
+							unfollowId.style.display ="block";
+						}else{
+							unfollowId.style.display="none";
+							followId.style.display ="block";
+						}
+				</script>
+
 			</div>
 		</div>
 		<div
 			th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
 	</div>
-	<script>
+	<script >
 		var url = document.getElementsByName('url');
 		var a = location.pathname;
 		console.log(url);
 		url.forEach(function(e) {
 			e.setAttribute("value", a);
-		})
-
-
-
+		});
 	</script>
 
 </body>
