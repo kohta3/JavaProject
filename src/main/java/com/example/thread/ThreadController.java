@@ -21,6 +21,7 @@ import com.example.entity.AnimeTitle;
 import com.example.entity.Categories;
 import com.example.entity.Comment;
 import com.example.entity.Threads;
+import com.example.follow.FollowService;
 import com.example.security.A2ChannelUserDetails;
 
 @Controller
@@ -31,12 +32,14 @@ public class ThreadController {
 	private CommentService commentService;
 	private CategoryService categoryService;
 	private AnimeTitleService animeTitleService;
+	private FollowService followService;
 	@Autowired
-	public ThreadController(ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService) {
+	public ThreadController(FollowService followService,ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService) {
 		this.threadService = threadService;
 		this.categoryService = categoryService;
 		this.animeTitleService = animeTitleService;
 		this.commentService = commentService;
+		this.followService = followService;
 	}
 
 	//左サイドバーにカテゴリ情報を送る

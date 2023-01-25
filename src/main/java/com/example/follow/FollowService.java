@@ -1,5 +1,6 @@
 package com.example.follow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -23,6 +24,19 @@ public class FollowService {
 		return followList;
 	}
 
+	/**
+	 * フォローしているユーザーのIDを取得
+	 * @param follow
+	 */
+	public List<Long> listUserId(Long userId) {
+		List<Follow> followList = listAll(userId);
+		List<Long> listNum = new ArrayList<Long>();
+		for(Follow follow : followList) {
+			listNum.add(follow.getFollowId());
+		}
+		return listNum;
+	}
+
 	/*
 	 * フォローユーザー登録
 	 */
@@ -41,7 +55,7 @@ public class FollowService {
 
 
 	//フォロー情報があるかチェック
-	private boolean isExist(Follow follow) {
+	public boolean isExist(Follow follow) {
 		//１，フォローしたいユーザーのID
 		Long wantFollowId = follow.getFollowId();
 		//２，フォローするユーザーのID
@@ -56,6 +70,17 @@ public class FollowService {
 		}
 		return false;
 
+	}
+
+	//フォローリストからフォロー情報があるかチェック
+	public boolean isFollowExist(Long userId, Long wantId) {
+		List<Follow> follows = this.listAll(userId);
+		for(Follow follow : follows) {
+			if(follow.getFollowId() == wantId) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	//フォローユーザーとフォロワーユーザーが同じかチェック
