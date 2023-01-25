@@ -15,6 +15,15 @@
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 m-0 p-0">
 			<div class="mb-3">
+
+				<form th:action="@{/threads}" method="get">
+					<select name="order" class="w-100" >
+						<option value="最新">最新順</option>
+						<option value="コメント数" >コメント数</option>
+					</select>
+					<input type="submit" value="並べ替え">
+				</form>
+
 				<h1 class="m-0 pl-3">トップ</h1>
 				<div th:replace="fragments :: message"></div>
 				<div th:text="${test}"></div>

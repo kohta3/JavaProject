@@ -66,7 +66,6 @@ public class ThreadController {
 	public String showThreadsAll(Model model, @RequestParam(required = false) String order) {
 		//スレッド一覧を取得
 		List<Threads> threads = this.threadService.listAll(order);
-
 		//取得したスレッド情報を画面に渡す
 		model.addAttribute("threads", threads);
 
@@ -141,11 +140,11 @@ public class ThreadController {
 
 	//スレ一覧(カテゴリー絞り込み)
 	@GetMapping("/threadsCategory/{categoryId}")
-	public String showThreadsCategory(@PathVariable Long categoryId, Model model) {
+	public String showThreadsCategory(@PathVariable Long categoryId, Model model, @RequestParam(name = "order" ,required = false) String order) {
 		//カテゴリIDからカテゴリ情報を取得
 		Categories category = this.categoryService.findById(categoryId);
 		//カテゴリIDから該当のスレッド情報のリストを取得
-		List<Threads> threads = this.threadService.findByCategory(categoryId);
+		List<Threads> threads = this.threadService.findByCategory(categoryId, order);
 		//画面に上記情報を送る
 		model.addAttribute("threads", threads);
 		model.addAttribute("category", category);
@@ -154,11 +153,11 @@ public class ThreadController {
 
 	//スレ一覧(アニメタイトル絞り込み)
 	@GetMapping("/threadsAnimeTitle/{animeTitleId}")
-	public String showThreadAnimeTitles(@PathVariable Long animeTitleId, Model model) {
+	public String showThreadAnimeTitles(@PathVariable Long animeTitleId, Model model, @RequestParam(name = "order" ,required = false) String order) {
 		//アニメタイトル情報取得
 		AnimeTitle animeTitle = this.animeTitleService.findById(animeTitleId);
 		//スレッド情報取得
-		List<Threads> threads = this.threadService.findByAnimeTitle(animeTitleId);
+		List<Threads> threads = this.threadService.findByAnimeTitle(animeTitleId, order);
 		//画面に上記情報を送る
 		model.addAttribute("animeTitle", animeTitle);
 		model.addAttribute("threads", threads);
@@ -172,9 +171,9 @@ public class ThreadController {
 	 * @return スレッド検索結果画面
 	 */
 	@GetMapping("/threadTitle")
-	public String thredTitle(@RequestParam String keyword, Model model) {
+	public String thredTitle(@RequestParam String keyword, @RequestParam(name = "order" ,required = false) String order, Model model) {
 		//スレッド検索
-		List<Threads> threads = this.threadService.findByTitle(keyword);
+		List<Threads> threads = this.threadService.findByTitle(keyword, order);
 		//画面に情報を渡す
 		model.addAttribute("threads", threads);
 		model.addAttribute("keyword", keyword);

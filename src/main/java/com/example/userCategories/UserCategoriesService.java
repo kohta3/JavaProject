@@ -28,6 +28,7 @@ public class UserCategoriesService {
    }
 
     public UserCategories save(UserCategories userCategories) {
+    	
     	return userCategoriesRepository.save(userCategories);
     }
 }

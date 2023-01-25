@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +32,12 @@ import com.example.userCategories.UserCategoriesService;
 
 @Controller
 @RequestMapping("/users")
-public class UserController {
+public class UserController extends Thread{
+
+	@Override
+	public void run() {
+
+	}
 
     private final UserService userService;
     private final FollowService followService;
@@ -76,11 +80,11 @@ public class UserController {
      * @param ra
      * @return スレッド一覧画面
      */
-    @Async
+    //@Async
     @PostMapping("/save")
     public String saveUser(User user, RedirectAttributes ra) {
 
-    	UserCategories userCategories = new UserCategories();
+
 
     	//入力された文字数のチェック
         if (!userService.isValid(user.getEmail(), user.getName())) {
@@ -101,15 +105,15 @@ public class UserController {
         }
 
         //ユーザー情報の登録
-        User userReturn=userService.save(user);
+        Long userReturnId=userService.save(user).getId();
+
 
        //category情報の保存
         for (UserCategories element : user.getUserCategories()) {
-        	System.out.println("処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始処理開始");
+        	UserCategories userCategories = new UserCategories();
             userCategories.setCategoryId(element.getId());
-            userCategories.setUserId(userReturn.getId());
+            userCategories.setUserId(userReturnId);
             userCategoriesService.save(userCategories);
-            System.out.println("処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了処理終了");
 		}
 
         // 登録成功のメッセージを格納
