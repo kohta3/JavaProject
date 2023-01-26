@@ -1,82 +1,80 @@
 <!DOCTYPE html>
-<html
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
-  th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}"
->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}">
 <head>
-	<meta charset="UTF-8">
-	<title>あ2ちゃんねる-トップ</title>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-トップ</title>
 <link />
 </head>
 <body>
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
-    <div class="pcoded-inner-content">
-      <!-- Main-body start -->
-      <div class="main-body">
-        <div class="page-wrapper">
-          <!-- Page body start -->
-          <div class="page-body">
-            <div class="row">
-              <div class="col-sm-12">
-                <!-- Basic Form Inputs card start -->
-                <div class="card">
-                  <div class="card-header">
-                      <h4>ユーザー情報編集</h4>
-                  </div>
-                  <div class="card-block">
-                    <form th:action="@{/users/save2}" method="post" th:object="${user}">
-                      <input type="hidden" th:field="*{id}">
-                      <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">ユーザー名</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="ユーザー名" th:field="*{name}">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">メールアドレス</label>
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" placeholder="メールアドレス" th:field="*{email}">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">パスワード</label>
-                        <div class="col-sm-10">
-                            <input type="password" class="form-control" placeholder="パスワード" th:field="*{password}">
-                        </div>
-                      </div>
+	<div class="pcoded-inner-content">
+		<!-- Main-body start -->
+		<div class="main-body">
+			<div class="page-wrapper">
+				<!-- Page body start -->
+				<div class="page-body">
+					<div class="row">
+						<div class="col-sm-12">
+							<!-- Basic Form Inputs card start -->
+							<div class="card">
+								<div class="card-header">
+									<h4>ユーザー情報編集</h4>
+								</div>
+								<div class="card-block">
+									<form th:action="@{/users/save2}" method="post" th:object="${user}">
+										<input type="hidden" th:field="*{id}">
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label">ユーザー名</label>
+											<div class="col-sm-10">
+												<input type="text" class="form-control" placeholder="ユーザー名" th:field="*{name}">
+											</div>
+										</div>
 
-                      <div class="form-group row">
-                    	<label class="col-sm-2 col-form-label">興味のあるジャンル</label>
-                        <th:block th:each="category : ${categories}">
-                            <div>
-                                <input class="m-2" type="checkbox" name="userCategories" th:value="${category.id}" th:checked="${false}" th:id="${category.name}">
-                                <label th:for="${category.name}" th:text="${category.name}"></label>
-                            </div>
-                        </th:block>
-                      </div>
-                      <div class="btn-toolbar">
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label">メールアドレス</label>
+											<div class="col-sm-10">
+												<input type="email" class="form-control" placeholder="メールアドレス" th:field="*{email}">
+											</div>
+										</div>
 
-                        <div class="ml-2">
-                          <a class="btn btn-secondary waves-effect waves-light" th:href="@{/users/mypage/{id}(id=${user.id})}">戻る</a>
-                        </div>
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label">パスワード</label>
+											<div class="col-sm-10">
+												<input type="password" class="form-control" placeholder="パスワード" th:field="*{password}">
+											</div>
+										</div>
 
-                        <div class="ml-auto mr-2">
-                          <button class="btn btn-primary waves-effect waves-light">編集</button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <!-- Basic Form Inputs card end -->
-              </div>
-            </div>
-          </div>
-          <!-- Page body end -->
-        </div>
-      </div>
-      <!-- Main-body end -->
-    </div>
-  </div>
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label">興味のあるジャンル</label>
+											<div th:each="category : ${categories}">
+												<input class="m-2" type="checkbox" name="userCategories" th:value="${category.id}" th:checked="${false}" th:id="${category.name}">
+												<label th:for="${category.name}" th:text="${category.name}"></label>
+											</div>
+										</div>
+
+										<div class="btn-toolbar">
+											<div class="ml-2">
+												<a class="btn btn-secondary waves-effect waves-light"
+													th:href="@{/users/mypage/{id}(id=${user.id})}">戻る</a>
+											</div>
+											<div class="ml-auto mr-2">
+												<button class="btn btn-primary waves-effect waves-light">編集</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+							<!-- Basic Form Inputs card end -->
+						</div>
+					</div>
+				</div>
+				<!-- Page body end -->
+			</div>
+		</div>
+		<!-- Main-body end -->
+	</div>
+	</div>
 </body>
 </html>

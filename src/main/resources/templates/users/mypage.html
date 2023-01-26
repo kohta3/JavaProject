@@ -32,7 +32,7 @@
 								<td th:text="${user.email}"></td>
 							</tr>
 						</table>
-						<a class="btn btn-success btn-sm m-1" th:if="${user.id} == ${#authentication.principal.user.id}" th:href="@{/users/edit/{id}(id=${user.id})}">編集</a>
+						<div><a class="btn btn-success btn-sm m-1" th:if="${user.id} == ${#authentication.principal.user.id}" th:href="@{/users/edit/{id}(id=${user.id})}">編集</a></div>
 					</div>
 				</div>
 				<!--
