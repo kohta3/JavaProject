@@ -13,9 +13,7 @@
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 m-0 p-0">
 			<h1>マイページ</h1>
-
 			<div th:replace="fragments :: message"></div>
-
 			<div class="m-auto w-75 p-3" style="background-color: rgb(245,245,245);">
 				<div class="row w-100 mb-5 mx-0 text-nowrap">
 					<div class="mypage">
@@ -32,14 +30,14 @@
 								<td th:text="${user.email}"></td>
 							</tr>
 						</table>
+						<div class="col-md-1 h-100 my-auto" th:if="${user.id} == ${#authentication.principal.user.id}"><a class="btn btn-success btn-sm m-1 text-light" id="update">更新</a></div>
+
+					<!--
 						<div><a class="btn btn-success btn-sm m-1" th:if="${user.id} == ${#authentication.principal.user.id}" th:href="@{/users/edit/{id}(id=${user.id})}">編集</a></div>
+					-->
 					</div>
 				</div>
-				<!--
-					<div class="col-md-1 h-100 my-auto" th:if="${user.id} == ${#authentication.principal.user.id}">
-						<a class="update-btn" id="update">更新</a>
-					</div>
-				-->
+
 
 				<div class="mypage-genre">
 					<h3 class="w-100">興味のあるジャンル</h3>
@@ -87,39 +85,54 @@
 						</div>
 					</form>
 				</div>
-
-				<div class="update-form" id="userUpdate">
-					<form action="" method="get">
-						<div class="m-5">
-							<h1>ユーザー情報更新</h1>
-							<div class="text-nowrap my-1">
-								<label for="update-form-name">ユーザー名</label>
-								<input type="text" id="update-form-name" value="ユーザー名">
-							</div>
-
-							<div class="text-nowrap my-1">
-								<label for="update-form-email">メールアドレス</label>
-								<input type="email" id="update-form-email" value="xxxx@gmail.com">
-							</div>
-
-							<div class="text-nowrap my-1">
-								<label for="update-form-mind">自己紹介</label>
-								<textarea id="update-form-mind"></textarea>
-							</div>
-							<br>
-							<h3>興味のあるジャンル</h3>
-							<span style="white-space: nowrap;" th:each="i : ${#numbers.sequence(0,5,1)}"><input type="checkbox" id="SF/ファンタジー"><label for="SF/ファンタジー">SF/ファンタジー</label></span>
-
-							<div class="text-center">
-								<button>保存</button>
-							</div>
-
-						</div>
-					</form>
-				</div>
+			</div>
 		</div>
-		</div></div>
-		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
+		<div id="userUpdate">
+			<form th:action="@{/users/save2}" method="post" th:object="${user}" class="m-3">
+				<input type="hidden" th:field="*{id}">
+				<div class="form-group row">
+					<label class="col-md-2">ユーザー名</label>
+					<div class="col-sm-10">
+						<input type="text" placeholder="ユーザー名" th:field="*{name}">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-md-2">メールアドレス</label>
+					<div class="col-sm-10">
+						<input type="email" placeholder="メールアドレス" th:field="*{email}">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-md-2">パスワード</label>
+					<div class="col-sm-10">
+						<input type="password" placeholder="パスワード" th:field="*{password}">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-md-2 mx-0 my-auto">興味のある<br>ジャンル</label>
+					<ul class="col-md-10 d-flex flex-wrap row">
+						<li th:each="category : ${categories}" class="text-nowrap listStyleCss col-md-4">
+							<input class="m-1" type="checkbox" name="userCategories" th:value="${category.id}" th:checked="${false}" th:id="${category.name}">
+							<label class="m-1" th:for="${category.name}" th:text="${category.name}"></label>
+						</li>
+					</ul>
+				</div>
+
+				<div class="btn-toolbar">
+					<div class="ml-2">
+						<a class="btn btn-secondary waves-effect waves-light"
+							th:href="@{/users/mypage/{id}(id=${user.id})}">戻る</a>
+					</div>
+					<div class="ml-auto mr-2">
+						<button class="btn btn-primary waves-effect waves-light">アップデート</button>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
+	<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
 </body>
 </html>

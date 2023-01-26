@@ -165,10 +165,6 @@ public class UserController extends Thread{
 	    List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
 	    List<Long> followUserList = this.followService.listUserId(loginUser.getUser().getId());
 
-//	    for (Long long : followUserList) {
-//	    	System.out.println(followUserList);
-//		}
-
 	    model.addAttribute("follows", followUserList);
     	model.addAttribute("loginUser",loginUser.getUser().getName());
 		model.addAttribute("recommendUser",recommendUsers);
@@ -201,18 +197,20 @@ public class UserController extends Thread{
     	try {
     		//ユーザー情報取得
 			User user = this.userService.get(userId);
+			//カテゴリー情報取得
+			List<Categories> categories = this.categoryService.listAll();
 			//フォロー情報取得
 	    	List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
 	    	//ブロック情報取得
 	    	List<Block> blockList = this.blockService.listAll(loginUser.getUser().getId());
 
 			//画面に情報を渡す
+            model.addAttribute("categories", categories);
 			model.addAttribute("follows", followList);
 			model.addAttribute("blocks", blockList);
 	    	model.addAttribute("user", user);
 	    	return "users/mypage";
 		} catch (NotFoundException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 			return "";
 		}
