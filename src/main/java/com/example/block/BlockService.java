@@ -1,5 +1,6 @@
 package com.example.block;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -23,6 +24,19 @@ public class BlockService {
 		return blockList;
 	}
 
+	/**
+	 * ブロックしているユーザーのIDのリストを取得
+	 * @param block
+	 */
+	public List<Long> listUserId(Long userId) {
+		List<Block> blockList = listAll(userId);
+		List<Long> listNum = new ArrayList<Long>();
+		for(Block block : blockList) {
+			listNum.add(block.getBlockId());
+		}
+		return listNum;
+	}
+
 	/*
 	 * ブロックユーザー登録
 	 */
@@ -37,6 +51,24 @@ public class BlockService {
 		}
 		//上記以外の場合登録する
 		this.blockRepository.save(block);
+	}
+
+	/**
+	 * ブロックユーザーIDとユーザーIDからブロック情報取得
+	 * @param block
+	 * @return
+	 */
+	public Block getByUserIdAndBlockId(Long userId, Long blockId) {
+		return this.blockRepository.findByUserIdAndBlockId(userId, blockId);
+	}
+
+	/**
+	 * ブロック情報削除
+	 * @param block
+	 * @return
+	 */
+	public void deleteBlock(Block block) {
+		this.blockRepository.delete(block);
 	}
 
 

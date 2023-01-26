@@ -22,14 +22,15 @@
 <link rel="stylesheet" th:href="@{/css/jquery.mCustomScrollbar.css}" type="text/css">
 <!--style.css-->
 <link rel="stylesheet" th:href="@{/css/base.css}" type="text/css">
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
 <link th:replace="${link}">
 
 </head>
 <body>
-		<div th:replace="${contents}"></div>
-
+	<div th:replace="${contents}"></div>
+	<div class="snow"><span class="material-symbols-outlined">spa</span></div>
+	<div class="snow snow2nd"><span class="material-symbols-outlined">spa</span></div>
 
 	<!-- Required Jquery -->
 	<script type="text/javascript" th:src="@{/js/jquery/jquery.min.js}"></script>

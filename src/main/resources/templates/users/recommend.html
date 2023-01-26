@@ -11,7 +11,7 @@
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
-		<div class="col-md-8 m-0 p-0">
+		<div class="col-md-8 m-0 p-0 originalBackColor">
 			<h1 class="ml-5" th:text="${loginUser}+'さんのおすすめのユーザー'"></h1>
 			<div class="recommend row" th:each="recommendUserInfo:${recommendUser}" th:if="${recommendUserInfo.id} != ${#authentication.principal.user.id}">
 
@@ -44,9 +44,14 @@
 				</form>
 
 
-				<form th:action="@{/blocks/save}" method="post">
+				<form th:action="@{/blocks/save}" method="post" th:id="block+${recommendUserInfo.id}">
 					<input type="hidden" name="url">
 					<button type="submit" name="blockId" th:value="${recommendUserInfo.id}">ブロック</button>
+				</form>
+
+				<form th:action="@{/blocks/delete}" method="post" th:id="unblock+${recommendUserInfo.id}">
+					<input type="hidden" name="url" >
+					<button type="submit" name="blockId" th:value="${recommendUserInfo.id}">ブロック解除</button>
 				</form>
 
 				<script th:inline="javascript">
@@ -63,12 +68,29 @@
 							unfollowId.style.display="none";
 							followId.style.display ="block";
 						}
+
+				</script>
+
+				<script th:inline="javascript">
+						var users =  /*[[${blocks}]]*/;
+						var recommend = /*[[${recommendUserInfo.id}]]*/;
+
+						var followId = document.getElementById('block'+/*[[${recommendUserInfo.id}]]*/);
+						var unfollowId = document.getElementById('unblock'+/*[[${recommendUserInfo.id}]]*/);
+
+						if(users.includes(recommend)){
+							followId.style.display ="none";
+							unfollowId.style.display ="block";
+						}else{
+							unfollowId.style.display="none";
+							followId.style.display ="block";
+						}
+
 				</script>
 
 			</div>
 		</div>
-		<div
-			th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
+		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
 	</div>
 	<script >
 		var url = document.getElementsByName('url');

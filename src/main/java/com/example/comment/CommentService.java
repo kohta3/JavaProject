@@ -24,7 +24,7 @@ public class CommentService {
 
 	//スレッド内表示メソッド
 	public List<Comment> commentMatchingTheThread(Long threadId) {
-		List<Comment> matchingComment = this.commentRepository.findBythreadId(threadId);
+		List<Comment> matchingComment = this.commentRepository.findBythreadIdOrderByDateTimeAsc(threadId);
 		return matchingComment;
 	}
 

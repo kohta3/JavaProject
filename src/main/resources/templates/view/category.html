@@ -11,7 +11,7 @@
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
-		<div class="col-md-8 category-page">
+		<div class="col-md-8 category-page originalBackColor">
 		<h1>カテゴリー一覧</h1>
 			<div class="row category-page-child">
 				<div class="col-md-3" th:each="category : ${categories}">

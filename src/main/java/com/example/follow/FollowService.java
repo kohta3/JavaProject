@@ -25,7 +25,7 @@ public class FollowService {
 	}
 
 	/**
-	 * フォローしているユーザーのIDを取得
+	 * フォローしているユーザーのIDのリストを取得
 	 * @param follow
 	 */
 	public List<Long> listUserId(Long userId) {
