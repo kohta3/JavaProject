@@ -11,4 +11,6 @@ import com.example.entity.Follow;
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 	//ユーザーIDからフォロー情報のリストを取得
 	public List<Follow> findByUserId(Long userId);
+	//ユーザーIDとフォローIDからフォロー情報を取得
+	public Follow findByUserIdAndFollowId(Long userId, Long followId);
 }

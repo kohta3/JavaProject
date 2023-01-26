@@ -38,9 +38,9 @@
 					<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー</button>
 				</form>
 
-				<form action="" method="post" th:id="unfollow+${recommendUserInfo.id}">
+				<form th:action="@{/follows/delete}" method="post" th:id="unfollow+${recommendUserInfo.id}">
 					<input type="hidden" name="url" >
-					<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー中</button>
+					<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー解除</button>
 				</form>
 
 

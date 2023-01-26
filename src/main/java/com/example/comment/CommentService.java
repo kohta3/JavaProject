@@ -28,6 +28,11 @@ public class CommentService {
 		return matchingComment;
 	}
 
+	//IDからコメント情報取得
+	public Comment get(Long id) {
+		return this.commentRepository.findById(id).get();
+	}
+
 	public Comment save(Comment comment) {
 		return commentRepository.save(comment);
 	}
