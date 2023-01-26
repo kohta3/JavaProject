@@ -69,13 +69,17 @@ public class FollowController {
 	}
 
 	/**
-	 * フォローユーザー判定
+	 * フォロー情報削除
 	 * @param model
 	 * @param loginUser
 	 * @return
 	 */
-//	@PostMapping("/isExist")
-//	public boolean isExist(@RequestParam("userId") Long userId, @)
+	@PostMapping("/delete")
+	public String deleteFollow(@RequestParam("followId") Long followId, @RequestParam("url") String url, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+		Follow follow = this.followService.getByUserIdAndFollowId(loginUser.getUser().getId(), followId);
+		this.followService.deleteFollow(follow);
+		return "redirect:" + url;
+	}
 
 
 

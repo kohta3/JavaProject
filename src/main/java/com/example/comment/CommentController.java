@@ -20,7 +20,9 @@ import com.example.category.CategoryService;
 import com.example.entity.AnimeTitle;
 import com.example.entity.Categories;
 import com.example.entity.Comment;
+import com.example.entity.Threads;
 import com.example.security.A2ChannelUserDetails;
+import com.example.thread.ThreadService;
 
 @Controller
 @RequestMapping("/comment")
@@ -29,14 +31,16 @@ public class CommentController {
 	private CommentService commentService;
 	private final CategoryService categoryService;
 	private final AnimeTitleService animeTitleService;
+	private final ThreadService threadsService;
 
 
 
 	@Autowired
-	public CommentController(CommentService commentService,CategoryService categoryService, AnimeTitleService animeTitleService) {
+	public CommentController(ThreadService threadsService, CommentService commentService,CategoryService categoryService, AnimeTitleService animeTitleService) {
 		this.commentService = commentService;
 		this.animeTitleService = animeTitleService;
 		this.categoryService = categoryService;
+		this.threadsService = threadsService;
 	}
 
 	@PostMapping("/create")
@@ -46,6 +50,11 @@ public class CommentController {
 		comment.setUserId(loginUser.getUser().getId());
 		this.commentService.save(comment);
 
+		//スレッドのコメント数更新
+		Threads thread = this.threadsService.get(comment.getThreadId());
+		thread.setCommentSum(thread.getCommentSum() + 1);
+		this.threadsService.save(thread);
+
 		URI location = builder.path("/threads/detail/" + comment.getThreadId()).build().toUri();
 
 		return "redirect:"+ location.toString();
@@ -53,6 +62,13 @@ public class CommentController {
 
 	@GetMapping("/delete/{id}")
 	public String detailCategory(@PathVariable(name = "id") Long id, Model model) {
+		//スレッド情報のコメント数ー１
+		Comment comment = this.commentService.get(id);
+		Threads thread = this.threadsService.get(comment.getThreadId());
+		thread.setCommentSum(thread.getCommentSum() - 1);
+		this.threadsService.save(thread);
+
+		//コメント削除
 		this.commentService.delete(id);
 		return "redirect:/threads";
 	}
