@@ -53,6 +53,24 @@ public class FollowService {
 		this.followRepository.save(follow);
 	}
 
+	/**
+	 * フォローユーザーIDとユーザーIDからフォロー情報取得
+	 * @param follow
+	 * @return
+	 */
+	public Follow getByUserIdAndFollowId(Long userId, Long followId) {
+		return this.followRepository.findByUserIdAndFollowId(userId, followId);
+	}
+
+	/**
+	 * フォロー情報削除
+	 * @param follow
+	 * @return
+	 */
+	public void deleteFollow(Follow follow) {
+		this.followRepository.delete(follow);
+	}
+
 
 	//フォロー情報があるかチェック
 	public boolean isExist(Follow follow) {
