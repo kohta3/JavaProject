@@ -11,4 +11,6 @@ import com.example.entity.Block;
 public interface BlockRepository extends JpaRepository<Block, Long>{
 	//UserIdからブロック情報のリストを取得
 	public List<Block> findByUserId(Long userId);
+	//ユーザーIDとフォローIDからフォロー情報を取得
+	public Block findByUserIdAndBlockId(Long userId, Long blockId);
 }

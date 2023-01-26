@@ -35,4 +35,14 @@ public class BlockController {
 		return "redirect:" + url;
 	}
 
+	/**
+	 * ブロック情報削除
+	 */
+	@PostMapping("/delete")
+	public String deleteBlock(@RequestParam("blockId") Long blockId, @RequestParam("url") String url, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+		Block block = this.blockService.getByUserIdAndBlockId(loginUser.getUser().getId(), blockId);
+		this.blockService.deleteBlock(block);
+		return "redirect:" + url;
+	}
+
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.animeTitle.AnimeTitleService;
+import com.example.block.BlockService;
 import com.example.category.CategoryService;
 import com.example.comment.CommentService;
 import com.example.entity.AnimeTitle;
@@ -33,13 +34,16 @@ public class ThreadController {
 	private CategoryService categoryService;
 	private AnimeTitleService animeTitleService;
 	private FollowService followService;
+	private BlockService blockService;
+
 	@Autowired
-	public ThreadController(FollowService followService,ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService) {
+	public ThreadController(BlockService blockService,FollowService followService,ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService) {
 		this.threadService = threadService;
 		this.categoryService = categoryService;
 		this.animeTitleService = animeTitleService;
 		this.commentService = commentService;
 		this.followService = followService;
+		this.blockService = blockService;
 	}
 
 	//左サイドバーにカテゴリ情報を送る
@@ -55,9 +59,6 @@ public class ThreadController {
 		List<AnimeTitle> animeTitles = this.animeTitleService.listAll();
 		return animeTitles;
 	}
-
-
-
 
 	/**
 	 * スレッド一覧ページ
@@ -77,10 +78,23 @@ public class ThreadController {
 
 	//スレッド詳細表示
 	@GetMapping("/detail/{id}")
-	public String detailThreads(@PathVariable(name = "id") Long id, Model model) {
+	public String detailThreads(@PathVariable(name = "id") Long id, Model model, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 		Threads threads = threadService.get(id);
 		List<Comment> comments = this.commentService.commentMatchingTheThread(id);
 		Comment comment = new Comment();
+
+		//ログイン情報からフォローリスト,ブロックリスト取得
+		//もしログイン情報があった場合処理実行
+		if(loginUser != null) {
+			//フォローリスト取得
+			List<Long> followUserList = this.followService.listUserId(loginUser.getUser().getId());
+			//ブロックリスト取得
+			List<Long> blockUserList = this.blockService.listUserId(loginUser.getUser().getId());
+
+			model.addAttribute("follows", followUserList);
+			model.addAttribute("blocks", blockUserList);
+			model.addAttribute("loginUser", loginUser.getUser().getId());
+		}
 		//スレッド詳細画面にタイムリーフで変数を送信
 		model.addAttribute("thread", threads);
 		model.addAttribute("comments",comments);
