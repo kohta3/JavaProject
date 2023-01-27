@@ -70,8 +70,12 @@ public class ThreadController {
 	public String showThreadsAll(Model model, @RequestParam(required = false) String order) {
 		//スレッド一覧を取得
 		List<Threads> threads = this.threadService.listAll(order);
+
+		//
 		//取得したスレッド情報を画面に渡す
 		model.addAttribute("threads", threads);
+
+
 
 		return "view/toppage";
 	}

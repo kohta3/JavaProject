@@ -36,8 +36,22 @@
 				<div class="row sled-innner" th:each="thread : ${threads}">
 
 					<div class="col-md-4 sled-image">
-						<img alt="sample" th:src="@{/images/usagi.png}">
+				 		<img alt="sample" th:id="image+${thread.id}" >
+			<!-- 			<img alt="test" th:src="@{http://drive.google.com/uc?export=view&id=1rmo_cnYiWu2YJwiUAhURwvhIOgSaKxxF}">
+						-->
 					</div>
+
+					<script th:inline="javascript">
+						var imageUrl = /*[[${thread.image}]]*/;
+
+						var source = document.getElementById('image'+/*[[${thread.id}]]*/);
+						if(imageUrl != null) {
+							imageUrl = decodeURI(imageUrl);
+						}
+
+						source.setAttribute("src", imageUrl);
+					</script>
+
 					<div class="col-md-8 p-0">
 						<a th:href="@{threads/detail/{id}(id=${thread.id})}">
 							<h2 th:text="${thread.title}"></h2>

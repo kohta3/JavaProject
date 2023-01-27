@@ -31,6 +31,9 @@ public class Threads {
 	@Column(name = "ID")
 	private Long id;
 
+	@Column(name = "IMAGE")
+	private String image;
+
 	@Column(name = "TITLE")
 	private String title;
 
@@ -66,6 +69,14 @@ public class Threads {
 
 	@OneToMany(mappedBy = "threads", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Comment> commentList;
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	public Long getCommentSum() {
 		return commentSum;
