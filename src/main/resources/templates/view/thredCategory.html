@@ -13,7 +13,7 @@
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
-	<div class="col-md-8 m-0 p-0 ">
+	<div class="col-md-8 m-0 p-0 originalBackColor">
 		<div class="mb-3">
 			<h1 class="m-0"><a th:href="@{/categories}">カテゴリー</a> > <span th:text="${category.name}"></span></h1>
 		</div>

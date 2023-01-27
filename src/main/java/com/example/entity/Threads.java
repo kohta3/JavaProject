@@ -31,14 +31,14 @@ public class Threads {
 	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "IMAGE")
-	private String image;
-
 	@Column(name = "TITLE")
 	private String title;
 
 	@Column(name = "COMMENTS")
 	private String comment;
+
+	@Column(name = "IMAGE")
+	private String image;
 
 	@Column(name = "DATE_TIME")
 	private LocalDateTime dateTime;
@@ -113,6 +113,7 @@ public class Threads {
 	public LocalDateTime getDateTime() {
 		return dateTime;
 	}
+
 
 	public void setDateTime(LocalDateTime dateTime) {
 		this.dateTime = dateTime;

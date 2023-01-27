@@ -12,7 +12,7 @@
 	<div>
 		<h1 class="ml-3">新規ユーザー登録</h1>
 		<div th:replace="fragments :: message"></div>
-		<div class="login-form p-3">
+		<div class="login-form p-3 originalBackColor">
 			<form th:action="@{/users/save}" method="post" th:object="${user}">
 
 				<div class="login-form-registar">
