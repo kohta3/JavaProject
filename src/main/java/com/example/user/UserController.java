@@ -34,13 +34,6 @@ import com.example.userCategories.UserCategoriesService;
 @RequestMapping("/users")
 public class UserController extends Thread{
 
-	@Override
-	public void run() {
-
-	}
-
-
-
     private final UserService userService;
     private final FollowService followService;
 	private final CategoryService categoryService;
@@ -133,7 +126,7 @@ public class UserController extends Thread{
 
         //登録成功のメッセージを格納
         ra.addFlashAttribute("success_message", "ユーザーの新規登録に成功しました");
-        return "redirect:/";
+        return "redirect:/loginForm";
     }
 
     @GetMapping("/recommend")
@@ -170,9 +163,6 @@ public class UserController extends Thread{
 	    //htmlに渡すブロックリスト
 	    List<Long> blockUserList = this.blockService.listUserId(loginUser.getUser().getId());
 
-//	    for (Long long : followUserList) {
-//	    	System.out.println(followUserList);
-//		}
 	    model.addAttribute("blocks", blockUserList);
 	    model.addAttribute("follows", followUserList);
     	model.addAttribute("loginUser",loginUser.getUser().getName());
@@ -209,9 +199,9 @@ public class UserController extends Thread{
 			//カテゴリー情報取得
 			List<Categories> categories = this.categoryService.listAll();
 			//フォロー情報取得
-	    	List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
+	    	List<Follow> followList = this.followService.listAll(user.getId());
 	    	//ブロック情報取得
-	    	List<Block> blockList = this.blockService.listAll(loginUser.getUser().getId());
+	    	List<Block> blockList = this.blockService.listAll(user.getId());
 
 			//画面に情報を渡す
             model.addAttribute("categories", categories);
@@ -269,11 +259,6 @@ public class UserController extends Thread{
             return "redirect:/users/user_edit";
         }
 
-    	//入力されたユーザー名の文字数チェック
-//       if (!userService.isValidIntroduction(user.getIntroduction())) {
-//            ra.addFlashAttribute("error_message", "自己紹介は、1文字以上300文字以内で入力してください");
-//            return "redirect:/users/user_edit";
-//        }
 
         //ユーザー情報のユーザー名重複チェック
         if (!userService.UserNamecheckUnique(user)) {

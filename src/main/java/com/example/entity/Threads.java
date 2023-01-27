@@ -38,7 +38,7 @@ public class Threads {
 	private String comment;
 
 	@Column(name = "IMAGE")
-	private String img;
+	private String image;
 
 	@Column(name = "DATE_TIME")
 	private LocalDateTime dateTime;
@@ -69,6 +69,14 @@ public class Threads {
 
 	@OneToMany(mappedBy = "threads", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Comment> commentList;
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	public Long getCommentSum() {
 		return commentSum;
@@ -106,13 +114,6 @@ public class Threads {
 		return dateTime;
 	}
 
-	public String getImg() {
-		return img;
-	}
-
-	public void setImg(String img) {
-		this.img = img;
-	}
 
 	public void setDateTime(LocalDateTime dateTime) {
 		this.dateTime = dateTime;

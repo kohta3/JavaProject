@@ -283,7 +283,6 @@ h3 {
 		margin-top:50px;
 		width: 40%;
 		text-align: center;
-		background: rgb(189,215,238);
 		box-shadow: 1px 1px 3px black;
 		border-radius: 30px;
 	}
@@ -293,7 +292,6 @@ h3 {
 		margin: auto;
 		width: 70%;
 		text-align: center;
-		background: rgb(189,215,238);
 		box-shadow: 1px 1px 3px black;
 		border-radius: 15px;
 		}

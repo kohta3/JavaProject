@@ -172,7 +172,7 @@
 							<button type="submit" name="blockId" th:value="${comment1.user.id}">ブロック解除</button>
 						</form>
 						<script th:inline="javascript">
-								var users =  /*[[${follows}]]*/;
+								var users =  /*[[${blocks}]]*/;
 								var recommend = /*[[${comment1.user.id}]]*/;
 								var loginUser = /*[[${loginUser}]]*/;
 
