@@ -209,9 +209,9 @@ public class UserController extends Thread{
 			//カテゴリー情報取得
 			List<Categories> categories = this.categoryService.listAll();
 			//フォロー情報取得
-	    	List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
+	    	List<Follow> followList = this.followService.listAll(user.getId());
 	    	//ブロック情報取得
-	    	List<Block> blockList = this.blockService.listAll(loginUser.getUser().getId());
+	    	List<Block> blockList = this.blockService.listAll(user.getId());
 
 			//画面に情報を渡す
             model.addAttribute("categories", categories);
