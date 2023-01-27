@@ -288,7 +288,7 @@ public class UserController extends Thread{
 
         //登録成功のメッセージを格納
 
- //       ra.addFlashAttribute("success_message", "ユーザー情報の編集に成功しました");
+        ra.addFlashAttribute("success_message", "ユーザー情報の編集に成功しました");
         return "redirect:/users/mypage/" + user.getId();
     }
 

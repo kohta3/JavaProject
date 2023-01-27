@@ -151,6 +151,12 @@ h3 {
 		white-space: nowrap;
 		font-size: small;
 	}
+
+	.overflow-css{
+		width:100%;
+		white-space: nowrap;
+		overflow: hidden;
+	}
 }
 
 /* ------------- とっぷページ ------------- */
@@ -221,6 +227,7 @@ h3 {
 
 .text-hidden {
 	height: 150px;
+	word-wrap: break-word;
 	overflow-y: scroll;
 }
 
@@ -458,7 +465,17 @@ input::placeholder{
 	font-size:x-small;
 }
 
+.input-text-box{
+	margin-top : 10px;
+	border: rgba(255,229,254,0.7);
+}
 
+.recommend-under-button button{
+	border: none;
+	background: aqua;
+	margin: 5px;
+	border-radius: 15px
+}
 /* ------------- 雪を降らせる ------------- */
 .snow {
   /*雪の色*/
