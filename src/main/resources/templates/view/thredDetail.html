@@ -13,10 +13,8 @@
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
-		<div class="col-md-8 m-0 p-0" th:object="${thread}">
+		<div class="col-md-8 m-0 p-0 originalBackColor" th:object="${thread}">
 		<h1><a th:href="@{/threads}">戻る</a>→<span th:text="${thread.title}"></span><span th:text="${userName}"></span></h1>
-
-
 		<div class="detail">
 			<div class="w-100">
 				<ul class="">
@@ -208,7 +206,7 @@
 												block.style.display ="block";
 											}
 											for(const unblock of unblocks){
-												unblocks.style.display ="none";
+												unblock.style.display ="none";
 											}
 										}
 										break;

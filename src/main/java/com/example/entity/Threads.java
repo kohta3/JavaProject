@@ -37,6 +37,9 @@ public class Threads {
 	@Column(name = "COMMENTS")
 	private String comment;
 
+	@Column(name = "IMAGE")
+	private String img;
+
 	@Column(name = "DATE_TIME")
 	private LocalDateTime dateTime;
 
@@ -101,6 +104,14 @@ public class Threads {
 
 	public LocalDateTime getDateTime() {
 		return dateTime;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 	public void setDateTime(LocalDateTime dateTime) {

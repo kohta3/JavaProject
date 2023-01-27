@@ -1,9 +1,10 @@
 /* ------------- 共通 ------------- */
 @import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
 
 body{
-	font-family: 'Mochiy Pop P One', sans-serif;
+	font-family: 'Hachi Maru Pop', cursive;
 	font-size: 15px;
 }
 
@@ -154,18 +155,20 @@ h3 {
 
 /* ------------- とっぷページ ------------- */
 .newAdd {
-	background-color: rgb(65, 113, 156);
+	background-color: rgb(255,133,222);
 	color: white;
 	border-radius: 50px;
 	padding: 5px 15px;
 	margin: 1px 10px;
 	transition: .5s cubic-bezier(0.45, 0, 0.55, 1);
+	border: solid white;
+
 }
 
 .newAdd:hover {
 	background-color: white;
-	color: rgb(65, 113, 156);
-	border: solid rgb(65, 113, 156);
+	color: rgb(255,133,222);
+	border: solid rgb(255,133,222);
 	transform: scale(2, 2);
 }
 
@@ -233,13 +236,12 @@ h3 {
 }
 
 .selectBox-top select{
-	background:linear-gradient(rgb(222, 235, 247),rgb(65, 113, 156));
+	background:linear-gradient(rgb(255,133,222),white);
 	border:none;
 	width: 30%;
 	border-radius: 10px;
 	transition: all 375ms ease-in-out;
-	color:white;
-	background-color: grey;
+	background-color: rgb(255,133,222);
 	text-align: center;
 
 }
@@ -393,6 +395,7 @@ input::placeholder{
 	left: 0;
 	right: 0;
 	margin: 30px auto;
+	display: none;
 }
 
 /* ------------- スレッド詳細 ------------- */

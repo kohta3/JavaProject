@@ -36,7 +36,7 @@
 				<div class="row sled-innner" th:each="thread : ${threads}">
 
 					<div class="col-md-4 sled-image">
-						<img alt="sample" th:src="@{/images/usagi.png}">
+						<img alt="sample" th:src="${thread.img}">
 					</div>
 					<div class="col-md-8 p-0">
 						<a th:href="@{threads/detail/{id}(id=${thread.id})}">
