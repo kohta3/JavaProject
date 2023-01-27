@@ -13,21 +13,22 @@
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
 	<div class="row m-0">
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
-	<div class="col-md-8 m-0 p-0">
+	<div class="col-md-8 m-0 p-0 originalBackColor">
 		<div class="mb-3 text-nowrap">
 			<h1 class="m-0" th:text="${keyword}"><a th:href="@{/}">👈戻る</a> 検索タイトル</h1>
 		</div>
 
 		<div class="sled">
 
-			<form th:action="@{/threads/threadTitle}" method="get" class="selectBox-top">
-				<select name="order" class="w-100" id="select-order" >
-					<option value="最新">最新順</option>
-					<option value="コメント数" >コメント数</option>
-				</select>
-				<input type="hidden" name="keyword" th:value="${keyword}">
-				<!--  <input type="submit" value="並べ替え"> -->
-			</form>
+			<div class="w-100 text-right mb-3">
+				<form th:action="@{/threads}" method="get" class="selectBox-top">
+					<select name="order" id="select-order">
+						<option disabled selected>並べ替え</option>
+						<option value="最新">最新順</option>
+						<option value="コメント数" >コメント数</option>
+					</select>
+				</form>
+			</div>
 
 			<div class="row sled-innner" th:each="thread : ${threads}">
 				<div class="col-md-4 sled-image">
