@@ -19,7 +19,7 @@
 		</div>
 
 		<div class="sled">
-			<div class="w-100 my-2 d-flex">
+			<div class="w-100 my-3 d-flex">
 				<div class="w-50" sec:authorize="isAuthenticated()">
 					<a th:href="@{/threads/postThred}" class="newAdd">新規すれ作成＋</a>
 				</div>
@@ -57,8 +57,8 @@
 					</div>
 					<div class="sled-info">
 						<ul class="m-0">
-							<li th:text="${thread.user.name}"></li>
-							<li th:text="${thread.commentSum}"></li>
+							<li th:text="${thread.user.name}+さん"></li>
+							<li th:text="${thread.commentSum}+コメ"></li>
 							<li th:text="${thread.dateTime}"></li>
 						</ul>
 						<ul class="m-0">
