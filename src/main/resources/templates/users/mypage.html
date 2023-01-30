@@ -25,11 +25,12 @@
 								<td th:text="${user.name}"></td>
 							</tr>
 
-							<tr>
+							<tr th:if="${user.id} == ${#authentication.principal.user.id}">
 								<td>アドレス</td>
 								<td th:text="${user.email}"></td>
 							</tr>
 						</table>
+
 						<div class="col-md-1 h-100 my-auto" th:if="${user.id} == ${#authentication.principal.user.id}">
 							<button class="btn btn-success btn-sm m-1 text-light" id="update" >更新</button>
 							<input th:each="userCategory : ${user.userCategories}" type="hidden" th:value="${userCategory.category.id}" class="userCates">
@@ -39,6 +40,7 @@
 					<!--
 						<div><a class="btn btn-success btn-sm m-1" th:if="${user.id} == ${#authentication.principal.user.id}" th:href="@{/users/edit/{id}(id=${user.id})}">編集</a></div>
 					-->
+
 					</div>
 				</div>
 

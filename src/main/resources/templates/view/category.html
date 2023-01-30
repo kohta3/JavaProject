@@ -29,7 +29,7 @@
 		<h1>アニメタイトル一覧</h1>
 			<div class="row category-page-child">
 				<div class="col-md-3" th:each="animeTitle : ${animeTitles}">
-					<div class="category-choise">
+					<div class="category-choise overflow-css">
 						<a th:href="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" th:text="${animeTitle.name}"></a>
 					</div>
 				</div>
