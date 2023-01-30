@@ -45,6 +45,11 @@ public class UserCategoriesService {
     	return userCategoriesRepository.save(userCategories);
     }
 
+    //ユーザーカテゴリの削除
+    public void deleteCategory(UserCategories userCategories) {
+    	this.userCategoriesRepository.delete(userCategories);
+    }
+
     private boolean isUserCategories(Long id, Long wantId) {
     	List<UserCategories> userCategories = this.userCategoriesRepository.findByUserId(id);
 
@@ -54,5 +59,9 @@ public class UserCategoriesService {
     		}
     	}
     	return false;
+    }
+
+    public UserCategories getUserCategory(Long userId, Long categoryId) {
+    	return this.userCategoriesRepository.findByUserIdAndCategoryId(userId, categoryId);
     }
 }
