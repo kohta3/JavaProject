@@ -20,11 +20,11 @@
 		</div>
 
 		<div class="sled">
-			<div class="w-100 my-2">
+			<div class="w-100 my-3 d-flex">
 				<div class="w-50" sec:authorize="isAuthenticated()">
 					<a th:href="@{/threads/postThred}" class="newAdd">新規すれ作成＋</a>
 				</div>
-				<div class="w-100 text-right">
+				<div class="w-50 text-right">
 					<form th:action="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" method="get" class="selectBox-top">
 						<select name="order" id="select-order" class="w-25">
 							<option disabled selected>並べ替え</option>
@@ -37,8 +37,18 @@
 
 			<div class="row sled-innner" th:each="thread : ${threads}">
 				<div class="col-md-4 sled-image">
-					<img alt="sample" th:src="@{/images/usagi.png}">
+					<img alt="sample" th:id="image+${thread.id}" >
 				</div>
+				<script th:inline="javascript">
+					var imageUrl = /*[[${thread.image}]]*/;
+
+					var source = document.getElementById('image'+/*[[${thread.id}]]*/);
+					if(imageUrl != null) {
+						imageUrl = decodeURI(imageUrl);
+					}
+
+					source.setAttribute("src", imageUrl);
+				</script>
 				<div class="col-md-8 p-0">
 					<a th:href="@{~/threads/detail/{id}(id=${thread.id})}">
 						<h2 th:text="${thread.title}"></h2>
@@ -48,8 +58,8 @@
 					</div>
 					<div class="sled-info">
 						<ul class="m-0">
-							<li th:text="${thread.user.name}"></li>
-							<li th:text="${thread.commentSum}"></li>
+							<li th:text="${thread.user.name}+さん"></li>
+							<li th:text="${thread.commentSum}+コメ"></li>
 							<li th:text="${thread.dateTime}"></li>
 						</ul>
 						<ul class="m-0">
