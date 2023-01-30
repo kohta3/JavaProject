@@ -14,8 +14,8 @@
 				</div>
 			</form>
 			<h1>タイトル</h1>
-			<li th:each="animeTitle : ${animeTitles}" class="listStyleCss">
-				<a th:href="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" th:text="${animeTitle.name}">アニメタイトル</a>
+			<li th:each="animeTitle : ${animeTitles}" class="listStyleCss overflow-css">
+				<a th:href="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" th:text="${animeTitle.name}"></a>
 			</li>
 		</div>
 	</nav>

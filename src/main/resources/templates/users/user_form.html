@@ -47,7 +47,7 @@
 				<label for="self">興味のあるジャンル</label>
 				<div class="row m-1" style="font-size: 0.2vw">
 					<div th:each="category : ${categories}" class="col-md-4 px-0 py-1 text-left">
-						<input class="ml-1" type="checkbox" name="userCategories" th:value="${category.id}" th:id="${category.name}">
+						<input class="ml-1" type="checkbox" name="userCategory" th:value="${category.id}" th:id="${category.name}">
 						<label th:for="${category.name}" th:text="${category.name}" class="h-100 m-0"></label>
 					</div>
 				</div>

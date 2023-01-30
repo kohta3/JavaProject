@@ -34,6 +34,16 @@ public class UserCategories {
 	@JoinColumn(name = "CATEGORY_ID", insertable = false, updatable = false)
 	private Categories category;
 
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == this)
+			return true;
+		if(!(obj instanceof UserCategories))
+			return false;
+		UserCategories userCategory = (UserCategories) obj;
+		return this.getCategoryId() == userCategory.getCategoryId();
+	}
+
 	public User getUser() {
 		return user;
 	}

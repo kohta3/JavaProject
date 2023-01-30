@@ -13,6 +13,7 @@
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 m-0 p-0 originalBackColor">
 			<h1 class="ml-5" th:text="${loginUser}+'さんのおすすめのユーザー'"></h1>
+			<div th:replace="fragments :: message"></div>
 			<div class="recommend row" th:each="recommendUserInfo:${recommendUser}" th:if="${recommendUserInfo.id} != ${#authentication.principal.user.id}">
 
 				<div class="col-md-2 my-auto">
@@ -20,13 +21,12 @@
 				</div>
 				<div class="d-flex col-md-5">
 					<label class="m-0 text-nowrap my-auto">ジャンル</label>
-					<ul th:each="favoritGenre:${recommendUserInfo.userCategories}">
-						<li th:text="${favoritGenre.category.name}"></li>
+					<ul>
+						<li th:each="favoritGenre:${recommendUserInfo.userCategories}"><span th:text="${favoritGenre.category.name}"></span></li>
 					</ul>
 				</div>
 				<div class="col-md-5 my-auto">
-					<input type="text" disabled="disabled" class="w-100"
-						th:value="${recommendUserInfo.introduction}">
+					<input type="text" disabled="disabled" class="w-100 originalBackColor input-text-box" th:value="${recommendUserInfo.introduction}">
 				</div>
 
 				<form th:action="@{/follows/save}" method="post" th:id="follow+${recommendUserInfo.id}">
@@ -50,6 +50,33 @@
 					<input type="hidden" name="url" >
 					<button type="submit" name="blockId" th:value="${recommendUserInfo.id}">ブロック解除</button>
 				</form>
+
+				<ul class="d-flex justify-content-end w-100 recommend-under-button">
+					<li>
+						<form th:action="@{/follows/save}" method="post" th:id="follow+${recommendUserInfo.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー</button>
+						</form>
+
+						<form th:action="@{/follows/delete}" method="post" th:id="unfollow+${recommendUserInfo.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー解除</button>
+						</form>
+					</li>
+
+
+					<li>
+						<form th:action="@{/blocks/save}" method="post" th:id="block+${recommendUserInfo.id}">
+							<input type="hidden" name="url">
+							<button type="submit" name="blockId" th:value="${recommendUserInfo.id}">ブロック</button>
+						</form>
+
+						<form th:action="@{/blocks/delete}" method="post" th:id="unblock+${recommendUserInfo.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="blockId" th:value="${recommendUserInfo.id}">ブロック解除</button>
+						</form>
+					</li>
+				</ul>
 
 				<script th:inline="javascript">
 						var users =  /*[[${follows}]]*/;
@@ -82,9 +109,7 @@
 							unfollowId.style.display="none";
 							followId.style.display ="block";
 						}
-
 				</script>
-
 			</div>
 		</div>
 		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>

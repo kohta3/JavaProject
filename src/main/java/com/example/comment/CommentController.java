@@ -70,7 +70,7 @@ public class CommentController {
 
 		//コメント削除
 		this.commentService.delete(id);
-		return "redirect:/threads";
+		return "redirect:/threads/detail/" + comment.getThreadId();
 	}
 
 	@ModelAttribute("categories")
