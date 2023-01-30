@@ -29,9 +29,6 @@
 						th:value="${recommendUserInfo.introduction}">
 				</div>
 
-
-
-
 				<form th:action="@{/follows/save}" method="post" th:id="follow+${recommendUserInfo.id}">
 
 					<input type="hidden" name="url" >
