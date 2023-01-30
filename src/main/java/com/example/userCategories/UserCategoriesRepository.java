@@ -11,4 +11,5 @@ import com.example.entity.UserCategories;
 public interface UserCategoriesRepository extends JpaRepository<UserCategories, Long> {
 	public List<UserCategories> findByUserId(Long UserId);
 	public List<UserCategories> findByCategoryId(Long CategoryId);
+	public UserCategories findByUserIdAndCategoryId(Long userId, Long categorId);
 }

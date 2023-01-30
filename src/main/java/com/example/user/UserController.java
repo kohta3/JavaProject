@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.animeTitle.AnimeTitleService;
@@ -32,7 +33,7 @@ import com.example.userCategories.UserCategoriesService;
 
 @Controller
 @RequestMapping("/users")
-public class UserController extends Thread{
+public class UserController {
 
     private final UserService userService;
     private final FollowService followService;
@@ -50,6 +51,7 @@ public class UserController extends Thread{
 		this.followService = followService;
 		this.blockService = blockService;
     }
+
 
     /**
      * 新規登録画面表示
@@ -77,7 +79,7 @@ public class UserController extends Thread{
      */
     //@Async
     @PostMapping("/save")
-    public String saveUser(User user, RedirectAttributes ra) {
+    public String saveUser(User user, RedirectAttributes ra, @RequestParam("userCategory") List<Long> userCategory) {
 
     	//入力されたメールアドレスの文字数チェック
         if (!userService.isValidEmail(user.getEmail())) {
@@ -111,13 +113,14 @@ public class UserController extends Thread{
 
         //ユーザー情報の登録
         Long userReturnId=userService.save(user).getId();
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
 
        //category情報の保存
-        if(user.getUserCategories() != null) {
-        	for (UserCategories element : user.getUserCategories()) {
+        if(userCategory != null) {
+        	for (Long element : userCategory) {
             	UserCategories userCategories = new UserCategories();
-                userCategories.setCategoryId(element.getId());
+                userCategories.setCategoryId(element);
                 userCategories.setUserId(userReturnId);
                 userCategoriesService.save(userCategories);
     		}
@@ -246,49 +249,73 @@ public class UserController extends Thread{
      * @return スレッド一覧画面
      */
     @PostMapping("/save2")
-    public String save2User(User user, RedirectAttributes ra) {
+    public String save2User(User user, RedirectAttributes ra, @RequestParam(name = "userCategories", required = false) List<Long> userCategories) {
     	//入力されたメールアドレスの文字数チェック
         if (!userService.isValidEmail(user.getEmail())) {
             ra.addFlashAttribute("error_message", "メールアドレスの文字数がオーバーしています");
-            return "redirect:/users/user_edit";
+            return "redirect:/users/mypage/" + user.getId();
         }
 
     	//入力されたユーザー名の文字数チェック
         if (!userService.isValidName(user.getName())) {
             ra.addFlashAttribute("error_message", "ユーザー名は、1文字以上100文字以内で入力してください");
-            return "redirect:/users/user_edit";
+            return "redirect:/users/mypage/" + user.getId();
         }
 
 
         //ユーザー情報のユーザー名重複チェック
         if (!userService.UserNamecheckUnique(user)) {
             ra.addFlashAttribute("error_message", "変更しようとしたユーザー名は既に使用されています。");
-            return "redirect:/users/user_edit";
+            return "redirect:/users/mypage/" + user.getId();
         }
 
         //ユーザー情報のメールアドレス重複チェック
         if (!userService.UserEmailcheckUnique(user)) {
             ra.addFlashAttribute("error_message", "変更しようとしたメールアドレスは既に使用されています。");
-            return "redirect:/users/user_edit";
+            return "redirect:/users/mypage/" + user.getId();
         }
 
         //ユーザー情報の登録
         Long userReturnId=userService.save(user).getId();
+        //登録しているユーザーカテゴリのリストの取得
+        List<UserCategories> yetUserCategories = this.userCategoriesService.findByUserId(userReturnId);
 
 
        //category情報の保存
-        if(user.getUserCategories() != null) {
-        	for (UserCategories element : user.getUserCategories()) {
-        		UserCategories userCategories = new UserCategories();
-        		userCategories.setCategoryId(element.getId());
-        		userCategories.setUserId(userReturnId);
-        		userCategoriesService.save(userCategories);
+        if(userCategories != null) {
+        	//削除処理
+        	//登録しているのに登録しようとしているユーザーカテゴリに情報がない時、削除
+        	for(UserCategories registerUser : yetUserCategories) {
+        		if(!userCategories.contains(registerUser.getCategoryId())) {
+        			//削除
+        			this.userCategoriesService.deleteCategory(registerUser);
+        		}
+        	}
+        	//登録処理
+        	for (Long element : userCategories) {
+        		//ユーザーカテゴリ情報をユーザーIDとカテゴリIDから取得
+        		UserCategories nowCategory = this.userCategoriesService.getUserCategory(userReturnId, element);
+
+        		//登録しているユーザーカテゴリの中に登録しようとしているユーザーカテゴリがない時登録
+        		if(nowCategory == null) {
+        			UserCategories userCategory = new UserCategories();
+            		userCategory.setCategoryId(element);
+            		userCategory.setUserId(userReturnId);
+            		userCategoriesService.save(userCategory);
+        		}
+        	}
+        	//userCategoriesがNULLでない時
+        } else {
+        	for(UserCategories registerUser : yetUserCategories) {
+        			//削除
+        		this.userCategoriesService.deleteCategory(registerUser);
         	}
         }
 
         //登録成功のメッセージを格納
 
         ra.addFlashAttribute("success_message", "ユーザー情報の編集に成功しました");
+
         return "redirect:/users/mypage/" + user.getId();
     }
 

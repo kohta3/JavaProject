@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.animeTitle.AnimeTitleService;
+import com.example.block.BlockService;
 import com.example.category.CategoryService;
 import com.example.entity.AnimeTitle;
+import com.example.entity.Block;
 import com.example.entity.Categories;
 import com.example.entity.Follow;
 import com.example.entity.User;
@@ -28,12 +31,14 @@ public class FollowController {
 	private final CategoryService categoryService;
 	private final AnimeTitleService animeTitleService;
 	private final UserService userService;
+	private final BlockService blockService;
 
-	public FollowController(FollowService followService, AnimeTitleService animeTitleService, CategoryService categoryService, UserService userService) {
+	public FollowController(BlockService blockService ,FollowService followService, AnimeTitleService animeTitleService, CategoryService categoryService, UserService userService) {
 		this.followService = followService;
 		this.animeTitleService = animeTitleService;
 		this.categoryService = categoryService;
 		this.userService = userService;
+		this.blockService = blockService;
 	}
 
 
@@ -60,11 +65,18 @@ public class FollowController {
 	 * @return フォロー前の画面
 	 */
 	@PostMapping("/save")
-	public String createFollow(@RequestParam("followId") Long followId ,@RequestParam("url") String url, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
-		Follow follow = new Follow();
-		follow.setUserId(loginUser.getUser().getId());
-		follow.setFollowId(followId);
-		this.followService.save(follow);
+	public String createFollow(RedirectAttributes ra, @RequestParam("followId") Long followId ,@RequestParam("url") String url, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+		//ブロック情報取得
+		Block block = this.blockService.getByUserIdAndBlockId(loginUser.getUser().getId(), followId);
+		//もしブロック情報がなければ登録
+		if(block == null) {
+			Follow follow = new Follow();
+			follow.setUserId(loginUser.getUser().getId());
+			follow.setFollowId(followId);
+			this.followService.save(follow);
+		} else {
+			ra.addFlashAttribute("error_message", "フォローする場合は、先にブロックを外してください。");
+		}
 		return "redirect:" + url;
 	}
 
