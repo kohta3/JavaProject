@@ -30,7 +30,11 @@
 								<td th:text="${user.email}"></td>
 							</tr>
 						</table>
-						<div class="col-md-1 h-100 my-auto" th:if="${user.id} == ${#authentication.principal.user.id}"><a class="btn btn-success btn-sm m-1 text-light" id="update">更新</a></div>
+						<div class="col-md-1 h-100 my-auto" th:if="${user.id} == ${#authentication.principal.user.id}">
+							<button class="btn btn-success btn-sm m-1 text-light" id="update" >更新</button>
+							<input th:each="userCategory : ${user.userCategories}" type="hidden" th:value="${userCategory.category.id}" class="userCates">
+
+						</div>
 
 					<!--
 						<div><a class="btn btn-success btn-sm m-1" th:if="${user.id} == ${#authentication.principal.user.id}" th:href="@{/users/edit/{id}(id=${user.id})}">編集</a></div>
@@ -112,13 +116,25 @@
 				</div>
 
 				<div class="form-group row">
+					<label class="col-md-2">自己紹介</label>
+					<div class="col-sm-10">
+						<textarea name="self" id="self" placeholder="自己紹介を入力してください"
+							th:field="*{introduction}"></textarea>
+					</div>
+				</div>
+
+				<div class="form-group row">
 					<label class="col-md-2 mx-0 my-auto">興味のある<br>ジャンル</label>
 					<ul class="col-md-10 d-flex flex-wrap row">
 						<li th:each="category : ${categories}" class="text-nowrap listStyleCss col-md-4">
-							<input class="m-1" type="checkbox" name="userCategories" th:value="${category.id}" th:checked="${false}" th:id="${category.name}">
+							<input class="m-1" type="checkbox" name="userCategories" th:value="${category.id}" th:checked="${false}" th:id="category+${category.id}">
 							<label class="m-1" th:for="${category.name}" th:text="${category.name}"></label>
+
 						</li>
+
 					</ul>
+
+
 				</div>
 
 				<div class="btn-toolbar">
@@ -134,5 +150,6 @@
 		</div>
 	</div>
 	<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
+
 </body>
 </html>

@@ -13,6 +13,7 @@
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 m-0 p-0 originalBackColor">
 			<h1 class="ml-5" th:text="${loginUser}+'さんのおすすめのユーザー'"></h1>
+			<div th:replace="fragments :: message"></div>
 			<div class="recommend row" th:each="recommendUserInfo:${recommendUser}" th:if="${recommendUserInfo.id} != ${#authentication.principal.user.id}">
 
 				<div class="col-md-2 my-auto">

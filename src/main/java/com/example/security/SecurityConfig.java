@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/categories").permitAll()//カテゴリー一覧画面
                 .antMatchers("/threads/threadsCategory/{id}").permitAll()//カテゴリー一覧>カテゴリー>スレッド
                 .antMatchers("/threads/threadsAnimeTitle/{id}").permitAll()//カテゴリー一覧>アニメタイトル>スレッド
+                .antMatchers("/threads/threadTitle").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin()
