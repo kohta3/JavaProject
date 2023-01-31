@@ -99,9 +99,12 @@ public class ThreadController {
 			List<Long> followUserList = this.followService.listUserId(loginUser.getUser().getId());
 			//ブロックリスト取得
 			List<Long> blockUserList = this.blockService.listUserId(loginUser.getUser().getId());
+			//フォローされている人のリスト
+			List<Long> passiveFollowList = this.followService.passiveFollowUserId(loginUser.getUser().getId());
 
 			model.addAttribute("follows", followUserList);
 			model.addAttribute("blocks", blockUserList);
+			model.addAttribute("passiveFollowers", passiveFollowList);
 			model.addAttribute("loginUser", loginUser.getUser().getId());
 		}
 		//スレッド詳細画面にタイムリーフで変数を送信

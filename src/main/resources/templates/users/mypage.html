@@ -71,16 +71,24 @@
 				<div class="row mypage-thredCell">
 					<div class="col-md-6">
 						<h3>フォロー</h3>
-						<ul class="w-100 list-unstyled change-Font" th:each="follow : ${follows}">
-							<li th:text="${follow.follower.name}"></li>
-						</ul>
+						<div class="w-100 list-unstyled change-Font d-flex" th:each="follow : ${follows}">
+							<a th:href="@{/users/mypage/{userId}(userId=${follow.follower.id})}" th:text="${follow.follower.name}"></a>
+							<form th:action="@{/follows/delete}" method="post" th:id="unfollow+${follow.follower.id}">
+								<input type="hidden" name="url" >
+								<button type="submit" name="followId" th:value="${follow.follower.id}">フォロー解除</button>
+							</form>
+						</div>
 					</div>
 
 					<div class="col-md-6">
 						<h3>ブロック</h3>
-						<ul class="w-100 list-unstyled change-Font" th:each="block : ${blocks}">
-							<li th:text="${block.blockUser.name}"></li>
-						</ul>
+						<div class="w-100 list-unstyled change-Font d-flex" th:each="block : ${blocks}">
+							<a th:href="@{/users/mypage/{userId}(userId=${block.blockUser.id})}" th:text="${block.blockUser.name}"></a>
+							<form th:action="@{/blocks/delete}" method="post" th:id="unblock+${block.blockUser.id}">
+								<input type="hidden" name="url" >
+								<button type="submit" name="blockId" th:value="${block.blockUser.id}">ブロック解除</button>
+							</form>
+						</div>
 					</div>
 				</div>
 
@@ -131,12 +139,8 @@
 						<li th:each="category : ${categories}" class="text-nowrap listStyleCss col-md-4">
 							<input class="m-1" type="checkbox" name="userCategories" th:value="${category.id}" th:checked="${false}" th:id="category+${category.id}">
 							<label class="m-1" th:for="${category.name}" th:text="${category.name}"></label>
-
 						</li>
-
 					</ul>
-
-
 				</div>
 
 				<div class="btn-toolbar">
@@ -152,6 +156,14 @@
 		</div>
 	</div>
 	<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
+	<script>
+		var url = document.getElementsByName('url');
+		var a = location.pathname;
+		console.log(url);
+		url.forEach(function(e) {
+			e.setAttribute("value", a);
+		})
+	</script>
 
 </body>
 </html>

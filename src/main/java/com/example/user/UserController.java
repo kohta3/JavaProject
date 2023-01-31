@@ -126,7 +126,6 @@ public class UserController {
     		}
         }
 
-
         //登録成功のメッセージを格納
         ra.addFlashAttribute("success_message", "ユーザーの新規登録に成功しました");
         return "redirect:/loginForm";
@@ -166,8 +165,12 @@ public class UserController {
 	    //htmlに渡すブロックリスト
 	    List<Long> blockUserList = this.blockService.listUserId(loginUser.getUser().getId());
 
+	    //htmlに渡すフォローされている人のリスト
+	    List<Long> passiveFollowList = this.followService.passiveFollowUserId(loginUser.getUser().getId());
+
 	    model.addAttribute("blocks", blockUserList);
 	    model.addAttribute("follows", followUserList);
+	    model.addAttribute("passiveFollows", passiveFollowList);
     	model.addAttribute("loginUser",loginUser.getUser().getName());
 		model.addAttribute("recommendUser",recommendUsers);
 
