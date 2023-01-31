@@ -1,5 +1,6 @@
 package com.example.thread;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.FirebaseService;
 import com.example.animeTitle.AnimeTitleService;
 import com.example.block.BlockService;
 import com.example.category.CategoryService;
@@ -38,16 +41,18 @@ public class ThreadController {
 	private AnimeTitleService animeTitleService;
 	private FollowService followService;
 	private BlockService blockService;
+	private FirebaseService firebaseService;
 	private UserCategoriesService userCategoryService;
 
 	@Autowired
-	public ThreadController(UserCategoriesService userCategoryService, BlockService blockService,FollowService followService,ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService) {
+	public ThreadController(UserCategoriesService userCategoryService, BlockService blockService,FollowService followService,ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService,FirebaseService firebaseService) {
 		this.threadService = threadService;
 		this.categoryService = categoryService;
 		this.animeTitleService = animeTitleService;
 		this.commentService = commentService;
 		this.followService = followService;
 		this.blockService = blockService;
+		this.firebaseService =firebaseService;
 		this.userCategoryService = userCategoryService;
 	}
 
@@ -175,9 +180,20 @@ public class ThreadController {
 	 * @param 新規スレッド情報 threads
 	 * @return view/threadDetail
 	 *@RequestParam("animeTitle") String animeTitle
+	 * @throws IOException
 	 */
 	@PostMapping("/postThred")
-	public String createThread(NewThreadForm threadsForm, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+	public String createThread(NewThreadForm threadsForm, @AuthenticationPrincipal A2ChannelUserDetails loginUser, @RequestParam(name="upload_file") MultipartFile multipartFile){
+		//画像の登録
+		String filePath = null;
+		if(multipartFile!=null) {
+			try {
+				filePath = firebaseService.uploadFile(multipartFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		//アニメIDの取得,登録
 		String animeTitle = threadsForm.getAnimeTitle();
 		Threads threads = threadsForm.getThreads();
@@ -188,6 +204,7 @@ public class ThreadController {
 		threads.setUserId(loginUser.getUser().getId());
 		threads.setCommentSum(1L);
 		threads.setDateTime(LocalDateTime.now());
+		threads.setImage(filePath);
 
 		//スレッドの登録
 		this.threadService.save(threads);
