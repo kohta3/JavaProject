@@ -204,6 +204,36 @@ public class ThreadController {
 		return "view/thredTitle";
 	}
 
+	/**
+	 * スレッド削除
+	 * @return redirectスレッド一覧画面
+	 * @param model
+	 * @param thread_id
+	 */
+	@GetMapping("/delete/{threadId}")
+	public String deleteThread(@PathVariable Long threadId, Model model) {
+		//コメント情報のリスト
+		List<Comment> comments = this.commentService.commentMatchingTheThread(threadId);
+		//コメント削除
+		for(Comment comment : comments) {
+			this.commentService.delete(comment.getId());
+		}
+
+		//スレッド情報取得
+		Threads thread = this.threadService.get(threadId);
+		//スレッドに紐づくアニメタイトル取得
+		Long anime = thread.getAnimeId();
+		//スレッド削除
+		this.threadService.deleteThread(thread);
+
+		//アニメタイトル削除
+		List<Threads> threadsByanimeTitle = this.animeTitleService.findById(anime).getThreadList();
+		if(threadsByanimeTitle.size() == 0) {
+			this.animeTitleService.delete(this.animeTitleService.findById(anime));
+		}
+		return "redirect:/threads";
+	}
+
 	@GetMapping("/thredDetail")
 	public String threDetail() {
 		return "view/thredDetail";

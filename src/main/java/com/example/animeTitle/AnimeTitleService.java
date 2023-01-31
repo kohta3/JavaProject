@@ -62,4 +62,11 @@ public class AnimeTitleService {
 		return this.animeTitleRepository.save(animeTitle);
 	}
 
+	/*
+	 * アニメタイトル削除
+	 */
+	public void delete(AnimeTitle animeTitle) {
+		this.animeTitleRepository.delete(animeTitle);
+	}
+
 }
