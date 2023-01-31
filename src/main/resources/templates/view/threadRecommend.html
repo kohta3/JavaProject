@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}"
+>
+<head>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-トップ</title>
+<link />
+</head>
+<body>
+	<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<div class="row m-0">
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
+		<div class="col-md-8 m-0 p-0 originalBackColor">
+			<div class="mb-3">
+				<h1 class="m-0 pl-3">トップ</h1>
+				<div class="w-100 h-100 d-flex mt-3">
+					<div class="w-50" sec:authorize="isAuthenticated()">
+						<a th:href="@{/threads/postThred}" class="newAdd">新規すれ作成＋</a>
+					</div>
+					<div class="w-50 text-right">
+						<form th:action="@{/threads/recommend}" method="get" class="selectBox-top">
+							<select name="order" id="select-order">
+								<option disabled selected>並べ替え</option>
+								<option value="最新">最新順</option>
+								<option value="コメント数" >コメント数</option>
+							</select>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="sled">
+
+				<div class="row sled-innner" th:each="thread : ${threads}">
+
+					<div class="col-md-4 sled-image">
+				 		<img alt="sample" th:id="image+${thread.id}" >
+					</div>
+
+					<script th:inline="javascript">
+						var imageUrl = /*[[${thread.image}]]*/;
+
+						var source = document.getElementById('image'+/*[[${thread.id}]]*/);
+						if(imageUrl != null) {
+							imageUrl = decodeURI(imageUrl);
+						}
+
+						source.setAttribute("src", imageUrl);
+					</script>
+
+					<div class="col-md-8 p-0">
+						<a th:href="@{/threads/detail/{id}(id=${thread.id})}">
+							<h2 th:text="${thread.title}"></h2>
+						</a>
+						<div class="text-hidden">
+							<h3 th:text="${thread.comment}"></h3>
+						</div>
+						<div class="sled-info">
+							<ul class="m-0">
+								<li th:text="${thread.user.name}+さん"></li>
+								<li th:text="${thread.commentSum}+コメ"></li>
+								<li th:text="${thread.dateTime}"></li>
+							</ul>
+							<ul class="m-0">
+								<li class="text-info" th:text="${thread.category.name}"></li>
+								<li class="text-" th:text="${thread.animeTitle.name}"></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
+	</div>
+
+</body>
+</html>

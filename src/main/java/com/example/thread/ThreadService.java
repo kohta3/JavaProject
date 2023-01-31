@@ -73,6 +73,13 @@ public class ThreadService {
 	}
 
 	/**
+	 * スレッド削除
+	 */
+	public void deleteThread(Threads thread) {
+		this.threadRepository.delete(thread);
+	}
+
+	/**
 	 * スレッドタイトル部分一致検索
 	 *
 	 */

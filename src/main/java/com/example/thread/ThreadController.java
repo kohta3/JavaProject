@@ -2,6 +2,7 @@ package com.example.thread;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,10 @@ import com.example.entity.AnimeTitle;
 import com.example.entity.Categories;
 import com.example.entity.Comment;
 import com.example.entity.Threads;
+import com.example.entity.UserCategories;
 import com.example.follow.FollowService;
 import com.example.security.A2ChannelUserDetails;
+import com.example.userCategories.UserCategoriesService;
 
 @Controller
 @RequestMapping("/threads")
@@ -39,9 +42,10 @@ public class ThreadController {
 	private FollowService followService;
 	private BlockService blockService;
 	private FirebaseService firebaseService;
+	private UserCategoriesService userCategoryService;
 
 	@Autowired
-	public ThreadController(BlockService blockService,FollowService followService,ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService,FirebaseService firebaseService) {
+	public ThreadController(UserCategoriesService userCategoryService, BlockService blockService,FollowService followService,ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService,FirebaseService firebaseService) {
 		this.threadService = threadService;
 		this.categoryService = categoryService;
 		this.animeTitleService = animeTitleService;
@@ -49,6 +53,7 @@ public class ThreadController {
 		this.followService = followService;
 		this.blockService = blockService;
 		this.firebaseService =firebaseService;
+		this.userCategoryService = userCategoryService;
 	}
 
 	//左サイドバーにカテゴリ情報を送る
@@ -83,6 +88,33 @@ public class ThreadController {
 
 
 		return "view/toppage";
+	}
+
+	/**
+	 * おすすめスレッド表示機能
+	 * @param
+	 * @return toppage
+	 *
+	 */
+	@GetMapping("recommend")
+	public String recommendThreads(Model model,@RequestParam(required = false) String order ,@AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+		//スレッド全件取得
+		List<Threads> threads = this.threadService.listAll(order);
+		//ログイン情報から登録しているユーザーカテゴリ情報取得
+		List<UserCategories> userCategories = this.userCategoryService.findByUserId(loginUser.getUser().getId());
+		//登録しているユーザーカテゴリ情報から、該当のスレッドを抽出
+		List<Threads> reccommendThreads = new ArrayList<Threads>();
+		//ユーザーカテゴリ情報で回す
+		for(UserCategories usercategory : userCategories) {
+			for(Threads thread : threads) {
+				if(thread.getCategoryId() == usercategory.getCategoryId()) {
+					reccommendThreads.add(thread);
+				}
+			}
+		}
+		model.addAttribute("threads", reccommendThreads);
+
+		return "view/threadRecommend";
 	}
 
 	//スレッド詳細表示
@@ -219,6 +251,38 @@ public class ThreadController {
 		model.addAttribute("threads", threads);
 		model.addAttribute("keyword", keyword);
 		return "view/thredTitle";
+	}
+
+
+
+	/**
+	 * スレッド削除
+	 * @return redirectスレッド一覧画面
+	 * @param model
+	 * @param thread_id
+	 */
+	@GetMapping("/delete/{threadId}")
+	public String deleteThread(@PathVariable Long threadId, Model model) {
+		//コメント情報のリスト
+		List<Comment> comments = this.commentService.commentMatchingTheThread(threadId);
+		//コメント削除
+		for(Comment comment : comments) {
+			this.commentService.delete(comment.getId());
+		}
+
+		//スレッド情報取得
+		Threads thread = this.threadService.get(threadId);
+		//スレッドに紐づくアニメタイトル取得
+		Long anime = thread.getAnimeId();
+		//スレッド削除
+		this.threadService.deleteThread(thread);
+
+		//アニメタイトル削除
+		List<Threads> threadsByanimeTitle = this.animeTitleService.findById(anime).getThreadList();
+		if(threadsByanimeTitle.size() == 0) {
+			this.animeTitleService.delete(this.animeTitleService.findById(anime));
+		}
+		return "redirect:/threads";
 	}
 
 	@GetMapping("/thredDetail")
