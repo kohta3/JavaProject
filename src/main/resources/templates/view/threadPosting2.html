@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}">
+<head>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-トップ</title>
+<link />
+</head>
+<body>
+	<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<div class="row m-0">
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
+
+		<div class="col-md-8 m-0 p-0 originalBackColor">
+			<div class="text-nowrap">
+				<a href=""></a>
+				<h1>新規スレ</h1>
+				<span th:text="${loginUser.name}"></span>
+			</div>
+
+			<div class="thredPosting">
+
+				<form th:action="@{/threads/postThred}" method="post" th:object="${threadsForm}">
+					<input type="hidden" th:value="${loginUser.id}">
+					<div class="w-75 mx-auto my-3">
+						<input type="text"  placeholder="スレタイトル"	required="required" class="w-100" th:field="*{threads.title}">
+					</div>
+
+					<div class="w-75 mx-auto mb-3">
+						<textarea name="ThredAbout" placeholder="1つ目のスレッド内容" required="required" class="w-100" th:field="*{threads.comment}"></textarea>
+					</div>
+
+					<div class="w-75 row mx-auto mb-3">
+					<!-- わからない箇所 -->
+						<div class="col-md-6 m-0 text-left">
+							<label class="w-100">カテゴリー</label>
+							<select th:field="*{threads.categoryId}"  required="required" class="w-100">
+								<option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+							</select>
+						</div>
+					<!-- ここまで -->
+						<div class="col-md-6 mb-3 text-left">
+							<label for="animeTitle" class="w-100">アニメタイトル</label>
+							<input type="text" th:field=*{animeTitle} class="w-100" required="required" >
+						</div>
+
+					</div>
+
+					<button class="btn-design">スレ投稿</button>
+				</form>
+			</div>
+		</div>
+
+		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
+	</div>
+
+</body>
+</html>

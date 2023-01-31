@@ -8,6 +8,16 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+  developmentOnly
+  runtimeClasspath {
+        extendsFrom developmentOnly
+}
+}
+
 repositories {
 	mavenCentral()
 }
@@ -17,7 +27,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.named('test') {

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}">
+<head>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-おすすめユーザー</title>
+<link />
+</head>
+<body>
+	<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<div class="row m-0">
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
+		<div class="col-md-8 m-0 p-0 originalBackColor">
+			<h1 class="ml-5" th:text="${loginUser}+'さんのおすすめのユーザー'"></h1>
+			<div th:replace="fragments :: message"></div>
+			<div class="recommend row" th:each="recommendUserInfo:${recommendUser}" th:if="${recommendUserInfo.id} != ${#authentication.principal.user.id}">
+
+				<div class="col-md-2 my-auto">
+					<a th:href="@{/users/mypage/{userId}(userId=${recommendUserInfo.id})}" th:text="${recommendUserInfo.name}"></a>
+				</div>
+				<div class="d-flex col-md-5">
+					<label class="m-0 text-nowrap my-auto">ジャンル</label>
+					<ul>
+						<li th:each="favoritGenre:${recommendUserInfo.userCategories}"><span th:text="${favoritGenre.category.name}"></span></li>
+					</ul>
+				</div>
+				<div class="col-md-5 my-auto">
+					<input type="text" disabled="disabled" class="w-100 originalBackColor input-text-box" th:value="${recommendUserInfo.introduction}">
+				</div>
+
+				<ul class="d-flex justify-content-end w-100 recommend-under-button">
+					<li>
+						<form th:action="@{/follows/save}" method="post" th:id="follow+${recommendUserInfo.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー</button>
+						</form>
+
+						<form th:action="@{/follows/delete}" method="post" th:id="unfollow+${recommendUserInfo.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー解除</button>
+						</form>
+					</li>
+
+
+					<li>
+						<form th:action="@{/blocks/save}" method="post" th:id="block+${recommendUserInfo.id}">
+							<input type="hidden" name="url">
+							<button type="submit" name="blockId" th:value="${recommendUserInfo.id}">ブロック</button>
+						</form>
+
+						<form th:action="@{/blocks/delete}" method="post" th:id="unblock+${recommendUserInfo.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="blockId" th:value="${recommendUserInfo.id}">ブロック解除</button>
+						</form>
+					</li>
+				</ul>
+				<script th:inline="javascript">
+						var users =  /*[[${follows}]]*/;
+						var recommend = /*[[${recommendUserInfo.id}]]*/;
+
+						var followId = document.getElementById('follow'+/*[[${recommendUserInfo.id}]]*/);
+						var unfollowId = document.getElementById('unfollow'+/*[[${recommendUserInfo.id}]]*/);
+
+						if(users.includes(recommend)){
+							followId.style.display ="none";
+							unfollowId.style.display ="block";
+						}else{
+							unfollowId.style.display="none";
+							followId.style.display ="block";
+						}
+
+				</script>
+
+				<script th:inline="javascript">
+						var users =  /*[[${blocks}]]*/;
+						var recommend = /*[[${recommendUserInfo.id}]]*/;
+
+						var followId = document.getElementById('block'+/*[[${recommendUserInfo.id}]]*/);
+						var unfollowId = document.getElementById('unblock'+/*[[${recommendUserInfo.id}]]*/);
+
+						if(users.includes(recommend)){
+							followId.style.display ="none";
+							unfollowId.style.display ="block";
+						}else{
+							unfollowId.style.display="none";
+							followId.style.display ="block";
+						}
+				</script>
+			</div>
+		</div>
+		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
+	</div>
+	<script >
+		var url = document.getElementsByName('url');
+		var a = location.pathname;
+		console.log(url);
+		url.forEach(function(e) {
+			e.setAttribute("value", a);
+		});
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}"
+>
+<head>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-トップ</title>
+<link />
+</head>
+<body>
+	<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<div class="row m-0">
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
+		<div class="col-md-8 m-0 p-0">
+			<div class="mb-3">
+				<h1 class="m-0">トップ</h1>
+				<div class="w-100 text-right">
+					<a th:href="@{/postThred}" class="newAdd">新規すれ作成＋</a>
+				</div>
+			</div>
+
+			<div class="sled">
+				<div class="row sled-innner" th:each="user : ${users}">
+					<div th:text="${user.name}"></div>
+					<form th:action="@{/follows/save}" method="post" >
+						<button type="submit"  name="followId" th:value="${user.id}">フォロー</button>
+					</form>
+
+
+
+
+				</div>
+			</div>
+		</div>
+
+		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
+	</div>
+</body>
+</html>

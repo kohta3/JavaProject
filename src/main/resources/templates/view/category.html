@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}">
+<head>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-トップ</title>
+<link />
+</head>
+<body>
+	<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<div class="row m-0">
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
+		<div class="col-md-8 category-page originalBackColor">
+		<h1>カテゴリー一覧</h1>
+			<div class="row category-page-child">
+				<div class="col-md-3" th:each="category : ${categories}">
+					<div class="category-choise">
+						<a th:href="@{/threads/threadsCategory/{categoryId}(categoryId=${category.id})}" th:text="${category.name}"></a>
+					</div>
+				</div>
+			</div>
+			<div sec:authorize="isAnonymous()">
+
+			</div>
+
+
+
+		<h1>アニメタイトル一覧</h1>
+			<div class="row category-page-child">
+				<div class="col-md-3" th:each="animeTitle : ${animeTitles}">
+					<div class="category-choise overflow-css">
+						<a th:href="@{/threads/threadsAnimeTitle/{animeTitleId}(animeTitleId=${animeTitle.id})}" th:text="${animeTitle.name}"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
+	</div>
+
+</body>
+</html>

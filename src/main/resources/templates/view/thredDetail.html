@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}"
+>
+<head>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-スレ</title>
+<link />
+</head>
+<body>
+	<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<div class="row m-0">
+		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
+		<div class="col-md-8 m-0 p-0 originalBackColor" th:object="${thread}">
+		<h1><a th:href="@{/threads}">戻る</a>→<span th:text="${thread.title}"></span><span th:text="${userName}"></span></h1>
+		<div th:replace="fragments :: message"></div>
+		<div class="detail">
+			<div class="w-100">
+				<ul class="">
+					<li th:text="${#temporals.format(thread.dateTime, 'yyyy/MM/dd HH:mm:ss')}">日付</li>
+					<li th:text="${thread.user.name}">ユーザー名</li>
+
+
+
+					<li>
+						<form th:action="@{/follows/save}" method="post" th:id="follow+${thread.user.id}">
+							<input type="hidden" name="url">
+							<button type="submit" name="followId" th:value="${thread.user.id}">フォロー</button>
+						</form>
+
+						<form th:action="@{/follows/delete}" method="post" th:id="unfollow+${thread.user.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="followId" th:value="${thread.user.id}">フォロー解除</button>
+						</form>
+					</li>
+
+					<li>
+						<form th:action="@{/blocks/save}" method="post" th:id="block+${thread.user.id}">
+							<input type="hidden" name="url">
+							<button type="submit" name="blockId" th:value="${thread.user.id}">ブロック</button>
+						</form>
+
+						<form th:action="@{/blocks/delete}" method="post" th:id="unblock+${thread.user.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="blockId" th:value="${thread.user.id}">ブロック解除</button>
+						</form>
+					</li>
+					</ul>
+
+			 		<script th:inline="javascript">
+						var users =  /*[[${follows}]]*/;
+						var recommend = /*[[${thread.user.id}]]*/;
+						var loginUser = /*[[${loginUser}]]*/;
+
+						var followId = document.getElementById('follow'+/*[[${thread.user.id}]]*/);
+						var unfollowId = document.getElementById('unfollow'+/*[[${thread.user.id}]]*/);
+
+						unfollowId.style.display = "none";
+
+
+						if(users.includes(recommend)){
+							followId.style.display ="none";
+							unfollowId.style.display ="block";
+						}else{
+							unfollowId.style.display="none";
+							followId.style.display ="block";
+						}
+
+						if(recommend == loginUser) {
+							unfollowId.style.display="none";
+							followId.style.display ="none";
+						}
+					</script>
+
+					<script th:inline="javascript">
+						var users =  /*[[${blocks}]]*/;
+						var recommend = /*[[${thread.user.id}]]*/;
+						var loginUser = /*[[${loginUser}]]*/;
+
+						var followId = document.getElementById('block'+/*[[${thread.user.id}]]*/);
+						var unfollowId = document.getElementById('unblock'+/*[[${thread.user.id}]]*/);
+
+						unfollowId.style.display = "none";
+
+						if(users.includes(recommend)){
+							followId.style.display ="none";
+							unfollowId.style.display ="block";
+						}else{
+							unfollowId.style.display="none";
+							followId.style.display ="block";
+						}
+
+						if(recommend == loginUser) {
+							unfollowId.style.display="none";
+							followId.style.display ="none";
+						}
+
+					</script>
+
+
+				<p th:text="'1.'+ ${thread.comment}"></p>
+			</div>
+		</div>
+		<div class="comment">
+			<div class="w-100" th:each="comment1 : ${comments}">
+				<ul class="mr-1">
+					<li th:text="${#temporals.format(comment1.dateTime, 'yyyy/MM/dd HH:mm:ss')}"></li>
+					<li th:text="${comment1.user.name}">ユーザー名</li>
+
+					<li th:class="followBlock+${comment1.user.id}">
+						<form th:action="@{/follows/save}" method="post" th:class="followComment+${comment1.user.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="followId" th:value="${comment1.user.id}">フォロー</button>
+						</form>
+						<form th:action="@{/follows/delete}" method="post" th:class="unfollowComment+${comment1.user.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="followId" th:value="${comment1.user.id}">フォロー解除</button>
+						</form>
+						<script th:inline="javascript">
+								var users =  /*[[${follows}]]*/;
+								var recommend = /*[[${comment1.user.id}]]*/;
+								var loginUser = /*[[${loginUser}]]*/;
+
+								var liBlocks = document.getElementsByClassName('followBlock'+/*[[${comment1.user.id}]]*/);
+								var follows = document.getElementsByClassName('followComment'+/*[[${comment1.user.id}]]*/);
+								var unfollows = document.getElementsByClassName('unfollowComment'+/*[[${comment1.user.id}]]*/);
+
+								switch(loginUser){
+									case null:
+										for(const liBlock of liBlocks){
+											liBlock.style.display ="none";
+										}
+										break;
+
+									case recommend:
+										for(const liBlock of liBlocks){
+											liBlock.style.display ="none";
+										}
+										break;
+
+									default:
+										if(users.includes(recommend)){
+											for(const follow of follows){
+												follow.style.display ="none";
+											}
+											for(const unfollow of unfollows){
+												unfollow.style.display ="block";
+											}
+										}else{
+											for(const follow of follows){
+												console.log("follow.style.display =block");
+												follow.style.display ="block";
+											}
+											for(const unfollow of unfollows){
+												console.log("unfollow.style.display =none");
+												unfollow.style.display ="none";
+											}
+										}
+										break;
+								}
+						</script>
+					</li>
+
+			 		<li th:class="blockBlock+${comment1.user.id}">
+						<form th:action="@{/blocks/save}" method="post" th:class="blockComment+${comment1.user.id}">
+							<input type="hidden" name="url">
+							<button type="submit" name="blockId" th:value="${comment1.user.id}">ブロック</button>
+						</form>
+						<form th:action="@{/blocks/delete}" method="post" th:class="unblockComment+${comment1.user.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="blockId" th:value="${comment1.user.id}">ブロック解除</button>
+						</form>
+						<script th:inline="javascript">
+								var users =  /*[[${blocks}]]*/;
+								var recommend = /*[[${comment1.user.id}]]*/;
+								var loginUser = /*[[${loginUser}]]*/;
+
+								var liBlocks = document.getElementsByClassName('blockBlock'+/*[[${comment1.user.id}]]*/);
+								var blocks = document.getElementsByClassName('blockComment'+/*[[${comment1.user.id}]]*/);
+								var unblocks = document.getElementsByClassName('unblockComment'+/*[[${comment1.user.id}]]*/);
+
+								switch(loginUser){
+									case null:
+										for(const liBlock of liBlocks){
+											liBlock.style.display ="none";
+										}
+										break;
+
+									case recommend:
+										for(const liBlock of liBlocks){
+											liBlock.style.display ="none";
+										}
+										break;
+
+									default:
+										if(users.includes(recommend)){
+											for(const block of blocks){
+												block.style.display ="none";
+											}
+											for(const unblock of unblocks){
+												unblock.style.display ="block";
+											}
+										}else{
+											for(const block of blocks){
+												block.style.display ="block";
+											}
+											for(const unblock of unblocks){
+												unblock.style.display ="none";
+											}
+										}
+										break;
+								}
+						</script>
+					</li>
+				</ul>
+
+				<p class="my-1" th:text="${comment1.content}"></p>
+
+				<a sec:authorize="isAuthenticated()" th:if="${comment1.user.id} == ${#authentication.principal.user.id}" th:href="@{/comment/delete/{id}(id=${comment1.id})}">削除</a>
+			</div>
+		</div>
+		<div class="w-75 mx-auto mt-3">
+			<form th:action="@{/comment/create}" method="post" th:object="${comment}">
+				<input type="hidden" name="_csrf" value="33c7b13f-f3e2-44de-b0b1-eadb5e6ffbdb">
+				<input type="hidden" name="threadId" th:value="${thread.id}">
+				<label for="thredComment">コメント</label>
+				<input type="text" id="thredComment" class="w-50" th:field="*{content}" required="required">
+				<button>送信</button>
+			</form>
+		</div>
+	</div>
+	<div th:replace="~{layout/rightSidebar :: rightSidebar(${animeTitles})}"></div>
+	</div>
+	<script>
+		var url = document.getElementsByName('url');
+		var a = location.pathname;
+		console.log(url);
+		url.forEach(function(e) {
+			e.setAttribute("value", a);
+		})
+	</script>
+
+
+</body>
+
+</html>

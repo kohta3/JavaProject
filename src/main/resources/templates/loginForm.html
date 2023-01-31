@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}"
+>
+<head>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる-ログイン</title>
+<link />
+</head>
+<body>
+<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<h1 class="ml-5">ログイン</h1>
+	<div th:replace="fragments :: message"></div>
+	<div class="login-form originalBackColor">
+		<div class="login-form-child p-3">
+			<form th:action="@{/login}" method="post">
+				<div th:if="${param.error}">
+    				<p class="text-danger">メールアドレスかパスワードが正しくありません</p>
+    			</div>
+    			<div th:if="${param.logout}">
+    				<p class="text-warning">ログアウトしました</p>
+    			</div>
+				<div class="w-100">
+					<label for="email" class="small w-25 text-center">メールアドレス</label>
+					<input type="email" id="email" name="email" placeholder="メールアドレスを入力してください" required="required">
+				</div>
+				<div class="w-100">
+					<label for="password" class="small w-25 text-center">パスワード</label>
+					<input type="password" id="password" name="password" placeholder="パスワードを入力してください" required="required">
+				</div>
+				<div class='text-center'>
+					<input type="submit" value="ログイン" class="btn-design">
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript" th:src="@{/js/componentNone.js}"></script>
+</body>
+</html>
