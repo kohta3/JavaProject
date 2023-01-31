@@ -1,6 +1,7 @@
 package com.example.thread;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,10 @@ import com.example.entity.AnimeTitle;
 import com.example.entity.Categories;
 import com.example.entity.Comment;
 import com.example.entity.Threads;
+import com.example.entity.UserCategories;
 import com.example.follow.FollowService;
 import com.example.security.A2ChannelUserDetails;
+import com.example.userCategories.UserCategoriesService;
 
 @Controller
 @RequestMapping("/threads")
@@ -35,15 +38,17 @@ public class ThreadController {
 	private AnimeTitleService animeTitleService;
 	private FollowService followService;
 	private BlockService blockService;
+	private UserCategoriesService userCategoryService;
 
 	@Autowired
-	public ThreadController(BlockService blockService,FollowService followService,ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService) {
+	public ThreadController(UserCategoriesService userCategoryService, BlockService blockService,FollowService followService,ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService) {
 		this.threadService = threadService;
 		this.categoryService = categoryService;
 		this.animeTitleService = animeTitleService;
 		this.commentService = commentService;
 		this.followService = followService;
 		this.blockService = blockService;
+		this.userCategoryService = userCategoryService;
 	}
 
 	//左サイドバーにカテゴリ情報を送る
@@ -78,6 +83,33 @@ public class ThreadController {
 
 
 		return "view/toppage";
+	}
+
+	/**
+	 * おすすめスレッド表示機能
+	 * @param
+	 * @return toppage
+	 *
+	 */
+	@GetMapping("recommend")
+	public String recommendThreads(Model model,@RequestParam(required = false) String order ,@AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+		//スレッド全件取得
+		List<Threads> threads = this.threadService.listAll(order);
+		//ログイン情報から登録しているユーザーカテゴリ情報取得
+		List<UserCategories> userCategories = this.userCategoryService.findByUserId(loginUser.getUser().getId());
+		//登録しているユーザーカテゴリ情報から、該当のスレッドを抽出
+		List<Threads> reccommendThreads = new ArrayList<Threads>();
+		//ユーザーカテゴリ情報で回す
+		for(UserCategories usercategory : userCategories) {
+			for(Threads thread : threads) {
+				if(thread.getCategoryId() == usercategory.getCategoryId()) {
+					reccommendThreads.add(thread);
+				}
+			}
+		}
+		model.addAttribute("threads", reccommendThreads);
+
+		return "view/threadRecommend";
 	}
 
 	//スレッド詳細表示
@@ -203,6 +235,8 @@ public class ThreadController {
 		model.addAttribute("keyword", keyword);
 		return "view/thredTitle";
 	}
+
+
 
 	/**
 	 * スレッド削除
