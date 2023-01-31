@@ -37,6 +37,19 @@ public class FollowService {
 		return listNum;
 	}
 
+	/**
+	 * フォローされているユーザーIDのリストを取得
+	 * @param follow
+	 */
+	public List<Long> passiveFollowUserId(Long userId) {
+		List<Follow> followList = this.followRepository.findByFollowId(userId);
+		List<Long> listNum = new ArrayList<Long>();
+		for(Follow follow : followList) {
+			listNum.add(follow.getUserId());
+		}
+		return listNum;
+	}
+
 	/*
 	 * フォローユーザー登録
 	 */

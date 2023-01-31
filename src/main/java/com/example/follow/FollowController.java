@@ -67,16 +67,24 @@ public class FollowController {
 	@PostMapping("/save")
 	public String createFollow(RedirectAttributes ra, @RequestParam("followId") Long followId ,@RequestParam("url") String url, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 		//ブロック情報取得
-		Block block = this.blockService.getByUserIdAndBlockId(loginUser.getUser().getId(), followId);
-		//もしブロック情報がなければ登録
-		if(block == null) {
-			Follow follow = new Follow();
-			follow.setUserId(loginUser.getUser().getId());
-			follow.setFollowId(followId);
-			this.followService.save(follow);
-		} else {
+		Block activeBlock = this.blockService.getByUserIdAndBlockId(loginUser.getUser().getId(), followId);
+		Block passiveBlock = this.blockService.getByUserIdAndBlockId(followId, loginUser.getUser().getId());
+		//もし自分からのブロック情報があったら登録できない
+		if(activeBlock != null) {
 			ra.addFlashAttribute("error_message", "フォローする場合は、先にブロックを外してください。");
+			return "redirect:" + url;
 		}
+		//もし相手からのブロック情報があったら登録できない
+		if(passiveBlock != null) {
+			ra.addFlashAttribute("error_message", "現在フォローできません");
+			return "redirect:" + url;
+		}
+		//フォロー情報登録実行
+		Follow follow = new Follow();
+		follow.setUserId(loginUser.getUser().getId());
+		follow.setFollowId(followId);
+		this.followService.save(follow);
+
 		return "redirect:" + url;
 	}
 
