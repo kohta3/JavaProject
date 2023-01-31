@@ -153,14 +153,13 @@ public class ThreadController {
 	@PostMapping("/postThred")
 	public String createThread(NewThreadForm threadsForm, @AuthenticationPrincipal A2ChannelUserDetails loginUser, @RequestParam(name="upload_file") MultipartFile multipartFile){
 		//画像の登録
-		System.out.println("testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest");
-		System.out.println(multipartFile);
-		System.out.println("testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest");
 		String filePath = null;
-		try {
-			filePath = firebaseService.uploadFile(multipartFile);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(multipartFile!=null) {
+			try {
+				filePath = firebaseService.uploadFile(multipartFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		//アニメIDの取得,登録
@@ -173,7 +172,7 @@ public class ThreadController {
 		threads.setUserId(loginUser.getUser().getId());
 		threads.setCommentSum(1L);
 		threads.setDateTime(LocalDateTime.now());
-//		threads.setImage(filePath);
+		threads.setImage(filePath);
 
 		//スレッドの登録
 		this.threadService.save(threads);

@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +23,6 @@ import com.google.cloud.storage.StorageOptions;
 @Service
 public class FirebaseService {
     public String uploadFile(MultipartFile multipartFile) throws IOException {
-
         String objectName = generateFileName(multipartFile);
         FileInputStream serviceAccount = new FileInputStream("src/main/resources/static/a2channel-64fed-firebase-adminsdk-ctt3t-a79808c88e.json");
         File file = convertMultiPartToFile(multipartFile);
@@ -30,15 +31,12 @@ public class FirebaseService {
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).setProjectId("a2channel-64fed").build().getService();
         BlobId blobId = BlobId.of("a2channel-64fed.appspot.com", objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
+        System.out.println(storage.create(blobInfo, Files.readAllBytes(filePath)));
+        URL url = storage.signUrl(blobInfo, 5, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature());
+        System.out.println(url);
+        System.out.println("tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
 
-        storage.create(blobInfo, Files.readAllBytes(filePath));
-        System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-        System.out.println(filePath);
-        System.out.println(storage);
-        System.out.println(blobInfo);
-        System.out.println(objectName);
-
-        return "gs://a2channel-64fed.appspot.com"+	objectName;
+        return url.toString();
     }
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
