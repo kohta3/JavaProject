@@ -126,7 +126,6 @@ public class UserController {
     		}
         }
 
-
         //登録成功のメッセージを格納
         ra.addFlashAttribute("success_message", "ユーザーの新規登録に成功しました");
         return "redirect:/loginForm";
