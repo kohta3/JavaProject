@@ -10,7 +10,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,11 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-<<<<<<< HEAD
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-=======
 import org.springframework.web.multipart.MultipartFile;
->>>>>>> e810220f1e02152e32840b3c3afd07d08ee11093
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.FirebaseService;
 import com.example.animeTitle.AnimeTitleService;
@@ -213,38 +209,24 @@ public class ThreadController {
 		threads.setDateTime(LocalDateTime.now());
 		threads.setImage(filePath);
 
-		if(result.hasErrors()) {
-			//正しい値が入力されているか
-			List<String> errorList = new ArrayList<String>();
-			//すべてのエラーをリストに追加する。
-			for(ObjectError error : result.getAllErrors()) {
-				errorList.add(error.getDefaultMessage());
-			}
-			//エラーをすべて画面に送る。
-			ra.addFlashAttribute("validationError", errorList);
-			return "redirect:/threads/postThred";
-		}
+		//入力されたスレッドタイトルの文字数チェック
+        if (!threadService.isValidTitle(threads.getTitle())) {
+            ra.addFlashAttribute("error_message", "スレッドタイトルは1文字以上50文字以内で入力してください");
+            return "redirect:/threads/postThred";
+        }
 
-//		//入力されたスレッドタイトルの文字数チェック
-//        if (!threadService.isValidTitle(threads.getTitle())) {
-//            ra.addFlashAttribute("error_message", "スレッドタイトルは1文字以上50文字以内で入力してください");
-//            return "redirect:/threads/postThred";
-//        }
-//
-//		//入力された１コメの文字数チェック
-//        if (!threadService.isValidComments(threads.getComment())) {
-//            ra.addFlashAttribute("error_message", "１コメ目は1文字以上600文字以内で入力してください");
-//            return "redirect:/threads/postThred";
-//        }
-//
-//		//入力されたアニメタイトルの文字数チェック
-//        System.out.println(animeTitle);
-//        if (!animeTitleService.isValidAnimeTitle(animeTitle)) {
-//            ra.addFlashAttribute("error_message", "アニメタイトルは1文字以上100文字以内で入力してください");
-//            return "redirect:/threads/postThred";
-//        }
+		//入力された１コメの文字数チェック
+        if (!threadService.isValidComments(threads.getComment())) {
+            ra.addFlashAttribute("error_message", "１コメ目は1文字以上600文字以内で入力してください");
+            return "redirect:/threads/postThred";
+        }
 
+        //入力されたアニメタイトルが空文字ではないかをチェック
+        if(animeTitle.equals(" ")) {
+            ra.addFlashAttribute("error_message", "アニメタイトルを入力してください");
+            return "redirect:/threads/postThred";
 
+        }
 
 		//スレッドの登録
 		this.threadService.save(threads);
