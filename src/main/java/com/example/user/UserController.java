@@ -212,6 +212,14 @@ public class UserController {
 	    	List<Block> blockList = this.blockService.listAll(user.getId());
 	    	//おすすめアニメ情報取得
 	    	Set<AnimeTitle> recommendAnime = this.recommendAnime(user);
+	    	//ログイン情報からフォローされているユーザーID情報取得(Long)
+	    	List<Long> numfollowers = this.followService.passiveFollowUserId(loginUser.getUser().getId());
+	    	//ログイン情報からフォロー情報の取得
+	    	List<Long> numFollows = this.followService.listUserId(loginUser.getUser().getId());
+	    	//ログイン情報からブロック情報を取得
+	    	List<Long> numBlocks = this.blockService.listUserId(loginUser.getUser().getId());
+	    	//フォロワーさんの中でまだフォローしていない人のユーザー情報取得
+	    	List<User> followers = this.followService.followBackwait(loginUser.getUser().getId());
 
 			//画面に情報を渡す
             model.addAttribute("categories", categories);
@@ -219,6 +227,10 @@ public class UserController {
 			model.addAttribute("blocks", blockList);
 	    	model.addAttribute("user", user);
 	    	model.addAttribute("recommendAnimes", recommendAnime);
+	    	model.addAttribute("numFollows", numFollows);
+	    	model.addAttribute("numFollowers", numfollowers);
+	    	model.addAttribute("numBlocks", numBlocks);
+	    	model.addAttribute("followers", followers);
 	    	return "users/mypage";
 		} catch (NotFoundException e) {
 			e.printStackTrace();
