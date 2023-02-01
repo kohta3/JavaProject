@@ -6,6 +6,7 @@
 body{
 	font-family: 'Hachi Maru Pop', cursive;
 	font-size: 15px;
+	min-height: 100vh;
 }
 
 h1 {
@@ -54,6 +55,10 @@ h3 {
 
 form{
 	font-family: 'Zen Antique', serif;
+}
+
+datalist{
+	background:linear-gradient(to right bottom ,rgb(255,229,254),10% ,rgb(229,253,255));
 }
 
 /* ------------- ヘッダー ------------- */
