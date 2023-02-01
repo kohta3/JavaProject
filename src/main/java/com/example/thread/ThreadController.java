@@ -162,7 +162,6 @@ public class ThreadController {
 	@GetMapping("/postThred")
 	public String showNewThred(Model model, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 		//新しいスレッド情報
-//		Threads threads = new Threads();
 		NewThreadForm threadsForm = new NewThreadForm();
 		//カテゴリ情報取得
 		List<Categories> categories = this.categoryService.listAll();
@@ -201,7 +200,6 @@ public class ThreadController {
 		Threads threads = threadsForm.getThreads();
 		Long animeId = this.animeTitleService.searchId(animeTitle, threads.getCategoryId());
 
-
 		//スレッドの中のアニメIDの登録
 		threads.setAnimeId(animeId);
 		threads.setUserId(loginUser.getUser().getId());
@@ -214,13 +212,11 @@ public class ThreadController {
             ra.addFlashAttribute("error_message", "スレッドタイトルは1文字以上50文字以内で入力してください");
             return "redirect:/threads/postThred";
         }
-
 		//入力された１コメの文字数チェック
         if (!threadService.isValidComments(threads.getComment())) {
             ra.addFlashAttribute("error_message", "１コメ目は1文字以上600文字以内で入力してください");
             return "redirect:/threads/postThred";
         }
-
         //入力されたアニメタイトルが空文字ではないかをチェック
         if(animeTitle.equals(" ")) {
             ra.addFlashAttribute("error_message", "アニメタイトルを入力してください");
@@ -274,8 +270,6 @@ public class ThreadController {
 		model.addAttribute("keyword", keyword);
 		return "view/thredTitle";
 	}
-
-
 
 	/**
 	 * スレッド削除
