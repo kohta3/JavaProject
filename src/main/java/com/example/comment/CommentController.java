@@ -2,17 +2,22 @@ package com.example.comment;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.animeTitle.AnimeTitleService;
@@ -44,10 +49,24 @@ public class CommentController {
 	}
 
 	@PostMapping("/create")
-	public String createComment(Comment comment,@AuthenticationPrincipal A2ChannelUserDetails loginUser, UriComponentsBuilder builder) {
+	public String createComment(@Validated Comment comment, BindingResult result, RedirectAttributes ra, @AuthenticationPrincipal A2ChannelUserDetails loginUser, UriComponentsBuilder builder) {
 
 		comment.setDateTime(LocalDateTime.now());
 		comment.setUserId(loginUser.getUser().getId());
+
+		if(result.hasErrors()) {
+			//正しい値が入力されているか
+			List<String> errorList = new ArrayList<String>();
+			//TODO 以下確認用コードは削除する
+			for(ObjectError error : result.getAllErrors()) {
+				errorList.add(error.getDefaultMessage());
+			}
+			if(comment.getId() == null) {
+				ra.addFlashAttribute("validationError", errorList);
+				return "redirect:/threads/detail/" + comment.getThreadId();
+			}
+		}
+
 		this.commentService.save(comment);
 
 		//スレッドのコメント数更新

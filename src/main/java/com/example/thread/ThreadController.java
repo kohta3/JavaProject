@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.FirebaseService;
 import com.example.animeTitle.AnimeTitleService;
@@ -81,11 +84,8 @@ public class ThreadController {
 		//スレッド一覧を取得
 		List<Threads> threads = this.threadService.listAll(order);
 
-		//
 		//取得したスレッド情報を画面に渡す
 		model.addAttribute("threads", threads);
-
-
 
 		return "view/toppage";
 	}
@@ -162,7 +162,6 @@ public class ThreadController {
 	@GetMapping("/postThred")
 	public String showNewThred(Model model, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 		//新しいスレッド情報
-//		Threads threads = new Threads();
 		NewThreadForm threadsForm = new NewThreadForm();
 		//カテゴリ情報取得
 		List<Categories> categories = this.categoryService.listAll();
@@ -184,7 +183,7 @@ public class ThreadController {
 	 * @throws IOException
 	 */
 	@PostMapping("/postThred")
-	public String createThread(NewThreadForm threadsForm, @AuthenticationPrincipal A2ChannelUserDetails loginUser, @RequestParam(name="upload_file") MultipartFile multipartFile){
+	public String createThread(@Validated NewThreadForm threadsForm, BindingResult result, RedirectAttributes ra, @AuthenticationPrincipal A2ChannelUserDetails loginUser, @RequestParam(name="upload_file") MultipartFile multipartFile){
 		//画像の登録
 		String filePath = null;
 		if(multipartFile!=null) {
@@ -196,7 +195,8 @@ public class ThreadController {
 		}
 
 		//アニメIDの取得,登録
-		String animeTitle = threadsForm.getAnimeTitle();
+		String animeTitle = threadsForm.getAnimeTitle().getName();
+		System.out.println(animeTitle);
 		Threads threads = threadsForm.getThreads();
 		Long animeId = this.animeTitleService.searchId(animeTitle, threads.getCategoryId());
 
@@ -206,6 +206,23 @@ public class ThreadController {
 		threads.setCommentSum(1L);
 		threads.setDateTime(LocalDateTime.now());
 		threads.setImage(filePath);
+
+		//入力されたスレッドタイトルの文字数チェック
+        if (!threadService.isValidTitle(threads.getTitle())) {
+            ra.addFlashAttribute("error_message", "スレッドタイトルは1文字以上50文字以内で入力してください");
+            return "redirect:/threads/postThred";
+        }
+		//入力された１コメの文字数チェック
+        if (!threadService.isValidComments(threads.getComment())) {
+            ra.addFlashAttribute("error_message", "１コメ目は1文字以上600文字以内で入力してください");
+            return "redirect:/threads/postThred";
+        }
+        //入力されたアニメタイトルが空文字ではないかをチェック
+        if(animeTitle.equals(" ")) {
+            ra.addFlashAttribute("error_message", "アニメタイトルを入力してください");
+            return "redirect:/threads/postThred";
+
+        }
 
 		//スレッドの登録
 		this.threadService.save(threads);
@@ -253,8 +270,6 @@ public class ThreadController {
 		model.addAttribute("keyword", keyword);
 		return "view/thredTitle";
 	}
-
-
 
 	/**
 	 * スレッド削除

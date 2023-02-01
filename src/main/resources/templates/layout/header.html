@@ -12,8 +12,9 @@
 					<li><a th:href="@{/threads}">トップ</a></li>
 					<li><a th:href="@{/categories}">カテゴリー</a></li>
 					<li><a th:href="@{/users/recommend}">おすすめのユーザー</a></li>
-					<li><a th:href="@{/threads/recommend}">おすすめのスレッド</a>
-					<li>問い合わせ</li>
+					<li><a th:href="@{/chats}">チャット</a></li>
+					<li><a th:href="@{/threads/recommend}">おすすめのスレッド</a></li>
+
 				</ul>
 				<div class="col-md-6 account-form" sec:authorize="isAnonymous()">
 					<a th:href="@{/users/new}">新規登録</a>
