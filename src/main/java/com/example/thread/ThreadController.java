@@ -112,6 +112,7 @@ public class ThreadController {
 				}
 			}
 		}
+		reccommendThreads = this.threadService.order(order, reccommendThreads);
 		model.addAttribute("threads", reccommendThreads);
 
 		return "view/threadRecommend";
