@@ -17,6 +17,12 @@
 				<a href=""></a>
 				<h1>新規スレ</h1>
 				<span th:text="${loginUser.name}"></span>
+				<div th:replace="fragments :: message"></div>
+				<table>
+			        <tr th:if="${validationError}" th:each="error : ${validationError}">
+			            <td style="color: red;" th:text="${error}"></td>
+			        </tr>
+			    </table>
 			</div>
 
 			<div class="thredPosting">
@@ -45,6 +51,7 @@
 							<input type="text" th:field=*{animeTitle} class="w-100" required="required" autocapitalize="off" onkeyup="searchTitle(this.value)" list="example">
 							<datalist id="example">
 							</datalist>
+							<input type="text" th:field=*{animeTitle.name} class="w-100" required="required">
 						</div>
 
 					</div>
