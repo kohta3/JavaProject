@@ -1,5 +1,6 @@
 package com.example.thread;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +18,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+<<<<<<< HEAD
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+=======
+import org.springframework.web.multipart.MultipartFile;
+>>>>>>> e810220f1e02152e32840b3c3afd07d08ee11093
 
+import com.example.FirebaseService;
 import com.example.animeTitle.AnimeTitleService;
 import com.example.block.BlockService;
 import com.example.category.CategoryService;
@@ -27,8 +33,10 @@ import com.example.entity.AnimeTitle;
 import com.example.entity.Categories;
 import com.example.entity.Comment;
 import com.example.entity.Threads;
+import com.example.entity.UserCategories;
 import com.example.follow.FollowService;
 import com.example.security.A2ChannelUserDetails;
+import com.example.userCategories.UserCategoriesService;
 
 @Controller
 @RequestMapping("/threads")
@@ -40,15 +48,19 @@ public class ThreadController {
 	private AnimeTitleService animeTitleService;
 	private FollowService followService;
 	private BlockService blockService;
+	private FirebaseService firebaseService;
+	private UserCategoriesService userCategoryService;
 
 	@Autowired
-	public ThreadController(BlockService blockService,FollowService followService,ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService) {
+	public ThreadController(UserCategoriesService userCategoryService, BlockService blockService,FollowService followService,ThreadService threadService, CategoryService categoryService, AnimeTitleService animeTitleService ,CommentService commentService,FirebaseService firebaseService) {
 		this.threadService = threadService;
 		this.categoryService = categoryService;
 		this.animeTitleService = animeTitleService;
 		this.commentService = commentService;
 		this.followService = followService;
 		this.blockService = blockService;
+		this.firebaseService =firebaseService;
+		this.userCategoryService = userCategoryService;
 	}
 
 	//左サイドバーにカテゴリ情報を送る
@@ -82,6 +94,34 @@ public class ThreadController {
 		return "view/toppage";
 	}
 
+	/**
+	 * おすすめスレッド表示機能
+	 * @param
+	 * @return toppage
+	 *
+	 */
+	@GetMapping("recommend")
+	public String recommendThreads(Model model,@RequestParam(required = false) String order ,@AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+		//スレッド全件取得
+		List<Threads> threads = this.threadService.listAll(order);
+		//ログイン情報から登録しているユーザーカテゴリ情報取得
+		List<UserCategories> userCategories = this.userCategoryService.findByUserId(loginUser.getUser().getId());
+		//登録しているユーザーカテゴリ情報から、該当のスレッドを抽出
+		List<Threads> reccommendThreads = new ArrayList<Threads>();
+		//ユーザーカテゴリ情報で回す
+		for(UserCategories usercategory : userCategories) {
+			for(Threads thread : threads) {
+				if(thread.getCategoryId() == usercategory.getCategoryId()) {
+					reccommendThreads.add(thread);
+				}
+			}
+		}
+		reccommendThreads = this.threadService.order(order, reccommendThreads);
+		model.addAttribute("threads", reccommendThreads);
+
+		return "view/threadRecommend";
+	}
+
 	//スレッド詳細表示
 	@GetMapping("/detail/{id}")
 	public String detailThreads(@PathVariable(name = "id") Long id, Model model, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
@@ -96,9 +136,12 @@ public class ThreadController {
 			List<Long> followUserList = this.followService.listUserId(loginUser.getUser().getId());
 			//ブロックリスト取得
 			List<Long> blockUserList = this.blockService.listUserId(loginUser.getUser().getId());
+			//フォローされている人のリスト
+			List<Long> passiveFollowList = this.followService.passiveFollowUserId(loginUser.getUser().getId());
 
 			model.addAttribute("follows", followUserList);
 			model.addAttribute("blocks", blockUserList);
+			model.addAttribute("passiveFollowers", passiveFollowList);
 			model.addAttribute("loginUser", loginUser.getUser().getId());
 		}
 		//スレッド詳細画面にタイムリーフで変数を送信
@@ -142,10 +185,19 @@ public class ThreadController {
 	 * @param 新規スレッド情報 threads
 	 * @return view/threadDetail
 	 *@RequestParam("animeTitle") String animeTitle
+	 * @throws IOException
 	 */
 	@PostMapping("/postThred")
-	public String createThread(@Validated  NewThreadForm threadsForm, BindingResult result, @AuthenticationPrincipal A2ChannelUserDetails loginUser, RedirectAttributes ra) {
-
+	public String createThread(@Validated NewThreadForm threadsForm, BindingResult result, RedirectAttributes ra, @AuthenticationPrincipal A2ChannelUserDetails loginUser, @RequestParam(name="upload_file") MultipartFile multipartFile){
+		//画像の登録
+		String filePath = null;
+		if(multipartFile!=null) {
+			try {
+				filePath = firebaseService.uploadFile(multipartFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		//アニメIDの取得,登録
 		String animeTitle = threadsForm.getAnimeTitle().getName();
@@ -159,6 +211,7 @@ public class ThreadController {
 		threads.setUserId(loginUser.getUser().getId());
 		threads.setCommentSum(1L);
 		threads.setDateTime(LocalDateTime.now());
+		threads.setImage(filePath);
 
 		if(result.hasErrors()) {
 			//正しい値が入力されているか
@@ -238,6 +291,38 @@ public class ThreadController {
 		model.addAttribute("threads", threads);
 		model.addAttribute("keyword", keyword);
 		return "view/thredTitle";
+	}
+
+
+
+	/**
+	 * スレッド削除
+	 * @return redirectスレッド一覧画面
+	 * @param model
+	 * @param thread_id
+	 */
+	@GetMapping("/delete/{threadId}")
+	public String deleteThread(@PathVariable Long threadId, Model model) {
+		//コメント情報のリスト
+		List<Comment> comments = this.commentService.commentMatchingTheThread(threadId);
+		//コメント削除
+		for(Comment comment : comments) {
+			this.commentService.delete(comment.getId());
+		}
+
+		//スレッド情報取得
+		Threads thread = this.threadService.get(threadId);
+		//スレッドに紐づくアニメタイトル取得
+		Long anime = thread.getAnimeId();
+		//スレッド削除
+		this.threadService.deleteThread(thread);
+
+		//アニメタイトル削除
+		List<Threads> threadsByanimeTitle = this.animeTitleService.findById(anime).getThreadList();
+		if(threadsByanimeTitle.size() == 0) {
+			this.animeTitleService.delete(this.animeTitleService.findById(anime));
+		}
+		return "redirect:/threads";
 	}
 
 	@GetMapping("/thredDetail")

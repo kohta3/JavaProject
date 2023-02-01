@@ -1,5 +1,6 @@
 package com.example.thread;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -30,9 +31,30 @@ public class ThreadService {
 			if(order.equals("コメント数")) {
 				return orderByComment(allThreads);
 			}
+			//ランダムに並べ替える場合
+			if(order.equals("ランダム")) {
+				return orderByRandom(allThreads);
+			}
 		}
 		 //そのほかの場合
 		return allThreads;
+	}
+
+	/**
+	 * 並べ替え機能
+	 */
+	public List<Threads> order(String order, List<Threads> threads) {
+
+		if(order != null) {
+			if(order.equals("コメント数")) {
+				return this.orderByComment(threads);
+			}
+			if(order.equals("ランダム")) {
+				return this.orderByRandom(threads);
+			}
+		}
+
+		return this.orderByDateTime(threads);
 	}
 
 	/**
@@ -48,6 +70,10 @@ public class ThreadService {
 			// コメント数で並べ替える場合
 			if(order.equals("コメント数")) {
 				return orderByComment(categoryThreads);
+			}
+			//ランダムに並べ替える場合
+			if(order.equals("ランダム")) {
+				return orderByRandom(categoryThreads);
 			}
 		}
 		//そのほかの場合
@@ -67,9 +93,20 @@ public class ThreadService {
 			if(order.equals("コメント数")) {
 				return orderByComment(animeTitleThreads);
 			}
+			//ランダムに並べ替える場合
+			if(order.equals("ランダム")) {
+				return orderByRandom(animeTitleThreads);
+			}
 		}
 		//そのほかの場合
 		return animeTitleThreads;
+	}
+
+	/**
+	 * スレッド削除
+	 */
+	public void deleteThread(Threads thread) {
+		this.threadRepository.delete(thread);
 	}
 
 	/**
@@ -85,6 +122,10 @@ public class ThreadService {
 			// コメント数で並べ替える場合
 			if(order.equals("コメント数")) {
 				return orderByComment(searchThreads);
+			}
+			//ランダムに並べ替える場合
+			if(order.equals("ランダム")) {
+				return orderByRandom(searchThreads);
 			}
 		}
 		//そのほかの場合
@@ -111,11 +152,21 @@ public class ThreadService {
 
 	/**
 	 * 日時で並べ替え降順
-	 * @param id
+	 * @param List<threads>
 	 * @return
 	 */
 	private List<Threads> orderByDateTime(List<Threads> threadList) {
 		threadList.sort(Comparator.comparing(Threads::getDateTime).reversed());
+		return threadList;
+	}
+
+	/**
+	 * ランダムに並べ替え
+	 * @param List<threads>
+	 * @return ランダムにしたスレッド情報のリスト
+	 */
+	private List<Threads> orderByRandom(List<Threads> threadList) {
+		Collections.shuffle(threadList);
 		return threadList;
 	}
 

@@ -14,7 +14,11 @@
 	<div class="row m-0">
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 m-0 p-0 originalBackColor" th:object="${thread}">
-		<h1><a th:href="@{/threads}">戻る</a>→<span th:text="${thread.title}"></span><span th:text="${userName}"></span></h1>
+		<h1><a href="javascript:history.back()">戻る</a>→<span th:text="${thread.title}"></span><span th:text="${userName}"></span></h1>
+		<div sec:authorize="isAuthenticated()">
+			<a th:if="${thread.userId} == ${#authentication.principal.user.id}" th:href="@{/threads/delete/{threadId}(threadId=${thread.id})}">このスレッドの削除</a>
+		</div>
+
 		<div th:replace="fragments :: message"></div>
 		<table>
 	        <tr th:if="${validationError}" th:each="error : ${validationError}">
@@ -30,6 +34,11 @@
 						<form th:action="@{/follows/save}" method="post" th:id="follow+${thread.user.id}">
 							<input type="hidden" name="url">
 							<button type="submit" name="followId" th:value="${thread.user.id}">フォロー</button>
+						</form>
+
+						<form th:action="@{/follows/save}" method="post" th:id="follower+${thread.user.id}">
+							<input type="hidden" name="url">
+							<button type="submit" name="followId" th:value="${thread.user.id}">フォローバック</button>
 						</form>
 
 						<form th:action="@{/follows/delete}" method="post" th:id="unfollow+${thread.user.id}">
@@ -55,24 +64,36 @@
 						var users =  /*[[${follows}]]*/;
 						var recommend = /*[[${thread.user.id}]]*/;
 						var loginUser = /*[[${loginUser}]]*/;
+						var followers = /*[[${passiveFollowers}]]*/;
 
 						var followId = document.getElementById('follow'+/*[[${thread.user.id}]]*/);
 						var unfollowId = document.getElementById('unfollow'+/*[[${thread.user.id}]]*/);
-
+						var followerId = document.getElementById('follower' + /*[[${thread.user.id}]]*/);
 						unfollowId.style.display = "none";
+						followerId.style.display = "none";
 
 
 						if(users.includes(recommend)){
 							followId.style.display ="none";
+							followerId.style.display = "none";
 							unfollowId.style.display ="block";
 						}else{
 							unfollowId.style.display="none";
-							followId.style.display ="block";
+							if(followers.includes(recommend)) {
+								followId.style.display ="none";
+								followerId.style.display ="block";
+							} else {
+								followId.style.display ="block";
+								followerId.style.display ="none";
+							}
+
 						}
 
 						if(recommend == loginUser) {
 							unfollowId.style.display="none";
 							followId.style.display ="none";
+							followerId.style.display ="none";
+
 						}
 					</script>
 
@@ -116,6 +137,10 @@
 							<input type="hidden" name="url" >
 							<button type="submit" name="followId" th:value="${comment1.user.id}">フォロー</button>
 						</form>
+						<form th:action="@{/follows/save}" method="post" th:class="followerComment+${comment1.user.id}">
+							<input type="hidden" name="url" >
+							<button type="submit" name="followId" th:value="${comment1.user.id}">フォローバック</button>
+						</form>
 						<form th:action="@{/follows/delete}" method="post" th:class="unfollowComment+${comment1.user.id}">
 							<input type="hidden" name="url" >
 							<button type="submit" name="followId" th:value="${comment1.user.id}">フォロー解除</button>
@@ -124,11 +149,14 @@
 								var users =  /*[[${follows}]]*/;
 								var recommend = /*[[${comment1.user.id}]]*/;
 								var loginUser = /*[[${loginUser}]]*/;
+								var followers = /*[[${passiveFollows}]]*/;
 
 								var liBlocks = document.getElementsByClassName('followBlock'+/*[[${comment1.user.id}]]*/);
 								var follows = document.getElementsByClassName('followComment'+/*[[${comment1.user.id}]]*/);
 								var unfollows = document.getElementsByClassName('unfollowComment'+/*[[${comment1.user.id}]]*/);
+								var followerIds = document.getElementsByClassName('followerComment'+/*[[${comment1.user.id}]]*/);
 
+								console.log(followerIds);
 								switch(loginUser){
 									case null:
 										for(const liBlock of liBlocks){
@@ -147,18 +175,52 @@
 											for(const follow of follows){
 												follow.style.display ="none";
 											}
+											for(const follower of followerIds) {
+												follower.style.display = "none";
+											}
 											for(const unfollow of unfollows){
 												unfollow.style.display ="block";
 											}
 										}else{
-											for(const follow of follows){
-												console.log("follow.style.display =block");
-												follow.style.display ="block";
+											if(followers == null) {
+												for(const follow of follows){
+													follow.style.display ="block";
+												}
+												for(const follower of followerIds) {
+													follower.style.display = "none";
+												}
+												for(const unfollow of unfollows){
+													unfollow.style.display ="none";
+												}
 											}
-											for(const unfollow of unfollows){
-												console.log("unfollow.style.display =none");
-												unfollow.style.display ="none";
+											else {
+												if(followers.includes(recommend)) {
+													for(const follow of follows){
+														console.log("follow.style.display =block");
+														follow.style.display ="none";
+													}
+													for(const follower of followerIds) {
+														follower.style.display = "block";
+													}
+													for(const unfollow of unfollows){
+														console.log("unfollow.style.display =none");
+														unfollow.style.display ="none";
+													}
+												}else {
+													for(const follow of follows){
+														console.log("follow.style.display =block");
+														follow.style.display ="block";
+													}
+													for(const follower of followerIds) {
+														follower.style.display = "none";
+													}
+													for(const unfollow of unfollows){
+														console.log("unfollow.style.display =none");
+														unfollow.style.display ="none";
+													}
+												}
 											}
+
 										}
 										break;
 								}

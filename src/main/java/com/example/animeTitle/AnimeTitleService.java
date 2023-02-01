@@ -44,7 +44,7 @@ public class AnimeTitleService {
 		if(word == null) {
 			return 0L;
 		}
-		
+
 		AnimeTitle animeTitle = this.animeTitleRepository.findByName(word);
 
 		//アニメタイトルがない場合
@@ -80,5 +80,11 @@ public class AnimeTitleService {
         return true;
     }
 
+	/*
+	 * アニメタイトル削除
+	 */
+	public void delete(AnimeTitle animeTitle) {
+		this.animeTitleRepository.delete(animeTitle);
+	}
 
 }
