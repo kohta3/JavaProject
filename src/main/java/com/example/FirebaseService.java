@@ -33,8 +33,6 @@ public class FirebaseService {
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
         System.out.println(storage.create(blobInfo, Files.readAllBytes(filePath)));
         URL url = storage.signUrl(blobInfo, 5, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature());
-        System.out.println(url);
-        System.out.println("tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
 
         return url.toString();
     }
