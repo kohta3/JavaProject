@@ -335,6 +335,20 @@ input::placeholder{
 	border-radius: 30px;
 }
 
+#threadPostImg{
+	width:30%;
+	aspect-ratio: 6 / 5;
+	text-align: center;
+	border:2px solid rgb(220,220,220);
+	margin-right: 20px
+}
+
+#threadPostImg img{
+	width:100%;
+	aspect-ratio: 6 / 5;
+	object-fit: contain;
+}
+
 
 /* ------------- マイページ ------------- */
 
