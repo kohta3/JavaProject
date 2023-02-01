@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Follow;
+import com.example.entity.User;
 
 @Service
 public class FollowService {
@@ -38,7 +39,7 @@ public class FollowService {
 	}
 
 	/**
-	 * フォローされているユーザーIDのリストを取得
+	 * フォローワーさんのユーザーIDのリストを取得
 	 * @param follow
 	 */
 	public List<Long> passiveFollowUserId(Long userId) {
@@ -48,6 +49,34 @@ public class FollowService {
 			listNum.add(follow.getUserId());
 		}
 		return listNum;
+	}
+
+	/**
+	 * フォローワーさんのユーザー情報のリストを取得
+	 * @param follow
+	 */
+	public List<User> followers(Long userId) {
+		List<Follow> followList = this.followRepository.findByFollowId(userId);
+		List<User> followUsers = new ArrayList<>();
+		for(Follow follow : followList) {
+			followUsers.add(follow.getUser());
+		}
+		return followUsers;
+	}
+
+	/**
+	 * フォローワーさんでまだフォロバしてない人のユーザー情報のリストを取得
+	 * @param follow
+	 */
+	public List<User> followBackwait(Long userId) {
+		List<User> followersNotFollow = new ArrayList<>();
+		List<Follow> followList = this.followRepository.findByFollowId(userId);
+		for(Follow follow : followList) {
+			if(!this.isFollowExist(userId, follow.getUserId())) {
+				followersNotFollow.add(follow.getUser());
+			}
+		}
+		return followersNotFollow;
 	}
 
 	/*

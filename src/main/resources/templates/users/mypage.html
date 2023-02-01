@@ -34,8 +34,83 @@
 						<div class="col-md-1 h-100 my-auto" th:if="${user.id} == ${#authentication.principal.user.id}">
 							<button class="btn btn-success btn-sm m-1 text-light" id="update" >更新</button>
 							<input th:each="userCategory : ${user.userCategories}" type="hidden" th:value="${userCategory.category.id}" class="userCates">
-
 						</div>
+
+					<ul class="d-flex justify-content-end w-100 recommend-under-button" style="list-style: none;" th:if="${user.id} != ${#authentication.principal.user.id}">
+						<li>
+							<form th:action="@{/follows/save}" method="post" th:id="follow+${user.id}">
+								<input type="hidden" name="url" >
+								<button type="submit" name="followId" th:value="${user.id}">フォロー</button>
+							</form>
+
+							<form th:action="@{/follows/save}" method="post" th:id="followback+${user.id}">
+								<input type="hidden" name="url" >
+								<button type="submit" name="followId" th:value="${user.id}">フォロバ</button>
+							</form>
+
+							<form th:action="@{/follows/delete}" method="post" th:id="unfollow+${user.id}">
+								<input type="hidden" name="url" >
+								<button type="submit" name="followId" th:value="${user.id}">フォロー解除</button>
+							</form>
+						</li>
+
+
+						<li>
+							<form th:action="@{/blocks/save}" method="post" th:id="block+${user.id}">
+								<input type="hidden" name="url">
+								<button type="submit" name="blockId" th:value="${user.id}">ブロック</button>
+							</form>
+
+							<form th:action="@{/blocks/delete}" method="post" th:id="unblock+${user.id}">
+								<input type="hidden" name="url" >
+								<button type="submit" name="blockId" th:value="${user.id}">ブロック解除</button>
+							</form>
+						</li>
+					</ul>
+
+					<script th:inline="javascript">
+						var users =  /*[[${numFollows}]]*/;
+						var recommend = /*[[${user.id}]]*/;
+						var followers = /*[[${numFollowers}]]*/;
+
+						var followId = document.getElementById('follow'+/*[[${user.id}]]*/);
+						var unfollowId = document.getElementById('unfollow'+/*[[${user.id}]]*/);
+						var followerId = document.getElementById('followback' + /*[[${user.id}]]*/);
+						console.log(followerId);
+
+						if(users.includes(recommend)){
+							unfollowId.style.display = "block";
+							followerId.style.display = "none";
+							followId.style.display ="none";
+						}else{
+							unfollowId.style.display="none";
+							if(followers.includes(recommend)) {
+								followId.style.display ="none";
+								followerId.style.display ="block";
+							} else {
+								followId.style.display ="block";
+								followerId.style.display ="none";
+							}
+
+						}
+
+					</script>
+
+					<script th:inline="javascript">
+						var users = /*[[${numBlocks}]]*/;
+						var recommend = /*[[${user.id}]]*/;
+
+						var followId = document.getElementById('block'+/*[[${user.id}]]*/);
+						var unfollowId = document.getElementById('unblock'+/*[[${user.id}]]*/);
+
+						if(users.includes(recommend)){
+							followId.style.display ="none";
+							unfollowId.style.display ="block";
+						}else{
+							unfollowId.style.display="none";
+							followId.style.display ="block";
+						}
+					</script>
 
 					<!--
 						<div><a class="btn btn-success btn-sm m-1" th:if="${user.id} == ${#authentication.principal.user.id}" th:href="@{/users/edit/{id}(id=${user.id})}">編集</a></div>
@@ -70,10 +145,10 @@
 
 				<div class="row mypage-thredCell">
 					<div class="col-md-6">
-						<h3>フォロー</h3>
+						<h3>フォロー中ユーザー</h3>
 						<div class="w-100 list-unstyled change-Font d-flex" th:each="follow : ${follows}">
 							<a th:href="@{/users/mypage/{userId}(userId=${follow.follower.id})}" th:text="${follow.follower.name}"></a>
-							<form th:action="@{/follows/delete}" method="post" th:id="unfollow+${follow.follower.id}">
+							<form th:if="${user.id} == ${#authentication.principal.user.id}" th:action="@{/follows/delete}" method="post" th:id="unfollow+${follow.follower.id}">
 								<input type="hidden" name="url" >
 								<button type="submit" name="followId" th:value="${follow.follower.id}">フォロー解除</button>
 							</form>
@@ -81,7 +156,7 @@
 					</div>
 
 					<div class="col-md-6">
-						<h3>ブロック</h3>
+						<h3>ブロック中ユーザー</h3>
 						<div class="w-100 list-unstyled change-Font d-flex" th:each="block : ${blocks}">
 							<a th:href="@{/users/mypage/{userId}(userId=${block.blockUser.id})}" th:text="${block.blockUser.name}"></a>
 							<form th:action="@{/blocks/delete}" method="post" th:id="unblock+${block.blockUser.id}">
@@ -89,6 +164,25 @@
 								<button type="submit" name="blockId" th:value="${block.blockUser.id}">ブロック解除</button>
 							</form>
 						</div>
+					</div>
+				</div>
+
+				<div class="row mypage-thredCell" th:if="${user.id} == ${#authentication.principal.user.id}">
+					<div class="col-md-6">
+						<h3>フォローされているユーザー</h3>
+						<div class="w-100 list-unstyled change-Font d-flex" th:each="follower : ${followers}">
+							<a th:href="@{/users/mypage/{userId}(userId=${follower.id})}" th:text="${follower.name}"></a>
+							<form th:action="@{/follows/save}" method="post" >
+								<input type="hidden" name="url" >
+								<button type="submit" name="followId" th:value="${follower.id}">フォローバック</button>
+							</form>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<h3>おすすめアニメ</h3>
+						<ul class="w-100 list-unstyled change-Font" th:each="anime : ${recommendAnimes}">
+							<li th:text="${anime.name}"></li>
+						</ul>
 					</div>
 				</div>
 
