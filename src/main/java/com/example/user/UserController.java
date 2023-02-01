@@ -3,6 +3,8 @@ package com.example.user;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -208,17 +210,55 @@ public class UserController {
 	    	List<Follow> followList = this.followService.listAll(user.getId());
 	    	//ブロック情報取得
 	    	List<Block> blockList = this.blockService.listAll(user.getId());
+	    	//おすすめアニメ情報取得
+	    	Set<AnimeTitle> recommendAnime = this.recommendAnime(user);
 
 			//画面に情報を渡す
             model.addAttribute("categories", categories);
 			model.addAttribute("follows", followList);
 			model.addAttribute("blocks", blockList);
 	    	model.addAttribute("user", user);
+	    	model.addAttribute("recommendAnimes", recommendAnime);
 	    	return "users/mypage";
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 			return "";
 		}
+    }
+
+    /**
+     * おすすめアニメ取得
+     */
+    private Set<AnimeTitle> recommendAnime(User user) {
+    	List<AnimeTitle> animeAll = this.animeTitleService.listAll();
+    	Set<AnimeTitle> recommend = new HashSet<>();
+    	List<AnimeTitle> removed = new ArrayList<>();
+    	//興味のあるカテゴリとアニメカテゴリ情報からおすすめアニメを取得
+    	for(UserCategories userCategory : user.getUserCategories()) {
+    		for(AnimeTitle anime : animeAll) {
+    			if(anime.getCategoryId() == userCategory.getCategoryId()) {
+    				recommend.add(anime);
+    				removed.add(anime);
+    			}
+    		}
+    		if(removed != null) {
+				for(AnimeTitle remove : removed) {
+					System.out.println("ddddddddddddddddddddddd");
+					System.out.println(remove);
+					animeAll.remove(remove);
+				}
+				removed.clear();
+			}
+    	}
+    	//もしおすすめアニメが5個未満だったら、ランダムにおすすめ表示
+    	while(recommend.size() < 5) {
+    		//ランダムに0以上animeall.size()未満の整数を取得
+    		int index = new Random().nextInt(animeAll.size());
+    		//indexからランダムにアニメタイトル要素をrecommendに加える
+    		recommend.add(animeAll.get(index));
+    		animeAll.remove(index);
+    	}
+    	return recommend;
     }
 
     /**
