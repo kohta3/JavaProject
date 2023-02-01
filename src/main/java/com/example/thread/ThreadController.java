@@ -1,18 +1,23 @@
 package com.example.thread;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.animeTitle.AnimeTitleService;
 import com.example.block.BlockService;
@@ -71,11 +76,8 @@ public class ThreadController {
 		//スレッド一覧を取得
 		List<Threads> threads = this.threadService.listAll(order);
 
-		//
 		//取得したスレッド情報を画面に渡す
 		model.addAttribute("threads", threads);
-
-
 
 		return "view/toppage";
 	}
@@ -142,17 +144,54 @@ public class ThreadController {
 	 *@RequestParam("animeTitle") String animeTitle
 	 */
 	@PostMapping("/postThred")
-	public String createThread(NewThreadForm threadsForm, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
+	public String createThread(@Validated  NewThreadForm threadsForm, BindingResult result, @AuthenticationPrincipal A2ChannelUserDetails loginUser, RedirectAttributes ra) {
+
+
 		//アニメIDの取得,登録
-		String animeTitle = threadsForm.getAnimeTitle();
+		String animeTitle = threadsForm.getAnimeTitle().getName();
+		System.out.println(animeTitle);
 		Threads threads = threadsForm.getThreads();
 		Long animeId = this.animeTitleService.searchId(animeTitle, threads.getCategoryId());
+
 
 		//スレッドの中のアニメIDの登録
 		threads.setAnimeId(animeId);
 		threads.setUserId(loginUser.getUser().getId());
 		threads.setCommentSum(1L);
 		threads.setDateTime(LocalDateTime.now());
+
+		if(result.hasErrors()) {
+			//正しい値が入力されているか
+			List<String> errorList = new ArrayList<String>();
+			//すべてのエラーをリストに追加する。
+			for(ObjectError error : result.getAllErrors()) {
+				errorList.add(error.getDefaultMessage());
+			}
+			//エラーをすべて画面に送る。
+			ra.addFlashAttribute("validationError", errorList);
+			return "redirect:/threads/postThred";
+		}
+
+//		//入力されたスレッドタイトルの文字数チェック
+//        if (!threadService.isValidTitle(threads.getTitle())) {
+//            ra.addFlashAttribute("error_message", "スレッドタイトルは1文字以上50文字以内で入力してください");
+//            return "redirect:/threads/postThred";
+//        }
+//
+//		//入力された１コメの文字数チェック
+//        if (!threadService.isValidComments(threads.getComment())) {
+//            ra.addFlashAttribute("error_message", "１コメ目は1文字以上600文字以内で入力してください");
+//            return "redirect:/threads/postThred";
+//        }
+//
+//		//入力されたアニメタイトルの文字数チェック
+//        System.out.println(animeTitle);
+//        if (!animeTitleService.isValidAnimeTitle(animeTitle)) {
+//            ra.addFlashAttribute("error_message", "アニメタイトルは1文字以上100文字以内で入力してください");
+//            return "redirect:/threads/postThred";
+//        }
+
+
 
 		//スレッドの登録
 		this.threadService.save(threads);

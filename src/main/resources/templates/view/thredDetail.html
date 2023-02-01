@@ -16,14 +16,16 @@
 		<div class="col-md-8 m-0 p-0 originalBackColor" th:object="${thread}">
 		<h1><a th:href="@{/threads}">戻る</a>→<span th:text="${thread.title}"></span><span th:text="${userName}"></span></h1>
 		<div th:replace="fragments :: message"></div>
+		<table>
+	        <tr th:if="${validationError}" th:each="error : ${validationError}">
+	            <td style="color: red;" th:text="${error}"></td>
+	        </tr>
+	    </table>
 		<div class="detail">
 			<div class="w-100">
 				<ul class="">
 					<li th:text="${#temporals.format(thread.dateTime, 'yyyy/MM/dd HH:mm:ss')}">日付</li>
 					<li th:text="${thread.user.name}">ユーザー名</li>
-
-
-
 					<li>
 						<form th:action="@{/follows/save}" method="post" th:id="follow+${thread.user.id}">
 							<input type="hidden" name="url">
@@ -226,7 +228,7 @@
 				<input type="hidden" name="_csrf" value="33c7b13f-f3e2-44de-b0b1-eadb5e6ffbdb">
 				<input type="hidden" name="threadId" th:value="${thread.id}">
 				<label for="thredComment">コメント</label>
-				<input type="text" id="thredComment" class="w-50" th:field="*{content}" required="required">
+				<input type="text" id="thredComment" class="w-50" th:field="*{content}">
 				<button>送信</button>
 			</form>
 		</div>

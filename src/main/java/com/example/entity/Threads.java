@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -31,9 +33,13 @@ public class Threads {
 	@Column(name = "ID")
 	private Long id;
 
+    @NotBlank(message = "スレッドタイトルを入力してください")
+    @Size(min=1, max = 50, message = "1文字以上50文字以内で入力してください")
 	@Column(name = "TITLE")
 	private String title;
 
+    @NotBlank(message = "1コメ目を入力してください")
+    @Size(min=1, max =600, message = "1文字以上600文字以内で入力してください")
 	@Column(name = "COMMENTS")
 	private String comment;
 

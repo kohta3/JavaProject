@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "ANIME_TITLES")
@@ -23,6 +25,8 @@ public class AnimeTitle {
 	@Column(name = "ID")
 	private Long id;
 
+	@NotBlank(message = "アニメタイトルを入力してください")
+    @Size(min=1, max = 100, message = "タイトルは1文字以上100文字以内で入力してください")
 	@Column(name = "NAME")
 	private String name;
 

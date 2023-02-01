@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  th:replace="~{layout/base :: layout(~{::title}, ~{::link}, ~{::body/content()})}"
+>
+<head>
+<meta charset="UTF-8">
+<title>あ2ちゃんねる</title>
+<link />
+</head>
+<body>
+<div th:replace="~{layout/header :: header}" class="w-100"></div>
+	<h1 class="ml-5">トーク</h1>
+	<div th:replace="fragments :: message"></div>
+	<div class="col-md-6">
+		<div class="w-100 list-unstyled change-Font d-flex" th:each="follow : ${follows}">
+			<a th:href="@{/users/mypage/{userId}(userId=${follow.follower.id})}" th:text="${follow.follower.name}"></a>
+			<form th:action="@{/follows/delete}" method="post" th:id="unfollow+${follow.follower.id}">
+				<input type="hidden" name="url" >
+				<button type="submit" name="followId" th:value="${follow.follower.id}">フォロー解除</button>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript" th:src="@{/js/componentNone.js}"></script>
+</body>
+</html>

@@ -128,9 +128,33 @@ public class ThreadService {
 		return threadRepository.findById(id).get();
 	}
 
+    /**
+     * スレッドタイトルの入力値チェック
+     * @param title スレッドタイトル
+     * @return true:正常の入力値 false:異常な入力値
+     */
+    public boolean isValidTitle(String title) {
+    	System.out.println(title);
+        //スレッドタイトルの判定（1文字から50文字まで）
+        if (title.length() < 1 || title.length() > 50) {
+            return false;
+        }
+        return true;
+    }
 
-
-
+    /**
+     * １コメの入力値チェック
+     * @param comments １コメ内容
+     * @return true:正常の入力値 false:異常な入力値
+     */
+    public boolean isValidComments(String comments) {
+    	System.out.println(comments);
+        //１コメの文字数の判定（1文字から600文字まで）
+        if (comments.length() < 1 || comments.length() > 600) {
+            return false;
+        }
+        return true;
+    }
 
 
 }

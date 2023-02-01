@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "COMMENTS")
@@ -22,6 +24,8 @@ public class Comment {
     @Column(name = "ID")
 	private Long id;
 
+    @NotBlank(message = "コメントを入力してください")
+    @Size(min=1, max = 150, message = "コメントは150文字以内で入力してください")
 	@Column(name = "CONTENT")
 	private String content;
 
