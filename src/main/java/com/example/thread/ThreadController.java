@@ -264,7 +264,7 @@ public class ThreadController {
 	 * @return スレッド検索結果画面
 	 */
 	@GetMapping("/threadTitle")
-	public String thredTitle(@RequestParam String keyword, @RequestParam(name = "order" ,required = false) String order, Model model) {
+	public String thredTitle(@RequestParam(name = "keyword", required = false) String keyword, @RequestParam(name = "order" ,required = false) String order, Model model) {
 		//スレッド検索
 		List<Threads> threads = this.threadService.findByTitle(keyword, order);
 		//画面に情報を渡す
