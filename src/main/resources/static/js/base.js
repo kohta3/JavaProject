@@ -9,9 +9,20 @@ $("#update").on('click', function(element){
 
 });
 
+//selectboxを変更したら発火
 $("#select-order").change(function(){
 	$(".selectBox-top").submit();
 });
+
+//確認モーダル
+function conf(url) {
+	if (!confirm('本当に削除しますか？')) {
+	    return false;
+	  } else {
+		  window.location.href = url;
+	  }
+}
+
 
 //アニメタイトル予測変換
 function searchTitle(title) {

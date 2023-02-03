@@ -11,11 +11,17 @@
 </head>
 <body>
 <div th:replace="~{layout/header :: header}" class="w-100"></div>
+
+<div class="originalBackColor" style="height: 100vh;">
 	<h1 class="ml-5">トーク</h1>
-	<div th:replace="fragments :: message"></div>
-	<div class="col-md-2 my-auto" th:each="follow : ${follows}">
-		<a th:href="@{/chats/talkroom/{userId}(userId=${follow.follower.id})}" th:text="${follow.follower.name}"></a>
+	<div class="chatSystem">
+		<div class="chatSystemChild" th:each="follow : ${follows}">
+			<div>
+				<a th:href="@{/chats/talkroom/{userId}(userId=${follow.follower.id})}" th:text="${follow.follower.name}"></a>
+			</div>
+		</div>
 	</div>
+</div>
 	<script type="text/javascript" th:src="@{/js/componentNone.js}"></script>
 </body>
 </html>
