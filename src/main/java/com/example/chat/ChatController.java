@@ -70,6 +70,8 @@ public class ChatController {
 		//コメント日時順に並べ替え
 		chats.sort(Comparator.comparing(Chat::getDateTime));
 
+		model.addAttribute("loginId",loginUser.getUser().getId());
+		model.addAttribute("loginName",loginUser.getUser().getName());
 		model.addAttribute("id", id);
 		model.addAttribute("chat",chat);
 		model.addAttribute("chats",chats);

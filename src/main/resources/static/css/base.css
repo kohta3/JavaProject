@@ -620,6 +620,8 @@ label[for="thredComment"]{
 	border-radius: 15px;
 }
 
+/* ------------- チャットページ ------------- */
+
 .chatSystem{
 	width:90%;
 	display: flex;
@@ -651,6 +653,67 @@ label[for="thredComment"]{
 
 .chatSystemChild a{
 	width: 100%;
+}
+
+
+.talk-box{
+	width:95%;
+	height:80vh;
+	margin:0 auto;
+	overflow-y: scroll;
+	border-bottom:solid gray;
+	font-size: large;
+	background-color: rgba(0,0,0,0.1);
+}
+
+.talk-box ul{
+	display: flex;
+	list-style: none;
+	margin:0 10px 15px 10px;
+	padding:0;
+}
+
+.massage-box-me{
+	word-wrap: break-word;
+	max-width:50%;
+	background-color: lightgreen;
+	border-radius: 15px;
+	padding: 5px;
+}
+
+.massage-box-you{
+	word-wrap: break-word;
+	max-width:50%;
+	background-color: white;
+	border-radius: 15px;
+	padding: 5px;
+}
+
+.date-massage{
+	font-size: 12px;
+}
+
+.chat-send-button{
+	border: none;
+	background: rgba(0,0,0,0);
+	color:rgb(255,189,243);
+	transition: .5s EASE;
+	font-size: large;
+	width: 50px;
+	border:1px solid gray;
+	margin-left: 2px;
+}
+
+.chat-send-button:focus{
+	border: none;
+	background: rgba(0,0,0,0);
+	color:lightgreen;
+}
+
+.chat-send-button:hover{
+	box-shadow: 2px 2px gray;
+	border-radius: 15px;
+	color: rgb(255,71,221);
 }
 
 /* ------------- 雪を降らせる ------------- */

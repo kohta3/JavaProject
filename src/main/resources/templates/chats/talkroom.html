@@ -11,45 +11,37 @@
 </head>
 <body>
 	<div th:replace="~{layout/header :: header}" class="w-100"></div>
-	<div class="m-0">
-		<div class="m-0 p-0 originalBackColor" th:object="${chat}">
-		<h1 class="ml-5">トークルーム</h1>
-		<h1><a th:href="@{/chats}">戻る</a></h1>
+	<div class="m-0 p-0 originalBackColor" style="height:100vh;" th:object="${chat}">
+		<h1><a th:href="@{/chats}">戻る</a><span class="ml-3">トークルーム</span></h1>
 		<div th:replace="fragments :: message"></div>
-		<div class="detail">
-			<div class="w-100">
-			</div>
-		</div>
-		<div class="comment">
-			<div class="w-100" th:each="chat : ${chats}">
-				<ul class="">
-					<li th:text="${#temporals.format(chat.dateTime, 'yyyy/MM/dd HH:mm')}">日付</li>
-					<li th:text="${chat.user.name}">ユーザー名</li>
-					<li th:text="${chat.contents}">チャット内容</li>
+		<div class="talk-box">
+				<!-- ログインユーザー以外のほう -->
+				<ul class="d-flex" th:each="chat : ${chats}" th:if="${loginId != chat.userId}">
+					<li><a th:text="${chat.user.name}" th:href="@{/users/mypage/{userId}(userId=${chat.userId})}">ユーザー名</a></li>
+					<li th:text="${chat.contents}" class="mt-3 massage-box-you">チャット内容</li>
+					<li th:text="${#temporals.format(chat.dateTime, 'HH:mm')}" class="mt-3 date-massage">日付</li>
 				</ul>
-			</div>
+
+				<!-- ログインユーザー -->
+				<ul class="d-flex flex-row-reverse" th:each="chat : ${chats}" th:if="${loginId == chat.userId}">
+					<li th:text="${chat.user.name}">ユーザー名</li>
+					<li th:text="${chat.contents}" class="mt-3 massage-box-me">チャット内容</li>
+					<li th:text="${#temporals.format(chat.dateTime, 'HH:mm')}" class="mt-3 date-massage">日付</li>
+				</ul>
 		</div>
-		<div class="w-75 mx-auto mt-3">
+		<div class="w-100 mt-3">
 			<form th:action="@{/chats/create}" method="post" th:object="${chat}">
 				<input type="hidden" name="_csrf" value="33c7b13f-f3e2-44de-b0b1-eadb5e6ffbdb">
 				<input type="hidden" name="followId" th:value="${id}">
-				<label for="chatContents">メッセージ</label>
-				<input type="text" id="chatContents" class="w-50" th:field="*{contents}">
-				<button>送信</button>
+				<div class="d-flex align-items-center mx-auto w-75">
+					<label for="chatContents" class="m-0 material-symbols-outlined px-2">mail</label>
+					<input type="text" id="chatContents" class="w-75" th:field="*{contents}" th:placeholder="${loginName}" required="required">
+					<button class="chat-send-button material-symbols-outlined">send</button>
+				</div>
 			</form>
 		</div>
 
 	</div>
-	</div>
-	<script>
-		var url = document.getElementsByName('url');
-		var a = location.pathname;
-		console.log(url);
-		url.forEach(function(e) {
-			e.setAttribute("value", a);
-		})
-	</script>
-
 </body>
 
 </html>
