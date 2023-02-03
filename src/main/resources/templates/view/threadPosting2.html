@@ -48,10 +48,9 @@
 						</div>
 						<div class="col-md-6 mb-3 text-left serch-anime-title pl-1 pr-0">
 							<label for="animeTitle" class="w-100">アニメタイトル</label>
-							<input type="text" th:field=*{animeTitle} class="w-100" required="required" autocapitalize="off" onkeyup="searchTitle(this.value)" list="example">
+							<input type="text" th:field=*{animeTitle.name} class="w-100" required="required" autocapitalize="off" onkeyup="searchTitle(this.value)" list="example">
 							<datalist id="example">
 							</datalist>
-							<input type="text" th:field=*{animeTitle.name} class="w-100" required="required">
 						</div>
 
 					</div>
@@ -60,11 +59,11 @@
 						</div>
 						<div class="w-50">
 							<input class="w-100" type="file" name="upload_file" id="selfile"/>
-							<p id="clearImg" class="text-left w-50 bg-light text-info mt-3 "><span>クリア</span></p>
+							<p class="text-left mt-3 "><span id="clearImg">クリア</span></p>
 						</div>
 					</div>
 
-					<button class="btn-design">スレ投稿</button>
+					<button class="btn-design my-5">スレ投稿</button>
 				</form>
 			</div>
 		</div>
