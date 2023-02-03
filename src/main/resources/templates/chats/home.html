@@ -16,6 +16,9 @@
 	<div class="col-md-2 my-auto" th:each="follow : ${follows}">
 		<a th:href="@{/chats/talkroom/{userId}(userId=${follow.follower.id})}" th:text="${follow.follower.name}"></a>
 	</div>
+	<div class="col-md-2 my-auto" th:each="follower : ${followers}">
+		<a th:href="@{/chats/talkroom/{userId}(userId=${follower.id})}" th:text="${follower.name}"></a>
+	</div>
 	<script type="text/javascript" th:src="@{/js/componentNone.js}"></script>
 </body>
 </html>

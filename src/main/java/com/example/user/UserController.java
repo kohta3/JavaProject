@@ -279,8 +279,12 @@ public class UserController {
 				removed.clear();
 			}
     	}
+
     	//もしおすすめアニメが5個未満だったら、ランダムにおすすめ表示
     	while(recommend.size() < 5) {
+    		if(animeAll.size() == 0) {
+    			break;
+    		}
     		//ランダムに0以上animeall.size()未満の整数を取得
     		int index = new Random().nextInt(animeAll.size());
     		//indexからランダムにアニメタイトル要素をrecommendに加える

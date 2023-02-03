@@ -148,14 +148,15 @@
 								var users =  /*[[${follows}]]*/;
 								var recommend = /*[[${comment1.user.id}]]*/;
 								var loginUser = /*[[${loginUser}]]*/;
-								var followers = /*[[${passiveFollows}]]*/;
+								var followers = /*[[${passiveFollowers}]]*/;
 
 								var liBlocks = document.getElementsByClassName('followBlock'+/*[[${comment1.user.id}]]*/);
 								var follows = document.getElementsByClassName('followComment'+/*[[${comment1.user.id}]]*/);
 								var unfollows = document.getElementsByClassName('unfollowComment'+/*[[${comment1.user.id}]]*/);
 								var followerIds = document.getElementsByClassName('followerComment'+/*[[${comment1.user.id}]]*/);
 
-								console.log(followerIds);
+								console.log(followers);
+								//console.log(followerIds);
 								switch(loginUser){
 									case null:
 										for(const liBlock of liBlocks){

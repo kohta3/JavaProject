@@ -24,13 +24,15 @@
 					<a th:href="@{/threads/postThred}" class="newAdd">新規すれ作成＋</a>
 				</div>
 				<div class="w-50 text-right">
-					<form th:action="@{/threads/threadsCategory/{categoryId}(categoryId=${category.id})}" method="get" class="selectBox-top">
+					<form th:action="@{/threads/threadTitle}" method="get" class="selectBox-top">
 						<select name="order" id="select-order" class="w-25">
+
 							<option disabled selected>並べ替え</option>
 							<option value="最新">最新順</option>
 							<option value="コメント数" >コメント数</option>
 							<option value="ランダム" >ランダム順</option>
 						</select>
+						<input type="hidden" name="keyword" th:value="${keyword}">
 					</form>
 				</div>
 			</div>

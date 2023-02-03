@@ -3,6 +3,7 @@ package com.example.chat;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.entity.Chat;
 import com.example.entity.Follow;
+import com.example.entity.User;
 import com.example.follow.FollowService;
 import com.example.security.A2ChannelUserDetails;
 
@@ -45,6 +47,15 @@ public class ChatController {
 	public String toppages(Model model,  @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 		//フォロー情報取得
     	List<Follow> followList = this.followService.listAll(loginUser.getUser().getId());
+    	List<User> followers = this.followService.followBackwait(loginUser.getUser().getId());
+    	List<User> messageFollowers = new ArrayList<User>();
+    	for(User follower : followers) {
+    		if(this.chatService.chatMatching(follower.getId(), loginUser.getUser().getId()).size() != 0) {
+    			messageFollowers.add(follower);
+    		}
+    	}
+
+    	model.addAttribute("followers", messageFollowers);
 		model.addAttribute("follows", followList);
 		return "chats/home";
 	}
@@ -54,7 +65,11 @@ public class ChatController {
 	public String tokeroom(@PathVariable(name = "id") Long id, Model model, @AuthenticationPrincipal A2ChannelUserDetails loginUser) {
 		Chat chat = new Chat();
 		List<Chat> chats =this.chatService.chatMatching(loginUser.getUser().getId(), id);
-		System.out.println(chats);
+		List<Chat> fromChats = this.chatService.chatMatching(id, loginUser.getUser().getId());
+		chats.addAll(fromChats);
+		//コメント日時順に並べ替え
+		chats.sort(Comparator.comparing(Chat::getDateTime));
+
 		model.addAttribute("id", id);
 		model.addAttribute("chat",chat);
 		model.addAttribute("chats",chats);
