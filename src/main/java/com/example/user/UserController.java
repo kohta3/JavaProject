@@ -307,7 +307,7 @@ public class UserController {
             //ユーザーIDに紐づくユーザー情報取得
             User user = userService.get(id);
             List<Categories> categories = this.categoryService.listAll();
-            System.out.println(categories);
+	            System.out.println(categories);
             model.addAttribute("user", user);
             model.addAttribute("categories", categories);
             return "users/user_edit";

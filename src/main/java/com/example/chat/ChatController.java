@@ -91,7 +91,6 @@ public class ChatController {
 			}
 			ra.addFlashAttribute("validationError", errorList);
 			return "redirect:/chats/talkroom/" + followId;
-
 		}
 
 		this.chatService.save(chat);
