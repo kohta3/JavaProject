@@ -101,10 +101,6 @@
 						</script>
 
 						<script th:inline="javascript">
-							var users =  /*[[${follows}]]*/;
-							var recommend = /*[[${comment1.user.id}]]*/;
-							var loginUser = /*[[${loginUser}]]*/;
-							var followers = /*[[${passiveFollowers}]]*/;
 							var users =  /*[[${blocks}]]*/;
 							var recommend = /*[[${thread.user.id}]]*/;
 							var loginUser = /*[[${loginUser}]]*/;
@@ -112,12 +108,6 @@
 							var followId = document.getElementById('block'+/*[[${thread.user.id}]]*/);
 							var unfollowId = document.getElementById('unblock'+/*[[${thread.user.id}]]*/);
 
-							switch(loginUser){
-								case null:
-									for(const liBlock of liBlocks){
-										liBlock.style.display ="none";
-									}
-									break;
 							unfollowId.style.display = "none";
 
 							if(users.includes(recommend)){
