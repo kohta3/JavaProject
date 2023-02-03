@@ -650,6 +650,12 @@ label[for="thredComment"]{
 	border: solid 1px;
 }
 
+.chatSystemChild div:hover{
+	background:linear-gradient(to right bottom ,rgb(255,229,254),60% ,rgb(229,253,255));
+	transform: scale(1.2, 1.2);
+	border-radius: 15px 0 15px 0;
+	transition: all 0.5s 0s ease;
+}
 
 .chatSystemChild a{
 	width: 100%;
@@ -714,6 +720,22 @@ label[for="thredComment"]{
 	box-shadow: 2px 2px gray;
 	border-radius: 15px;
 	color: rgb(255,71,221);
+}
+
+.chatInput{
+	background: white;
+	border: 8px double rgb(255,229,254);
+}
+
+.chatInput:focus{
+	background: white;
+	border: 8px double lightgreen;
+	font-family: 'Hachi Maru Pop', cursive;
+}
+
+.chatInput::placeholder{
+	color:skyblue;
+	font-family: 'Hachi Maru Pop', cursive;
 }
 
 /* ------------- 雪を降らせる ------------- */

@@ -35,7 +35,7 @@
 				<input type="hidden" name="followId" th:value="${id}">
 				<div class="d-flex align-items-center mx-auto w-75">
 					<label for="chatContents" class="m-0 material-symbols-outlined px-2">mail</label>
-					<input type="text" id="chatContents" class="w-75" th:field="*{contents}" th:placeholder="${loginName}" required="required">
+					<input type="text" id="chatContents" class="w-75 chatInput" th:field="*{contents}" th:placeholder="${loginName}" required="required">
 					<button class="chat-send-button material-symbols-outlined">send</button>
 				</div>
 			</form>
