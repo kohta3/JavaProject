@@ -28,7 +28,9 @@ import com.example.category.CategoryService;
 import com.example.entity.AnimeTitle;
 import com.example.entity.Block;
 import com.example.entity.Categories;
+import com.example.entity.Comment;
 import com.example.entity.Follow;
+import com.example.entity.Threads;
 import com.example.entity.User;
 import com.example.entity.UserCategories;
 import com.example.follow.FollowService;
@@ -237,6 +239,13 @@ public class UserController {
 	    	List<Long> numBlocks = this.blockService.listUserId(loginUser.getUser().getId());
 	    	//フォロワーさんの中でまだフォローしていない人のユーザー情報取得
 	    	List<User> followers = this.followService.followBackwait(loginUser.getUser().getId());
+	    	//コメントしたスレの取得
+	    	List<Comment>comments=user.getCommentList();
+	    	Set<Threads> commentThreads = new HashSet<Threads>();
+	    	for (Comment comment : comments) {
+	    		commentThreads.add(comment.getThreads());
+			}
+
 
 			//画面に情報を渡す
             model.addAttribute("categories", categories);
@@ -248,6 +257,7 @@ public class UserController {
 	    	model.addAttribute("numFollowers", numfollowers);
 	    	model.addAttribute("numBlocks", numBlocks);
 	    	model.addAttribute("followers", followers);
+	    	model.addAttribute("commentThreads",commentThreads);
 	    	return "users/mypage";
 		} catch (NotFoundException e) {
 			e.printStackTrace();
