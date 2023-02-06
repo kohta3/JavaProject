@@ -461,7 +461,7 @@ input::placeholder{
 
 #userUpdate{
 	margin: auto;
-	height:inherit;
+	height:85vh;
 	width: 90%;
 	border-radius: 15px;
 	color:white;
@@ -549,7 +549,6 @@ input::placeholder{
 #thredComment:focus{
 	background: white;
 	border: 8px double lightgreen;
-	font-family: 'Hachi Maru Pop', cursive;
 }
 
 #thredComment::placeholder{
@@ -730,7 +729,6 @@ label[for="thredComment"]{
 .chatInput:focus{
 	background: white;
 	border: 8px double lightgreen;
-	font-family: 'Hachi Maru Pop', cursive;
 }
 
 .chatInput::placeholder{
