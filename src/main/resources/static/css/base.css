@@ -549,7 +549,10 @@ input::placeholder{
 #thredComment:focus{
 	background: white;
 	border: 8px double lightgreen;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/develop
 }
 
 #thredComment::placeholder{
@@ -730,7 +733,10 @@ label[for="thredComment"]{
 .chatInput:focus{
 	background: white;
 	border: 8px double lightgreen;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/develop
 }
 
 .chatInput::placeholder{

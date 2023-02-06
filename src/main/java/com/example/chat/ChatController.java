@@ -99,7 +99,7 @@ public class ChatController {
 
 		URI location = builder.path("/chats/talkroom/" + followId).build().toUri();
 
-		return "redirect:"+ location.toString();
+		return "redirect:"+ location.toString()+"#chatContents";
 	}
 
 }
