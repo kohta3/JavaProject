@@ -30,16 +30,19 @@
 						<label for="email">メールアドレス</label> <input type="email"
 							placeholder="メールアドレス" th:field="*{email}" >
 					</div>
+					<div id="new-user-text"></div>
 
 					<div class="text-nowrap">
 						<label for="password">パスワード</label> <input type="password"
 							placeholder="パスワード" th:field="*{password}" id="confirmPasswors">
+
 					</div>
 
 					<div class="text-nowrap">
 						<label for="confirm">確認パスワード<span id="confirmCheck"></span></label> <input type="password"
 							placeholder="確認パスワード" id="confirm" name="confirm" onchange="confirmPassword(this.value)"
 							>
+
 					</div>
 
 					<div class="text-nowrap">
@@ -58,6 +61,7 @@
 				</div>
 				<div class='text-center'>
 					<button class="btn-design" id="new-user-button">新規登録</button>
+
 				</div>
 
 			</form>

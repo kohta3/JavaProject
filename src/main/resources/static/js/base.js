@@ -83,7 +83,8 @@ function confirmPassword(val){
 	}else{
 		console.log($("#confirmPasswors").val());
 		$("#new-user-button").prop("disabled", true);
-		$("#new-user-button").text("確認パスワードが一致しません").css("color","red");
+		$("#new-user-button").text("登録不可").css("color","red");
+		$("#new-user-text").text("確認パスワードが一致しません").css("color", "red");
 		$("#confirm").css("background","rgb(255,112,112)")
 		$("#confirmCheck").text("NG").css("color","red");
 	}
