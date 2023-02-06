@@ -76,7 +76,7 @@ public class CommentController {
 
 		URI location = builder.path("/threads/detail/" + comment.getThreadId()).build().toUri();
 
-		return "redirect:"+ location.toString();
+		return "redirect:"+ location.toString()+"#thredComment";
 	}
 
 	@GetMapping("/delete/{id}")
