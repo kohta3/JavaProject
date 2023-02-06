@@ -38,7 +38,7 @@
 
 						<form th:action="@{/follows/save}" method="post" th:id="followback+${recommendUserInfo.id}">
 							<input type="hidden" name="url" >
-							<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロバ</button>
+							<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォローバック</button>
 						</form>
 
 						<form th:action="@{/follows/delete}" method="post" th:id="unfollow+${recommendUserInfo.id}">

@@ -86,7 +86,7 @@ public class UserController {
      */
     //@Async
     @PostMapping("/save")
-    public String saveUser(@Validated User user, BindingResult result, RedirectAttributes ra, @RequestParam("userCategory") List<Long> userCategory ) {
+    public String saveUser(@Validated User user, BindingResult result, RedirectAttributes ra, @RequestParam("confirm") String confirm ,@RequestParam("userCategory") List<Long> userCategory ) {
 
 
         //ユーザー情報のユーザー名重複チェック
@@ -99,6 +99,12 @@ public class UserController {
         if (!userService.UserEmailcheckUnique(user)) {
             ra.addFlashAttribute("error_message", "既に使用されているメールアドレスです");
             return "redirect:/users/new";
+        }
+
+        //パスワードチェック
+        if(!user.getPassword().contentEquals(confirm)) {
+        	ra.addFlashAttribute("error_message", "確認用パスワードが入力パスワードと一致しません");
+        	return "redirect:/users/new";
         }
 
 		if(result.hasErrors()) {
