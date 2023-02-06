@@ -46,6 +46,7 @@ function searchTitle(title) {
 	});
 }
 
+//画像取得
 var obj1 = document.getElementById("selfile");
 
 obj1.addEventListener("change", function(evt){
@@ -68,4 +69,23 @@ obj1.addEventListener("change", function(evt){
 $("#clearImg").on('click',function(){
 	$("#threadPostImg").empty();
 	$("#selfile").val(null);
-})
+});
+
+
+//パスワード確認
+function confirmPassword(val){
+	if($("#confirmPasswors").val()===val){
+		console.log($("#confirmPasswors").val());
+		$("#new-user-button").prop("disabled", false);
+		$("#new-user-button").text("新規登録").css("color","rgb(87,174,255)");
+		$("#confirm").css("background","lightgreen")
+		$("#confirmCheck").text("OK").css("color","lightgreen");
+	}else{
+		console.log($("#confirmPasswors").val());
+		$("#new-user-button").prop("disabled", true);
+		$("#new-user-button").text("確認パスワードが一致しません").css("color","red");
+		$("#confirm").css("background","rgb(255,112,112)")
+		$("#confirmCheck").text("NG").css("color","red");
+	}
+}
+
