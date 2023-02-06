@@ -473,6 +473,7 @@ input::placeholder{
 	right: 0;
 	margin: 30px auto;
 	display: none;
+	border:solid black 1px;
 }
 
 /* ------------- スレッド詳細 ------------- */
