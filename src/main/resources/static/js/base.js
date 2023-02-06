@@ -78,7 +78,7 @@ function confirmPassword(val){
 		console.log($("#confirmPasswors").val());
 		$("#new-user-button").prop("disabled", false);
 		$("#new-user-button").text("新規登録").css("color","rgb(87,174,255)");
-		$("#confirm").css("background","lightgreen")
+		$("#confirm").css("background","lightgreen");
 		$("#confirmCheck").text("OK").css("color","lightgreen");
 	}else{
 		console.log($("#confirmPasswors").val());
