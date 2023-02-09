@@ -3,12 +3,17 @@ package com.example.user;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +28,9 @@ import com.example.category.CategoryService;
 import com.example.entity.AnimeTitle;
 import com.example.entity.Block;
 import com.example.entity.Categories;
+import com.example.entity.Comment;
 import com.example.entity.Follow;
+import com.example.entity.Threads;
 import com.example.entity.User;
 import com.example.entity.UserCategories;
 import com.example.follow.FollowService;
@@ -79,25 +86,8 @@ public class UserController {
      */
     //@Async
     @PostMapping("/save")
-    public String saveUser(User user, RedirectAttributes ra, @RequestParam("userCategory") List<Long> userCategory) {
+    public String saveUser(@Validated User user, BindingResult result, RedirectAttributes ra, @RequestParam("confirm") String confirm ,@RequestParam("userCategory") List<Long> userCategory ) {
 
-    	//入力されたメールアドレスの文字数チェック
-        if (!userService.isValidEmail(user.getEmail())) {
-            ra.addFlashAttribute("error_message", "メールアドレスは10文字以上254文字以内で入力してください");
-            return "redirect:/users/new";
-        }
-
-    	//入力されたユーザー名の文字数チェック
-        if (!userService.isValidName(user.getName())) {
-            ra.addFlashAttribute("error_message", "ユーザー名は、1文字以上100文字以内で入力してください");
-            return "redirect:/users/new";
-        }
-
-    	//入力された自己紹介の文字数チェック
-        if (!userService.isValidIntroduction(user.getIntroduction())) {
-            ra.addFlashAttribute("error_message", "自己紹介は、1文字以上300文字以内で入力してください");
-            return "redirect:/users/new";
-        }
 
         //ユーザー情報のユーザー名重複チェック
         if (!userService.UserNamecheckUnique(user)) {
@@ -110,6 +100,43 @@ public class UserController {
             ra.addFlashAttribute("error_message", "既に使用されているメールアドレスです");
             return "redirect:/users/new";
         }
+
+        //パスワードチェック
+        if(!user.getPassword().contentEquals(confirm)) {
+        	ra.addFlashAttribute("error_message", "確認用パスワードが入力パスワードと一致しません");
+        	return "redirect:/users/new";
+        }
+
+		if(result.hasErrors()) {
+			//正しい値が入力されているか
+			List<String> errorList = new ArrayList<String>();
+			//TODO 以下確認用コードは削除する
+			for(ObjectError error : result.getAllErrors()) {
+				errorList.add(error.getDefaultMessage());
+			}
+			if(user.getId() == null) {
+				ra.addFlashAttribute("validationError", errorList);
+				return "redirect:/users/new";
+			}
+		}
+
+//    	//入力されたメールアドレスの文字数チェック
+//        if (!userService.isValidEmail(user.getEmail())) {
+//            ra.addFlashAttribute("error_message", "メールアドレスは10文字以上254文字以内で入力してください");
+//            return "redirect:/users/new";
+//        }
+//
+//    	//入力されたユーザー名の文字数チェック
+//        if (!userService.isValidName(user.getName())) {
+//            ra.addFlashAttribute("error_message", "ユーザー名は、1文字以上100文字以内で入力してください");
+//            return "redirect:/users/new";
+//        }
+//
+//    	//入力された自己紹介の文字数チェック
+//        if (!userService.isValidIntroduction(user.getIntroduction())) {
+//            ra.addFlashAttribute("error_message", "自己紹介は、1文字以上300文字以内で入力してください");
+//            return "redirect:/users/new";
+//        }
 
         //ユーザー情報の登録
         Long userReturnId=userService.save(user).getId();
@@ -165,8 +192,12 @@ public class UserController {
 	    //htmlに渡すブロックリスト
 	    List<Long> blockUserList = this.blockService.listUserId(loginUser.getUser().getId());
 
+	    //htmlに渡すフォローされている人のリスト
+	    List<Long> passiveFollowList = this.followService.passiveFollowUserId(loginUser.getUser().getId());
+
 	    model.addAttribute("blocks", blockUserList);
 	    model.addAttribute("follows", followUserList);
+	    model.addAttribute("passiveFollows", passiveFollowList);
     	model.addAttribute("loginUser",loginUser.getUser().getName());
 		model.addAttribute("recommendUser",recommendUsers);
 
@@ -204,17 +235,79 @@ public class UserController {
 	    	List<Follow> followList = this.followService.listAll(user.getId());
 	    	//ブロック情報取得
 	    	List<Block> blockList = this.blockService.listAll(user.getId());
+	    	//おすすめアニメ情報取得
+	    	Set<AnimeTitle> recommendAnime = this.recommendAnime(user);
+	    	//ログイン情報からフォローされているユーザーID情報取得(Long)
+	    	List<Long> numfollowers = this.followService.passiveFollowUserId(loginUser.getUser().getId());
+	    	//ログイン情報からフォロー情報の取得
+	    	List<Long> numFollows = this.followService.listUserId(loginUser.getUser().getId());
+	    	//ログイン情報からブロック情報を取得
+	    	List<Long> numBlocks = this.blockService.listUserId(loginUser.getUser().getId());
+	    	//フォロワーさんの中でまだフォローしていない人のユーザー情報取得
+	    	List<User> followers = this.followService.followBackwait(loginUser.getUser().getId());
+	    	//コメントしたスレの取得
+	    	List<Comment>comments=user.getCommentList();
+	    	Set<Threads> commentThreads = new HashSet<Threads>();
+	    	for (Comment comment : comments) {
+	    		commentThreads.add(comment.getThreads());
+			}
+
 
 			//画面に情報を渡す
             model.addAttribute("categories", categories);
 			model.addAttribute("follows", followList);
 			model.addAttribute("blocks", blockList);
 	    	model.addAttribute("user", user);
+	    	model.addAttribute("recommendAnimes", recommendAnime);
+	    	model.addAttribute("numFollows", numFollows);
+	    	model.addAttribute("numFollowers", numfollowers);
+	    	model.addAttribute("numBlocks", numBlocks);
+	    	model.addAttribute("followers", followers);
+	    	model.addAttribute("commentThreads",commentThreads);
 	    	return "users/mypage";
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 			return "";
 		}
+    }
+
+    /**
+     * おすすめアニメ取得
+     */
+    private Set<AnimeTitle> recommendAnime(User user) {
+    	List<AnimeTitle> animeAll = this.animeTitleService.listAll();
+    	Set<AnimeTitle> recommend = new HashSet<>();
+    	List<AnimeTitle> removed = new ArrayList<>();
+    	//興味のあるカテゴリとアニメカテゴリ情報からおすすめアニメを取得
+    	for(UserCategories userCategory : user.getUserCategories()) {
+    		for(AnimeTitle anime : animeAll) {
+    			if(anime.getCategoryId() == userCategory.getCategoryId()) {
+    				recommend.add(anime);
+    				removed.add(anime);
+    			}
+    		}
+    		if(removed != null) {
+				for(AnimeTitle remove : removed) {
+					System.out.println("ddddddddddddddddddddddd");
+					System.out.println(remove);
+					animeAll.remove(remove);
+				}
+				removed.clear();
+			}
+    	}
+
+    	//もしおすすめアニメが5個未満だったら、ランダムにおすすめ表示
+    	while(recommend.size() < 5) {
+    		if(animeAll.size() == 0) {
+    			break;
+    		}
+    		//ランダムに0以上animeall.size()未満の整数を取得
+    		int index = new Random().nextInt(animeAll.size());
+    		//indexからランダムにアニメタイトル要素をrecommendに加える
+    		recommend.add(animeAll.get(index));
+    		animeAll.remove(index);
+    	}
+    	return recommend;
     }
 
     /**
@@ -230,7 +323,7 @@ public class UserController {
             //ユーザーIDに紐づくユーザー情報取得
             User user = userService.get(id);
             List<Categories> categories = this.categoryService.listAll();
-            System.out.println(categories);
+	            System.out.println(categories);
             model.addAttribute("user", user);
             model.addAttribute("categories", categories);
             return "users/user_edit";
@@ -249,30 +342,30 @@ public class UserController {
      */
     @PostMapping("/save2")
     public String save2User(User user, RedirectAttributes ra, @RequestParam(name = "userCategories", required = false) List<Long> userCategories) {
+
     	//入力されたメールアドレスの文字数チェック
-        if (!userService.isValidEmail(user.getEmail())) {
-            ra.addFlashAttribute("error_message", "メールアドレスの文字数がオーバーしています");
-            return "redirect:/users/mypage/" + user.getId();
-        }
+    	if (!userService.isValidEmail(user.getEmail())) {
+    		ra.addFlashAttribute("error_message", "メールアドレスの文字数がオーバーしています");
+    		return "redirect:/users/mypage/" + user.getId();
+    	}
 
-    	//入力されたユーザー名の文字数チェック
-        if (!userService.isValidName(user.getName())) {
-            ra.addFlashAttribute("error_message", "ユーザー名は、1文字以上100文字以内で入力してください");
-            return "redirect:/users/mypage/" + user.getId();
-        }
+	  	//入力されたユーザー名の文字数チェック
+	    if (!userService.isValidName(user.getName())) {
+	          ra.addFlashAttribute("error_message", "ユーザー名は、1文字以上100文字以内で入力してください");
+	          return "redirect:/users/mypage/" + user.getId();
+	    }
 
+	    //ユーザー情報のユーザー名重複チェック
+	    if (!userService.UserNamecheckUnique(user)) {
+	    	ra.addFlashAttribute("error_message", "変更しようとしたユーザー名は既に使用されています。");
+	    	return "redirect:/users/mypage/" + user.getId();
+	    }
 
-        //ユーザー情報のユーザー名重複チェック
-        if (!userService.UserNamecheckUnique(user)) {
-            ra.addFlashAttribute("error_message", "変更しようとしたユーザー名は既に使用されています。");
-            return "redirect:/users/mypage/" + user.getId();
-        }
-
-        //ユーザー情報のメールアドレス重複チェック
-        if (!userService.UserEmailcheckUnique(user)) {
-            ra.addFlashAttribute("error_message", "変更しようとしたメールアドレスは既に使用されています。");
-            return "redirect:/users/mypage/" + user.getId();
-        }
+	    //ユーザー情報のメールアドレス重複チェック
+	    if (!userService.UserEmailcheckUnique(user)) {
+	    	ra.addFlashAttribute("error_message", "変更しようとしたメールアドレスは既に使用されています。");
+	    	return "redirect:/users/mypage/" + user.getId();
+	    }
 
         //ユーザー情報の登録
         Long userReturnId=userService.save(user).getId();
@@ -281,7 +374,7 @@ public class UserController {
 
 
        //category情報の保存
-        if(userCategories != null) {
+       if(userCategories != null) {
         	//削除処理
         	//登録しているのに登録しようとしているユーザーカテゴリに情報がない時、削除
         	for(UserCategories registerUser : yetUserCategories) {
@@ -312,9 +405,7 @@ public class UserController {
         }
 
         //登録成功のメッセージを格納
-
         ra.addFlashAttribute("success_message", "ユーザー情報の編集に成功しました");
-
         return "redirect:/users/mypage/" + user.getId();
     }
 

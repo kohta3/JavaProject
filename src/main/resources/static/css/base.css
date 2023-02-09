@@ -6,6 +6,7 @@
 body{
 	font-family: 'Hachi Maru Pop', cursive;
 	font-size: 15px;
+	min-height: 100vh;
 }
 
 h1 {
@@ -31,7 +32,7 @@ h3 {
 	border-radius: 15px;
 	width:30%;
 	border: 1px solid rgb(183,231,251);
-	color:rgb(183,231,251);
+	color:rgb(87,174,255);
 	background-color:white;
 	transition: all 0.5s 0s ease;
 	box-shadow: 1px 1px 5px fuchsia;
@@ -54,6 +55,32 @@ h3 {
 
 form{
 	font-family: 'Zen Antique', serif;
+}
+
+datalist{
+	background:linear-gradient(to right bottom ,rgb(255,229,254),10% ,rgb(229,253,255));
+}
+
+.mordal-a{
+	cursor: pointer;
+	margin: 5px 0;
+}
+
+.mordal-a span{
+	color: #0080c0;
+	transition: all 0.5s 0s ease;
+	padding:5px;
+	border-radius: 15px;
+}
+
+.mordal-a span:hover{
+	color: blue;
+	box-shadow: 1px 1px purple;
+}
+
+.box{
+	height: 150px;
+	overflow-y:scroll;
 }
 
 /* ------------- ヘッダー ------------- */
@@ -330,6 +357,34 @@ input::placeholder{
 	border-radius: 30px;
 }
 
+#threadPostImg{
+	width:30%;
+	aspect-ratio: 6 / 5;
+	text-align: center;
+	border:2px solid rgb(220,220,220);
+	margin-right: 20px
+}
+
+#threadPostImg img{
+	width:100%;
+	aspect-ratio: 6 / 5;
+	object-fit: contain;
+}
+
+#clearImg{
+	background:linear-gradient(rgb(255,133,222),white);
+	padding: 5px;
+	border-radius: 15px;
+	cursor: pointer;
+	transition: .5s EASE;
+}
+
+#clearImg:hover{
+	color:rgb(255,133,222);
+	background:white;
+	border: 1px solid rgb(255,133,222);
+}
+
 
 /* ------------- マイページ ------------- */
 
@@ -380,6 +435,19 @@ input::placeholder{
 	padding: 5px;
 }
 
+.mypageAll .back{
+	background:linear-gradient(rgba(251,234,250,0.5),pink);
+}
+
+.mypageAll button{
+	border: none;
+	font-family: 'Hachi Maru Pop', cursive;
+	background-color: skyblue;
+	border-radius: 15px;
+	padding: 3px;
+	cursor: pointer;
+}
+
 #update{
 	cursor: pointer;
 }
@@ -393,7 +461,7 @@ input::placeholder{
 
 #userUpdate{
 	margin: auto;
-	height:inherit;
+	height:85vh;
 	width: 90%;
 	border-radius: 15px;
 	color:white;
@@ -405,39 +473,110 @@ input::placeholder{
 	right: 0;
 	margin: 30px auto;
 	display: none;
+	border:solid black 1px;
 }
 
 /* ------------- スレッド詳細 ------------- */
 
+.threadDetails{
+	background-color: rgba(255,255,255,0.5);
+	width: 90%;
+	margin: auto
+}
+
 .detail{
 	margin:5px auto 0 auto;
 	padding-bottom:3px;
-	width:75%;
-	background-color: rgb(240,240,240);
+	width:100%;
 }
 
 .comment{
-	margin:0 auto 2px auto;
-	width:75%;
+	width:100%;
 	height:500px;
 	overflow-y: scroll;
 	border-bottom:solid gray;
-	border-top:solid gray;
-	background-color: rgb(240,240,240);
 	font-size: small;
 }
 
 .detail ul, .comment ul{
 	display:flex;
-	margin: 0;
-	justify-content: flex-end;
+	margin: 0 10px;
+	justify-content: flex-start;
+	padding: 0 0 5px 0 ;
+	border-bottom: 1px solid;
+	border-image: linear-gradient(#c21500 , #ffc500);
+	border-image-slice: 1;
 }
 
 .detail ul li ,.comment ul li{
 	list-style: none;
-	border-left:solid 1px;
-	padding: 0 5px;
+	padding: 0 10px 0 0;
 }
+
+.threadDetails button{
+	border: none;
+	font-family: 'Hachi Maru Pop', cursive;
+	background-color: skyblue;
+	border-radius: 15px;
+	padding: 3px;
+	cursor: pointer;
+}
+
+.threadDetails button:hover{
+	box-shadow: 1px 1px 5px 5px rgb(255,229,254);
+}
+
+.detail p{
+	margin: 0 10px;
+}
+
+.detail p , .comment p{
+	width: 100%;
+  	overflow-wrap: break-word;;
+}
+
+.threadDetailImg{
+	max-width: 50%;
+	max-height:180px;
+	object-fit:conver;
+	margin-left: 10px;
+}
+
+#thredComment{
+	background: white;
+	border: 8px double rgb(255,229,254);
+}
+
+#thredComment:focus{
+	background: white;
+	border: 8px double lightgreen;
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/develop
+}
+
+#thredComment::placeholder{
+	color:skyblue;
+	font-family: 'Hachi Maru Pop', cursive;
+}
+
+label[for="thredComment"]{
+	font-family: 'Hachi Maru Pop', cursive;
+}
+
+.sendMassage{
+	border: 8px solid rgb(255,229,254);
+	padding: 3px;
+	background:white;
+	color: blue;
+	font-family: 'Hachi Maru Pop', cursive;
+}
+
+.sendMassage:hover{
+	border: 8px solid lightgreen;
+}
+
 
 /* ------------- おすすめユーザー ------------- */
 
@@ -474,12 +613,138 @@ input::placeholder{
 	border: rgba(255,229,254,0.7);
 }
 
+.recommend-under-button{
+	list-style: none;
+}
+
 .recommend-under-button button{
 	border: none;
 	background: aqua;
 	margin: 5px;
-	border-radius: 15px
+	border-radius: 15px;
 }
+
+/* ------------- チャットページ ------------- */
+
+.chatSystem{
+	width:90%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	text-align: center;
+	margin:auto;
+}
+
+.chatSystemChild{
+	width:25%;
+	height: 100px;
+	marigin:auto;
+	flex-wrap: wrap;
+	align-items: center;
+	text-align: center;
+}
+
+.chatSystemChild div{
+	margin: auto;
+	width: 95%;
+	height: 90%;
+	display: flex;
+	text-align: center;
+	align-items: center;
+	border: solid 1px;
+}
+
+.chatSystemChild div:hover{
+	background:linear-gradient(to right bottom ,rgb(255,229,254),60% ,rgb(229,253,255));
+	transform: scale(1.2, 1.2);
+	border-radius: 15px 0 15px 0;
+	transition: all 0.5s 0s ease;
+}
+
+.chatSystemChild a{
+	width: 100%;
+}
+
+
+.talk-box{
+	width:95%;
+	height:80vh;
+	margin:0 auto;
+	overflow-y: scroll;
+	border-bottom:solid gray;
+	font-size: large;
+	background-color: rgba(0,0,0,0.1);
+}
+
+.talk-box ul{
+	display: flex;
+	list-style: none;
+	margin:0 10px 15px 10px;
+	padding:0;
+}
+
+.massage-box-me{
+	word-wrap: break-word;
+	max-width:50%;
+	background-color: lightgreen;
+	border-radius: 15px;
+	padding: 5px;
+}
+
+.massage-box-you{
+	word-wrap: break-word;
+	max-width:50%;
+	background-color: white;
+	border-radius: 15px;
+	padding: 5px;
+}
+
+.date-massage{
+	font-size: 12px;
+}
+
+.chat-send-button{
+	border: none;
+	background: rgba(0,0,0,0);
+	color:rgb(255,189,243);
+	transition: .5s EASE;
+	font-size: large;
+	width: 50px;
+	border:1px solid gray;
+	margin-left: 2px;
+}
+
+.chat-send-button:focus{
+	border: none;
+	background: rgba(0,0,0,0);
+	color:lightgreen;
+}
+
+.chat-send-button:hover{
+	box-shadow: 2px 2px gray;
+	border-radius: 15px;
+	color: rgb(255,71,221);
+}
+
+.chatInput{
+	background: white;
+	border: 8px double rgb(255,229,254);
+}
+
+.chatInput:focus{
+	background: white;
+	border: 8px double lightgreen;
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/develop
+}
+
+.chatInput::placeholder{
+	color:skyblue;
+	font-family: 'Hachi Maru Pop', cursive;
+}
+
 /* ------------- 雪を降らせる ------------- */
 .snow {
   /*雪の色*/

@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -25,21 +27,25 @@ public class User {
     @Column(name = "ID")
     private Long id;
 
-    //メールアドレス
-    @Column(name = "EMAIL", length = 50, nullable = false, unique = true)
-    private String email;
+    @NotBlank(message = "メールアドレスを入力してください")
+    @Size(max = 254, message = "メールアドレスは254文字以内で入力してください")
+    @Column(name = "EMAIL", length = 254, nullable = false, unique = true)
+    private String email;//メールアドレス
 
-    //ユーザー名
+    @NotBlank(message = "ユーザー名を入力してください")
+    @Size(max = 100, message = "ユーザー名は100文字以内で入力してください")
     @Column(name = "NAME", length = 100, nullable = false, unique = true )
-    private String name;
+    private String name;//ユーザー名
 
-    //パスワード
+    @NotBlank(message = "パスワードを入力してください")
+    @Size(min=4, max = 64, message = "パスワードは4文字以上64文字以内で入力してください")
     @Column(name = "PASSWORD", length = 64, nullable = false)
-    private String password;
+    private String password;//パスワード
 
-    //自己紹介文
+    @NotBlank(message = "自己紹介を入力してください")
+    @Size(max = 300, message = "自己紹介は300文字以内で入力してください")
     @Column(name = "INTRODUCTION", length = 300, nullable = true)
-    private String introduction;
+    private String introduction;//自己紹介文
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Threads> threadList;

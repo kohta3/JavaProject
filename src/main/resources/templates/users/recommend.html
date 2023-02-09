@@ -36,6 +36,13 @@
 							<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー</button>
 						</form>
 
+						<form th:action="@{/follows/save}" method="post" th:id="followback+${recommendUserInfo.id}">
+							<input type="hidden" name="url" >
+
+							<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォローバック</button>
+
+						</form>
+
 						<form th:action="@{/follows/delete}" method="post" th:id="unfollow+${recommendUserInfo.id}">
 							<input type="hidden" name="url" >
 							<button type="submit" name="followId" th:value="${recommendUserInfo.id}">フォロー解除</button>
@@ -58,16 +65,27 @@
 				<script th:inline="javascript">
 						var users =  /*[[${follows}]]*/;
 						var recommend = /*[[${recommendUserInfo.id}]]*/;
+						var followers = /*[[${passiveFollows}]]*/;
 
 						var followId = document.getElementById('follow'+/*[[${recommendUserInfo.id}]]*/);
 						var unfollowId = document.getElementById('unfollow'+/*[[${recommendUserInfo.id}]]*/);
+						var followerId = document.getElementById('followback' + /*[[${recommendUserInfo.id}]]*/);
+						console.log(followerId);
 
 						if(users.includes(recommend)){
+							unfollowId.style.display = "block";
+							followerId.style.display = "none";
 							followId.style.display ="none";
-							unfollowId.style.display ="block";
 						}else{
 							unfollowId.style.display="none";
-							followId.style.display ="block";
+							if(followers.includes(recommend)) {
+								followId.style.display ="none";
+								followerId.style.display ="block";
+							} else {
+								followId.style.display ="block";
+								followerId.style.display ="none";
+							}
+
 						}
 
 				</script>
