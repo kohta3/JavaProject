@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -15,8 +14,7 @@ import javax.persistence.Table;
 public class Follow {
 
 	@Id
-	@SequenceGenerator(name = "FOLLOWS_ID_GENERATOR", sequenceName = "FOLLOW_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FOLLOWS_ID_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Long id;
 
