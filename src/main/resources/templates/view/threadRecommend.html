@@ -15,17 +15,14 @@
 		<div th:replace="~{layout/leftSidebar :: leftSidebar(${categories})}"></div>
 		<div class="col-md-8 m-0 p-0 originalBackColor">
 			<div class="mb-3">
-				<h1 class="m-0 pl-3">トップ</h1>
-				<div class="w-100 h-100 d-flex mt-3">
-					<div class="w-50" sec:authorize="isAuthenticated()">
-						<a th:href="@{/threads/postThred}" class="newAdd">新規すれ作成＋</a>
-					</div>
-					<div class="w-50 text-right">
-						<form th:action="@{/threads}" method="get" class="selectBox-top">
-							<select name="order" id="select-order">
+				<h1 class="m-0 pl-3">おすすめのスレッド</h1>
+				<div class="w-100 mt-3">
+					<div class="w-100 text-right">
+						<form th:action="@{/threads/recommend}" method="get" class="selectBox-top">
+							<select name="order" id="select-order" class="w-25">
 								<option disabled selected>並べ替え</option>
 								<option value="最新">最新順</option>
-								<option value="コメント数" >コメント数順</option>
+								<option value="コメント数" >コメント数</option>
 								<option value="ランダム" >ランダム順</option>
 							</select>
 						</form>
@@ -52,7 +49,7 @@
 					</script>
 
 					<div class="col-md-8 p-0">
-						<a th:href="@{threads/detail/{id}(id=${thread.id})}">
+						<a th:href="@{/threads/detail/{id}(id=${thread.id})}">
 							<h2 th:text="${thread.title}"></h2>
 						</a>
 						<div class="text-hidden">

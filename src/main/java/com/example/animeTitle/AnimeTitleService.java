@@ -41,6 +41,10 @@ public class AnimeTitleService {
 	 */
 	public Long searchId(String word, Long categoryId) {
 		//アニメタイトル検索
+		if(word == null) {
+			return 0L;
+		}
+
 		AnimeTitle animeTitle = this.animeTitleRepository.findByName(word);
 
 		//アニメタイトルがない場合
@@ -60,6 +64,27 @@ public class AnimeTitleService {
 		animeTitle.setName(name);
 		animeTitle.setCategoryId(categoryId);
 		return this.animeTitleRepository.save(animeTitle);
+	}
+
+    /**
+     * アニメタイトルの入力値チェック
+     * @param animeTitle アニメタイトル
+     * @return true:正常の入力値 false:異常な入力値
+     */
+    public boolean isValidAnimeTitle(String animeTitle) {
+    	System.out.println(animeTitle);
+        //アニメタイトル文字数の判定（1文字から100文字まで）
+        if (animeTitle.length() < 1 || animeTitle.length() > 100) {
+            return false;
+        }
+        return true;
+    }
+
+	/*
+	 * アニメタイトル削除
+	 */
+	public void delete(AnimeTitle animeTitle) {
+		this.animeTitleRepository.delete(animeTitle);
 	}
 
 }
